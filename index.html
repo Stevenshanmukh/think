@@ -1,0 +1,2563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ThinkBubble is an independent AI research lab building infrastructure for human-centric artificial intelligence. We develop foundational systems that prioritize clarity, safety, and real-world utility.">
+    <meta name="theme-color" content="#030305">
+    <title>ThinkBubble | Human-Centric AI Infrastructure</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        corePlugins: { preflight: false }
+      }
+    </script>
+
+    <style>
+        /* ============================================
+           CSS SYSTEM - Cinematic Variables
+        ============================================ */
+        :root {
+            /* Palette */
+            --bg-base: #030305;
+            --bg-surface: #0a0a0f;
+            --bg-elevated: #11111a;
+            --bg-glass: rgba(10, 10, 15, 0.6);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #52525b;
+            
+            --accent-cyan: #00d4e8;
+            --accent-blue: #4a90d9;
+            --accent-glow: rgba(0, 212, 232, 0.15);
+            
+            /* Employee Portal Specific */
+            --color-bg: var(--bg-base);
+            --color-surface: var(--bg-surface);
+            --color-muted-surface: var(--bg-elevated);
+            --color-border: rgba(255, 255, 255, 0.1);
+            --color-text-secondary: var(--text-secondary);
+            --color-text-primary: var(--text-primary);
+            --color-bg-2: rgba(255, 255, 255, 0.05);
+
+            /* Typography */
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --transition-smooth: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            --transition-fast: 0.3s ease;
+        }
+
+        /* ============================================
+           CSS RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        p {
+            color: var(--text-secondary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul { list-style: none; }
+        button, input, textarea { font-family: inherit; }
+
+        /* ============================================
+           LAYOUT & UTILITIES
+        ============================================ */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+
+        .container-narrow {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ============================================
+           TYPOGRAPHY SYSTEM
+        ============================================ */
+        .text-hero {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .text-h2 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .text-h3 {
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .text-lead {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* ============================================
+           ANIMATION SYSTEM (Data Attributes)
+        ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ============================================
+           COMPONENTS - NAVBAR
+        ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 0;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar.is-scrolled {
+            background: rgba(3, 3, 5, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            height: 56px;
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            filter: brightness(1.1);
+            transition: transform var(--transition-fast);
+        }
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link-cta {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link-cta:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* ============================================
+           COMPONENTS - BUTTONS
+        ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+            border: none;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+            background: var(--accent-cyan);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           SECTIONS - HERO
+        ============================================ */
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            padding-top: clamp(60px, 8vh, 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-video-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.6;
+            will-change: transform, opacity;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(3, 3, 5, 0.1) 0%,
+                rgba(3, 3, 5, 0.7) 60%,
+                var(--bg-base) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            will-change: transform, opacity;
+        }
+
+        .hero-logo-large {
+            height: 72px;
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            filter: brightness(1.1);
+            margin-bottom: 3rem;
+            /* Handcrafted entrance */
+            animation: heroLogoIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        .hero-headline-wrap { overflow: hidden; }
+
+        .hero-sub {
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.8s;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1s;
+        }
+
+        @keyframes heroLogoIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ============================================
+           PULSE BEAMS CTA
+        ============================================ */
+        .pulse-beams-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pulse-beams-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1.2s;
+        }
+
+        .pulse-beams-cta {
+            position: relative;
+            z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: #000;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, #fff 100%);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            text-decoration: none;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow:
+                0 4px 20px rgba(0, 212, 232, 0.4),
+                0 0 40px rgba(0, 212, 232, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .pulse-beams-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 100px;
+            background: radial-gradient(75% 100% at 50% 0%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 75%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .pulse-beams-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 8px 30px rgba(0, 212, 232, 0.5),
+                0 0 60px rgba(0, 212, 232, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .pulse-beams-cta:hover::before {
+            opacity: 1;
+        }
+
+        .pulse-beams-cta span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Beam path styling */
+        .beam-path-base {
+            stroke: var(--bg-elevated);
+            stroke-width: 1;
+            fill: none;
+        }
+
+        .beam-path-glow {
+            stroke-width: 2;
+            stroke-linecap: round;
+            fill: none;
+        }
+
+        .beam-connection-point {
+            fill: var(--bg-elevated);
+            stroke: var(--accent-cyan);
+            stroke-width: 1;
+        }
+
+        /* Beam gradient animations */
+        @keyframes beamPulse1 {
+            0% {
+                stop-color: var(--accent-cyan);
+                stop-opacity: 0;
+            }
+            20% {
+                stop-color: var(--accent-cyan);
+                stop-opacity: 1;
+            }
+            50% {
+                stop-color: var(--accent-blue);
+                stop-opacity: 1;
+            }
+            100% {
+                stop-color: #AE48FF;
+                stop-opacity: 0;
+            }
+        }
+
+        @keyframes beamFlow1 {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes beamFlow2 {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes beamFlow3 {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes beamFlow4 {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        /* Gradient flow animation for SVG */
+        .beam-gradient-animate {
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                offset: 0%;
+            }
+            50% {
+                offset: 100%;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .pulse-beams-svg {
+                transform: translate(-50%, -50%) scale(0.6);
+            }
+            .pulse-beams-cta {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* ============================================
+           SECTIONS - NARRATIVE (Purpose)
+        ============================================ */
+        .narrative {
+            position: relative;
+            z-index: 5;
+            background: var(--bg-base);
+        }
+        .narrative-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+        .narrative-text strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           SECTIONS - HOW WE BUILD
+        ============================================ */
+        .grid-stagger {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .card-motion {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-motion:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 40px var(--accent-glow);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            background: rgba(255,255,255,0.03);
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Staggered layout pseudo-trick */
+        @media (min-width: 768px) {
+            .grid-stagger .card-motion:nth-child(even) {
+                transform: translateY(40px);
+            }
+            .grid-stagger .card-motion:nth-child(even):hover {
+                transform: translateY(30px);
+            }
+        }
+
+        /* ============================================
+           SECTIONS - PRODUCTS & COUNTERS
+        ============================================ */
+        .metrics-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 8rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-num {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ============================================
+           SECTIONS - COMPANIES
+        ============================================ */
+        .showcase-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .company-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 32px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-showcase::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(0, 212, 232, 0.05) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .company-showcase:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .company-showcase:hover::after {
+            opacity: 1;
+        }
+
+        @media (min-width: 900px) {
+            .company-showcase {
+                flex-direction: row;
+                align-items: center;
+                gap: 4rem;
+                padding: 4rem;
+            }
+            .company-showcase:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+            .company-showcase .showcase-content {
+                flex: 1.2;
+            }
+            .company-showcase .showcase-visual {
+                flex: 0.8;
+                max-width: 400px;
+            }
+        }
+
+        .showcase-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 2;
+        }
+
+        .showcase-cat {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .showcase-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            color: var(--text-primary);
+        }
+
+        .showcase-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .showcase-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all var(--transition-smooth);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+        .showcase-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,212,232,0.15);
+        }
+
+        .showcase-visual {
+            position: relative;
+            background: rgba(0,0,0,0.3);
+            border-radius: 24px;
+            width: 100%;
+            aspect-ratio: 16/10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            transition: border-color var(--transition-smooth);
+            z-index: 2;
+        }
+
+        .company-showcase:hover .showcase-visual {
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .showcase-logo {
+            width: 55%;
+            height: auto;
+            max-height: 60%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            transition: transform var(--transition-smooth);
+            position: relative;
+            z-index: 2;
+        }
+
+        .company-showcase:hover .showcase-logo {
+            transform: scale(1.05);
+        }
+
+        .showcase-icon {
+            font-size: 6rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #52525b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: 2;
+            transition: opacity var(--transition-smooth);
+        }
+
+        .showcase-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        /* ============================================
+           PAGES - PORTAL
+        ============================================ */
+        .portal-layout {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-base);
+            padding: 2rem;
+        }
+
+        .portal-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .portal-input {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: border-color var(--transition-fast);
+        }
+        .portal-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        /* Portal Dashboard */
+        .dashboard-header {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .schedule-list {
+            display: grid;
+            gap: 1rem;
+        }
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+        }
+        .schedule-item:hover {
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* ============================================
+           PAGES - CONTACT
+        ============================================ */
+        .contact-layout {
+            min-height: 85vh;
+            padding-top: 20vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .floating-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .floating-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 0;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: border-color var(--transition-fast);
+        }
+
+        .floating-input:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .floating-label {
+            position: absolute;
+            left: 0;
+            top: 1rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: all var(--transition-fast);
+        }
+
+        .floating-input:focus ~ .floating-label,
+        .floating-input:not(:placeholder-shown) ~ .floating-label {
+            top: -0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .floating-input::placeholder {
+            color: transparent;
+        }
+
+        /* ============================================
+           GLOSSY 3D CARDS
+        ============================================ */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        @media (min-width: 768px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1200px) {
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .glossy-wrap {
+            perspective: 1000px;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glossy-card {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            background-color: var(--bg-elevated);
+            box-shadow: 0 -10px 100px 10px rgba(0, 212, 232, 0.05), 0 0 10px 0 rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s ease-out;
+            --hover-intensity: 0;
+            --rot-x: 0deg;
+            --rot-y: 0deg;
+            transform: translateY(calc(-5px * var(--hover-intensity))) rotateX(var(--rot-x)) rotateY(var(--rot-y));
+            will-change: transform;
+        }
+
+        .glossy-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .glossy-glass {
+            z-index: 35;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(2px);
+            opacity: calc(0.5 + 0.2 * var(--hover-intensity));
+            transform: rotateX(calc(var(--rot-x) * -0.2)) rotateY(calc(var(--rot-y) * -0.2)) translateZ(1px);
+        }
+
+        .glossy-bg {
+            z-index: 0;
+            background: linear-gradient(180deg, #0b1222 0%, var(--bg-surface) 70%);
+            transform: translateZ(-1px);
+        }
+
+        .glossy-noise {
+            z-index: 10;
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            transform: translateZ(-0.5px);
+        }
+
+        .glossy-smudge {
+            z-index: 11;
+            opacity: 0.1;
+            mix-blend-mode: soft-light;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='smudge'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01' numOctaves='3' seed='5' stitchTiles='stitch'/%3E%3CfeGaussianBlur stdDeviation='10'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23smudge)'/%3E%3C/svg%3E");
+            backdrop-filter: blur(1px);
+            transform: translateZ(-0.25px);
+        }
+
+        .glossy-glow-1 {
+            bottom: 0; left: 0; right: 0; height: 66%; top: auto;
+            z-index: 20;
+            background: radial-gradient(ellipse at bottom right, rgba(0, 212, 232, 0.4) -10%, transparent 70%),
+                        radial-gradient(ellipse at bottom left, rgba(74, 144, 217, 0.4) -10%, transparent 70%);
+            filter: blur(40px);
+            opacity: calc(0.8 + 0.1 * var(--hover-intensity));
+            transform: translateZ(0);
+        }
+
+        .glossy-glow-2 {
+            bottom: 0; left: 0; right: 0; height: 66%; top: auto;
+            z-index: 21;
+            background: radial-gradient(circle at bottom center, rgba(0, 212, 232, 0.5) -20%, transparent 60%);
+            filter: blur(45px);
+            opacity: calc(0.75 + 0.1 * var(--hover-intensity));
+            transform: translateY(calc(10% + var(--rot-x) * 0.3)) translateZ(0);
+        }
+
+        .glossy-border {
+            bottom: 0; left: 0; right: 0; height: 2px; top: auto;
+            z-index: 25;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.05) 100%);
+            opacity: calc(0.9 + 0.1 * var(--hover-intensity));
+            box-shadow: 0 0 calc(15px + 5px * var(--hover-intensity)) calc(3px + 1px * var(--hover-intensity)) rgba(0, 212, 232, 0.8);
+            transform: translateZ(0.5px);
+        }
+
+        .glossy-content {
+            position: relative;
+            z-index: 40;
+            height: 100%;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            transform: translateZ(2px);
+            pointer-events: none;
+        }
+
+        .glossy-icon-wrap {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(225deg, #14213d 0%, #0b1222 100%);
+            box-shadow: 0 6px 12px -2px rgba(0,0,0,0.25), inset 1px 1px 3px rgba(255,255,255,0.12);
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(calc(5px + 5px * var(--hover-intensity))) rotateX(calc(var(--rot-x) * -0.5)) rotateY(calc(var(--rot-y) * -0.5));
+            transition: transform 0.1s ease-out;
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+        }
+
+        .glossy-icon-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 66%; height: 66%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 80%);
+            filter: blur(10px);
+            opacity: 0.4;
+        }
+
+        .glossy-text-wrap {
+            margin-top: auto;
+            transform: translateZ(calc(2px + 3px * var(--hover-intensity))) rotateX(calc(var(--rot-x) * -0.3)) rotateY(calc(var(--rot-y) * -0.3));
+            transition: transform 0.1s ease-out;
+        }
+
+        .glossy-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+            text-shadow: 0 calc(2px * var(--hover-intensity)) calc(4px * var(--hover-intensity)) rgba(0,0,0,0.5);
+        }
+
+        .glossy-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.5;
+            text-shadow: 0 calc(1px * var(--hover-intensity)) calc(2px * var(--hover-intensity)) rgba(0,0,0,0.5);
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 6rem 0 3rem 0;
+            margin-top: 6rem;
+            background: linear-gradient(to top, rgba(3, 3, 5, 0.9) 0%, rgba(10, 10, 15, 0.4) 100%);
+            position: relative;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .footer-brand {
+            max-width: 380px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: fill var(--transition-fast);
+        }
+
+        .social-link.github:hover {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .social-link.linkedin:hover {
+            background: #0A66C2;
+            color: #ffffff;
+            border-color: #0A66C2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(10, 102, 194, 0.3);
+        }
+
+        .footer-heading {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+        }
+
+        .footer-link:hover {
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .external-arrow {
+            font-size: 0.8em;
+            margin-left: 6px;
+            opacity: 0.5;
+            transition: opacity var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .footer-link:hover .external-arrow {
+            opacity: 1;
+            transform: translateX(2px) translateY(-2px);
+            color: var(--accent-cyan);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .legal-link {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: color var(--transition-fast);
+        }
+
+        .legal-link:hover {
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           ROUTER TRANSITION
+        ============================================ */
+        #page-content {
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        #page-content.fade-out {
+            opacity: 0;
+        }
+
+        /* ============================================
+           PORTAL DASHBOARD CARDS
+        ============================================ */
+        .portal-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .portal-option-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .portal-option-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 212, 232, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
+        }
+
+        .portal-option-card .card-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 212, 232, 0.1), rgba(74, 144, 217, 0.1));
+            border: 1px solid rgba(0, 212, 232, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .portal-option-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .portal-option-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           SCHEDULING GRID
+        ============================================ */
+        .scheduling-container {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .scheduling-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .scheduling-title h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.25rem;
+        }
+
+        .scheduling-title p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .week-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .week-nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .week-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .week-range {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .scheduling-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .scheduling-grid th,
+        .scheduling-grid td {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .scheduling-grid th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .scheduling-grid td {
+            background: rgba(0, 0, 0, 0.2);
+            vertical-align: top;
+        }
+
+        .scheduling-grid .time-cell {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            width: 100px;
+        }
+
+        .schedule-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .schedule-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .schedule-select:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .schedule-select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .schedule-select.status-off {
+            background: rgba(82, 82, 91, 0.3);
+        }
+
+        .schedule-select.status-remote {
+            background: rgba(0, 212, 232, 0.15);
+            border-color: rgba(0, 212, 232, 0.3);
+        }
+
+        .schedule-select.status-onprem {
+            background: rgba(74, 144, 217, 0.15);
+            border-color: rgba(74, 144, 217, 0.3);
+        }
+
+        .capacity-indicator {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .capacity-ok {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .capacity-full {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .scheduling-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-save:hover {
+            background: #00e8ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-copy {
+            background: rgba(249, 115, 22, 0.2);
+            color: #f97316;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-copy:hover {
+            background: rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-paste {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-paste:hover {
+            background: rgba(34, 197, 94, 0.3);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            margin-bottom: 1.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 768px) {
+            .scheduling-grid {
+                font-size: 0.8rem;
+            }
+            .scheduling-grid th,
+            .scheduling-grid td {
+                padding: 0.5rem;
+            }
+            .schedule-select {
+                padding: 0.4rem;
+                font-size: 0.75rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Nav Shell -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="#home" class="nav-brand" data-link style="display: flex; align-items: center; gap: 0.75rem;">
+                <img src="ThinkbubbleLogo.png?v=1.1" alt="ThinkBubble Logo" class="nav-logo" style="border-radius: 50%; width: 48px; height: 48px; object-fit: cover; margin-right: 0.25rem;">
+                <div class="nav-brand-text" style="display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1; color: #fff;">ThinkBubble</div>
+                    <div style="font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 0.2rem;">Beyond Infinity</div>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link" data-link>Overview</a>
+                <a href="#companies" class="nav-link" data-link>Companies</a>
+                <a href="#portal" class="nav-link" data-link>Employees</a>
+                <a href="#contact" class="nav-link nav-link-cta" data-link>Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- App Mount Point -->
+    <main id="page-content"></main>
+
+    <!-- Footer Shell -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="footer-brand">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <img src="ThinkbubbleLogo.png?v=1.1" alt="ThinkBubble Logo" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover; mix-blend-mode: screen; filter: brightness(1.1); display: block;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+                            <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; line-height: 1; color: #fff;">ThinkBubble</div>
+                            <div style="font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-top: 0.15rem;">Beyond Infinity</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+                        Independent AI research lab building infrastructure for human-centric artificial intelligence. We prioritize clarity, safety, and real-world utility.
+                    </p>
+                    
+                    <div class="footer-socials">
+                        <a href="https://github.com/thinkbubble" target="_blank" class="social-link github" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/thinkbubble" target="_blank" class="social-link linkedin" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Companies Column -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Our Companies</h4>
+                    <div class="footer-links">
+                        <a href="https://www.aiparel.io/" target="_blank" class="footer-link">Aiparel <span class="external-arrow">&#x2197;</span></a>
+                        <a href="https://kloe.bot/" target="_blank" class="footer-link">KloeBot <span class="external-arrow">&#x2197;</span></a>
+                        <a href="https://www.ozonelayer.io/" target="_blank" class="footer-link">OzoneLayer <span class="external-arrow">&#x2197;</span></a>
+                    </div>
+                </div>
+
+                <!-- Explore Column -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Explore</h4>
+                    <div class="footer-links">
+                        <a href="#home" class="footer-link" data-link>Overview</a>
+                        <a href="#companies" class="footer-link" data-link>Companies</a>
+                        <a href="#portal" class="footer-link" data-link>Employees</a>
+                        <a href="#contact" class="footer-link" data-link>Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p style="font-size: 0.9rem; color: var(--text-muted);">© 2026 ThinkBubble. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#" class="legal-link">Privacy Policy</a>
+                    <a href="#" class="legal-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        /* ============================================
+           DATA
+        ============================================ */
+        const DATA = Object.freeze({
+            products: [
+                { name: 'Aiparel', desc: 'Merchandise creation tools, from concept to production.', init: 'A' },
+                { name: 'KloeBot', desc: 'Conversational AI for multilingual markets.', init: 'K' },
+                { name: 'OzoneLayer', desc: 'Shared compute, orchestration, and interfaces.', init: 'O' }
+            ],
+            companies: [
+                { 
+                    name: 'ThinkBubble', 
+                    cat: 'Research', 
+                    subtitle: 'The infrastructure behind everything we build',
+                    desc: 'ThinkBubble is the underlying engine powering our ecosystem of intelligent products. It provides the architecture, systems, and deployment frameworks required to run modern AI at scale — from Retrieval-Augmented Generation (RAG) pipelines to high-performance data processing environments.<br><br>Built for reliability and flexibility, ThinkBubble handles the technical heavy lifting so innovation can move faster.', 
+                    init: 'TB', 
+                    url: 'https://www.thinkbubble.io/', 
+                    logo: 'company_logos/thinkbubblelogo.svg' 
+                },
+                { 
+                    name: 'Aiparel', 
+                    cat: 'Consumer', 
+                    subtitle: 'Create. Customize. Launch. Sell — globally with AI',
+                    desc: 'Aiparel is an AI-powered platform that transforms ideas into sellable products in minutes. Generate original designs with AI, apply them to merchandise instantly, and launch to a worldwide audience through integrated fulfillment and payments across 200+ countries.<br><br>No inventory. No complexity. Just creation at scale.', 
+                    init: 'A', 
+                    url: 'https://www.aiparel.io/', 
+                    logo: 'company_logos/aiparellogo.svg' 
+                },
+                { 
+                    name: 'KloeBot', 
+                    cat: 'Enterprise', 
+                    subtitle: 'Enterprise-level conversational AI — made accessible',
+                    desc: 'KloeBot helps businesses deploy intelligent, multilingual customer support without technical overhead. From answering questions to guiding customers through workflows, it brings powerful conversational automation to teams of any size.<br><br>Smart support shouldn’t require a large engineering team — and with KloeBot, it doesn’t.', 
+                    init: 'K', 
+                    url: 'https://kloe.bot/', 
+                    logo: 'company_logos/kloebotlogo.svg' 
+                },
+                { 
+                    name: 'OzoneLayer', 
+                    cat: 'Infrastructure', 
+                    subtitle: 'Infrastructure designed for modern AI systems',
+                    desc: 'OzoneLayer is our O³ infrastructure stack built for performance, scalability, and control. It includes OxiFrame for rapid development, Omnexus for unified API orchestration, and Orbnet for secure self-hosted deployment and large-scale object storage.<br><br>Purpose-built for LLM applications, fast iteration cycles, and production-grade AI environments.', 
+                    init: 'O', 
+                    url: 'https://www.ozonelayer.io/', 
+                    logo: 'company_logos/ozonelayerlogo.svg' 
+                }
+            ],
+            architecture: [
+                { icon: '🧠', title: 'Context-Aware Systems', desc: 'We design AI that understands human context—cultural, linguistic, and situational—as a core capability, not a retrofit.', cat: 'Principle 1' },
+                { icon: '🏗️', title: 'Shared Infrastructure', desc: 'Common problems deserve common solutions. Our internal systems become the foundation that each product builds upon.', cat: 'Principle 2' },
+                { icon: '⚡', title: 'Measured Deployment', desc: 'We ship incrementally, observe carefully, and refine continuously. Speed follows from understanding, not haste.', cat: 'Principle 3' },
+                { icon: '🎯', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 4' }
+            ],
+            portalUsers: [
+                { email: 'demo@thinkbubble.ai', pass: 'demo', name: 'Demo User', role: 'Engineer' }
+            ],
+            schedule: [
+                { day: 'Mon', time: '9:00 AM', title: 'Sprint Planning', type: 'meeting' },
+                { day: 'Tue', time: '10:00 AM', title: 'OzoneLayer Standup', type: 'standup' },
+                { day: 'Wed', time: '2:00 PM', title: 'Architecture Review', type: 'review' }
+            ],
+            // Scheduling feature data
+            schedulingOptions: ['Off', 'Remote', 'On-Prem'],
+            timeSlots: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'],
+            weekdays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            onPremCapacity: { total: 3 }
+        });
+
+        const UI = {
+            GlossyCard: (item, index) => `
+                <div class="glossy-wrap reveal" style="transition-delay: ${0.1 * index}s">
+                    <div class="glossy-card">
+                        <div class="glossy-layer glossy-glass"></div>
+                        <div class="glossy-layer glossy-bg"></div>
+                        <div class="glossy-layer glossy-noise"></div>
+                        <div class="glossy-layer glossy-smudge"></div>
+                        <div class="glossy-layer glossy-glow-1"></div>
+                        <div class="glossy-layer glossy-glow-2"></div>
+                        <div class="glossy-layer glossy-border"></div>
+                        <div class="glossy-content">
+                            <div class="glossy-icon-wrap">${item.icon || item.init}</div>
+                            <div class="glossy-text-wrap">
+                                <div style="color: var(--accent-cyan); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">${item.cat}</div>
+                                <h3 class="glossy-title">${item.title || item.name}</h3>
+                                <p class="glossy-desc">${item.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            CompanyShowcase: (item, index) => `
+                <div class="company-showcase reveal" style="transition-delay: ${0.1 * index}s">
+                    <div class="showcase-content">
+                        <div class="showcase-cat">${item.cat}</div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: ${item.subtitle ? '0.5rem' : '1.5rem'}; gap: 1rem; flex-wrap: wrap;">
+                            <h3 class="showcase-title" style="margin-bottom: 0;">${item.name}</h3>
+                            ${item.url ? `<a href="${item.url}" target="_blank" class="showcase-btn" style="padding: 0.6rem 1.5rem; font-size: 0.85rem;">Visit Website <span style="margin-left:8px; font-size:1.1em;">&#x2197;</span></a>` : ''}
+                        </div>
+                        ${item.subtitle ? `<h4 style="font-size: 1.25rem; color: var(--text-primary); font-weight: 500; margin-bottom: 1.5rem; line-height: 1.4;">${item.subtitle}</h4>` : ''}
+                        <p class="showcase-desc" style="margin-bottom: 0;">${item.desc}</p>
+                    </div>
+                    <div class="showcase-visual">
+                        ${item.logo ? `<img src="${item.logo}" alt="${item.name} Logo" class="showcase-logo">` : `<div class="showcase-icon">${item.icon || item.init}</div>`}
+                    </div>
+                </div>
+            `,
+            SchedulingGrid: (userName) => {
+                UTILITIES.initWeekStart();
+                const weekRange = UTILITIES.getWeekRange();
+
+                const getStatusClass = (value) => {
+                    if (value === 'Remote') return 'status-remote';
+                    if (value === 'On-Prem') return 'status-onprem';
+                    return 'status-off';
+                };
+
+                return `
+                    <div class="scheduling-container">
+                        <div class="scheduling-header">
+                            <div class="scheduling-title">
+                                <h2>Employee Scheduling</h2>
+                                <p>Set your weekly hours, ${userName}</p>
+                            </div>
+                            <div class="week-navigation">
+                                <button class="week-nav-btn" onclick="UTILITIES.navigateWeek('prev')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                                </button>
+                                <span class="week-range">${weekRange}</span>
+                                <button class="week-nav-btn" onclick="UTILITIES.navigateWeek('next')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="overflow-x: auto;">
+                            <table class="scheduling-grid">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        ${DATA.weekdays.map(day => `<th>${day}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${DATA.timeSlots.map(time => `
+                                        <tr>
+                                            <td class="time-cell">${time}</td>
+                                            ${DATA.weekdays.map(day => {
+                                                const value = UTILITIES.getScheduleValue(day, time);
+                                                const count = Math.floor(Math.random() * 3);
+                                                const total = DATA.onPremCapacity.total;
+                                                const capacityClass = count >= total ? 'capacity-full' : 'capacity-ok';
+                                                return `
+                                                    <td>
+                                                        <div class="schedule-cell">
+                                                            <select
+                                                                class="schedule-select ${getStatusClass(value)}"
+                                                                onchange="UTILITIES.updateScheduleCell('${day}', '${time}', this.value); this.className = 'schedule-select ' + (this.value === 'Remote' ? 'status-remote' : this.value === 'On-Prem' ? 'status-onprem' : 'status-off');"
+                                                            >
+                                                                ${DATA.schedulingOptions.map(opt => `
+                                                                    <option value="${opt}" ${value === opt ? 'selected' : ''}>${opt}</option>
+                                                                `).join('')}
+                                                            </select>
+                                                            <span class="capacity-indicator ${capacityClass}" data-day="${day}" data-time="${time}">${count}/${total}</span>
+                                                        </div>
+                                                    </td>
+                                                `;
+                                            }).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="scheduling-actions">
+                            <button class="btn-save" onclick="UTILITIES.saveSchedule()">Save My Schedule</button>
+                            <button class="btn-copy" onclick="UTILITIES.copyHours()">Copy Hours</button>
+                            <button class="btn-paste" onclick="UTILITIES.pasteHours()">Paste Hours</button>
+                        </div>
+                    </div>
+                `;
+            },
+            PulseBeamsCTA: (text, href) => {
+                // Generate unique IDs for gradients
+                const uniqueId = Math.random().toString(36).substr(2, 9);
+
+                return `
+                    <div class="pulse-beams-container">
+                        <svg class="pulse-beams-svg" width="500" height="280" viewBox="0 0 500 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <!-- Beam 1 gradient - left top -->
+                                <linearGradient id="grad1-${uniqueId}" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
+                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
+                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                </linearGradient>
+
+                                <!-- Beam 2 gradient - right top -->
+                                <linearGradient id="grad2-${uniqueId}" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
+                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
+                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
+                                    </stop>
+                                </linearGradient>
+
+                                <!-- Beam 3 gradient - left bottom -->
+                                <linearGradient id="grad3-${uniqueId}" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
+                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
+                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                </linearGradient>
+
+                                <!-- Beam 4 gradient - right bottom -->
+                                <linearGradient id="grad4-${uniqueId}" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
+                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
+                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
+                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                    </stop>
+                                </linearGradient>
+
+                                <!-- Glow filter -->
+                                <filter id="glow-${uniqueId}" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Beam 1: Top left corner to center -->
+                            <path d="M10 10 L10 100 Q10 120 30 120 L200 120" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
+                            <path d="M10 10 L10 100 Q10 120 30 120 L200 120" stroke="url(#grad1-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
+                            <circle cx="10" cy="10" r="4" class="beam-connection-point"/>
+
+                            <!-- Beam 2: Top right corner to center -->
+                            <path d="M490 10 L490 100 Q490 120 470 120 L300 120" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
+                            <path d="M490 10 L490 100 Q490 120 470 120 L300 120" stroke="url(#grad2-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
+                            <circle cx="490" cy="10" r="4" class="beam-connection-point"/>
+
+                            <!-- Beam 3: Bottom left to center -->
+                            <path d="M10 270 L10 180 Q10 160 30 160 L200 160" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
+                            <path d="M10 270 L10 180 Q10 160 30 160 L200 160" stroke="url(#grad3-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
+                            <circle cx="10" cy="270" r="4" class="beam-connection-point"/>
+
+                            <!-- Beam 4: Bottom right to center -->
+                            <path d="M490 270 L490 180 Q490 160 470 160 L300 160" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
+                            <path d="M490 270 L490 180 Q490 160 470 160 L300 160" stroke="url(#grad4-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
+                            <circle cx="490" cy="270" r="4" class="beam-connection-point"/>
+
+                            <!-- Center connection points -->
+                            <circle cx="200" cy="120" r="3" class="beam-connection-point"/>
+                            <circle cx="300" cy="120" r="3" class="beam-connection-point"/>
+                            <circle cx="200" cy="160" r="3" class="beam-connection-point"/>
+                            <circle cx="300" cy="160" r="3" class="beam-connection-point"/>
+                        </svg>
+
+                        <a href="${href}" class="pulse-beams-cta" data-link>
+                            <span>${text}</span>
+                        </a>
+                    </div>
+                `;
+            }
+        };
+
+        /* ============================================
+           STATE
+        ============================================ */
+        const STATE = {
+            user: null,
+            route: '',
+            scrollObservers: [],
+            rafId: null,
+            // Portal scheduling state
+            portalView: 'cards', // 'cards' | 'scheduling'
+            currentWeekStart: null, // Will be initialized to current week
+            employeeSchedule: {}, // { 'Monday-10:00 AM': 'Off', ... }
+            copiedSchedule: null // For copy/paste functionality
+        };
+
+        /* ============================================
+           SECTIONS (Returning HTML Strings)
+        ============================================ */
+        const SECTIONS = {
+            Hero: () => `
+                <section class="hero" id="hero">
+                    <div class="hero-video-wrapper">
+                        <video class="hero-video" loop autoplay muted playsinline poster="ThinkbubbleLogo.png">
+                            <source src="hero_boomerang.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content container">
+                        <div class="hero-headline-wrap">
+                            <h1 class="text-hero reveal" id="hero-headline">Infrastructure for<br>Human-Centric AI.</h1>
+                        </div>
+                        <p class="text-lead hero-sub reveal reveal-delay-2">
+                            ThinkBubble is an independent AI research lab. We build foundational infrastructure that treats human context as a first-class concern—not an afterthought.
+                        </p>
+                        <div class="hero-actions reveal reveal-delay-3">
+                            ${UI.PulseBeamsCTA('Contact Us', '#contact')}
+                        </div>
+                    </div>
+                </section>
+            `,
+
+            Narrative: () => `
+                <section class="section narrative" id="narrative">
+                    <div class="container container-narrow text-center">
+                        <p class="narrative-text reveal">
+                            Artificial intelligence will shape the next century. We believe the organizations building it should operate with <strong>institutional permanence</strong>—prioritizing long-term research, careful deployment, and genuine benefit to the people who use these systems.
+                        </p>
+                    </div>
+                </section>
+            `,
+
+            HowWeBuild: () => `
+                <section class="section">
+                    <div class="container">
+                        <h2 class="text-h2 reveal">How We Build</h2>
+                        <p class="text-lead reveal reveal-delay-1">The principles that guide our work.</p>
+                        
+                        <div class="grid-4">
+                            ${DATA.architecture.map((item, i) => UI.GlossyCard(item, i)).join('')}
+                        </div>
+                    </div>
+                </section>
+            `,
+
+            WhatWeBuild: () => `
+                <section class="section narrative" style="padding-top: 0;">
+                    <div class="container container-narrow text-center">
+                        <h2 class="text-h2 reveal">What We're Building</h2>
+                        <p class="narrative-text reveal reveal-delay-1" style="font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 3rem;">
+                            On top of our infrastructure foundation sit the products themselves. Aiparel focuses on creator-driven commerce and expression. KloeBot helps small and medium-sized businesses deploy intelligent, multilingual chatbots without needing a development team. In parallel, we're developing a broader suite of AI-driven tools built on the same underlying infrastructure, aimed at putting capable, practical AI in the hands of individuals and small organizations. Each company operates independently but shares the same technical foundation.
+                        </p>
+                        <div class="reveal reveal-delay-2">
+                            <a href="#companies" class="btn btn-primary" data-link>Explore Our Companies</a>
+                        </div>
+                    </div>
+                </section>
+            `,
+
+            Companies: () => `
+                <section class="section" style="background: var(--bg-surface)" id="companies">
+                    <div class="container">
+
+                        <h2 class="text-h2 reveal" style="text-align: center;">Our Companies</h2>
+                        <div class="showcase-list mt-4">
+                            ${DATA.companies.map((c, i) => UI.CompanyShowcase(c, i)).join('')}
+
+                            <div class="reveal mt-8 mb-4" style="display: flex; justify-content: center; width: 100%;">
+                                <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.75rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                    <span style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); animation: customPulse 2s ease-in-out infinite;"></span>
+                                    <span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">More ventures in development...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <style>
+                            @keyframes customPulse {
+                                0%, 100% { opacity: 1; transform: scale(1); }
+                                50% { opacity: 0.4; transform: scale(1.2); }
+                            }
+                        </style>
+                    </div>
+                </section>
+            `
+        };
+
+        /* ============================================
+           COMPONENTS (Pages)
+        ============================================ */
+        const COMPONENTS = {
+            LandingScreen: () => `
+                ${SECTIONS.Hero()}
+                ${SECTIONS.Narrative()}
+                ${SECTIONS.HowWeBuild()}
+                ${SECTIONS.WhatWeBuild()}
+            `,
+
+            PortalScreen: () => {
+                if (!STATE.user) {
+                    return `
+                        <div class="h-[100vh] w-[100%] bg-[var(--color-bg)] flex items-center justify-center p-4">
+                            <div class="card w-full lg:w-[70%] md:w-[80%] flex justify-between h-[600px] border border-[var(--color-border)] rounded-3xl overflow-hidden shadow-2xl bg-[#0a0a0f] reveal" id="portal-container" style="background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%);">
+                              <div
+                                class="w-full lg:w-1/2 px-4 lg:px-16 left h-full relative overflow-hidden flex flex-col justify-center border-r border-[var(--color-border)]"
+                                id="portal-left-section">
+                                  <div
+                                    id="portal-orb"
+                                    class="absolute pointer-events-none w-[500px] h-[500px] bg-gradient-to-r from-cyan-300/10 via-blue-300/10 to-purple-300/10 rounded-full blur-[80px] transition-opacity duration-300 opacity-0 transform -translate-x-1/2 -translate-y-1/2"
+                                    style="top: 0; left: 0; filter: blur(80px);"
+                                  ></div>
+                                  <div class="form-container sign-in-container z-10 relative w-full pt-8">
+                                    <form class="text-center grid gap-2" onsubmit="event.preventDefault(); UTILITIES.login();">
+                                      <div class="grid gap-4 md:gap-6 mb-2">
+                                        <h1 class="text-3xl md:text-4xl font-extrabold" style="font-family: var(--font-display);">Sign in</h1>
+                                      </div>
+                                      <div class="grid gap-4 items-center mb-2 mt-4 text-left">
+                                        <div class="w-full relative portal-app-input group">
+                                          <div class="relative w-full">
+                                            <input type="email" id="l-email" required placeholder="Employee Email" class="peer relative z-10 border border-[var(--color-border)] h-12 w-full rounded-md bg-[rgba(0,0,0,0.3)] px-4 font-body text-sm outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-[#000000] placeholder:font-medium placeholder:text-[var(--text-muted)] text-white" value="demo@thinkbubble.ai" />
+                                            <div class="portal-gradient-top absolute pointer-events-none top-0 left-0 right-0 h-[2px] z-20 rounded-t-md overflow-hidden opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+                                            <div class="portal-gradient-bottom absolute pointer-events-none bottom-0 left-0 right-0 h-[2px] z-20 rounded-b-md overflow-hidden opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+                                          </div>
+                                      </div>
+                                      <div class="w-full relative portal-app-input group">
+                                          <div class="relative w-full">
+                                            <input type="password" id="l-pass" required placeholder="Password" class="peer relative z-10 border border-[var(--color-border)] h-12 w-full rounded-md bg-[rgba(0,0,0,0.3)] px-4 font-body text-sm outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-[#000000] placeholder:font-medium placeholder:text-[var(--text-muted)] text-white" value="demo" />
+                                            <div class="portal-gradient-top absolute pointer-events-none top-0 left-0 right-0 h-[2px] z-20 rounded-t-md overflow-hidden opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+                                            <div class="portal-gradient-bottom absolute pointer-events-none bottom-0 left-0 right-0 h-[2px] z-20 rounded-b-md overflow-hidden opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <p id="l-err" class="text-xs text-red-500 text-center m-0 h-4"></p>
+                                      <a href="#" class="font-light text-sm md:text-sm text-[var(--text-secondary)] hover:text-white transition-colors duration-200 mt-2">Need access?</a>
+                                      <div class="flex flex-col gap-4 justify-center items-center mt-4">
+                                         <button type="submit" class="group/button relative inline-flex justify-center items-center overflow-hidden rounded-md bg-white w-full h-12 text-sm font-semibold text-black transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-[var(--accent-glow)] cursor-pointer outline-none border-none">
+                                          <span class="px-2">Sign In</span>
+                                          <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]">
+                                            <div class="relative h-full w-8 bg-[rgba(0,0,0,0.1)]"></div>
+                                          </div>
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                                <div class="w-[50%] right h-full overflow-hidden relative bg-[var(--bg-elevated)]">
+                                    <img 
+                                      src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                                      class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-[20s] ease-linear hover:scale-110 opacity-70" 
+                                      alt="Cyber security concept" 
+                                    />
+                                    <div class="absolute inset-0 pointer-events-none z-10" style="background: linear-gradient(135deg, rgba(10,10,15,0.9) 0%, rgba(0,212,232,0.2) 100%);"></div>
+                                    <div class="absolute inset-0 bg-blue-900/30 mix-blend-overlay pointer-events-none z-10"></div>
+                                    
+                                    <!-- Employee Portal Overlay Content -->
+                                    <div class="absolute inset-0 z-20 flex flex-col justify-between p-10 lg:p-14 pointer-events-none text-white">
+                                        
+                                        <!-- Top Badge -->
+                                        <div class="flex justify-end w-full">
+                                            <div class="flex items-center gap-3 backdrop-blur-md bg-white/10 border border-white/20 px-5 py-2 rounded-full shadow-2xl">
+                                                <div class="w-2.5 h-2.5 rounded-full bg-[var(--accent-cyan)] shadow-[0_0_10px_var(--accent-cyan)]"></div>
+                                                <span class="text-xs font-semibold tracking-widest uppercase text-[var(--accent-cyan)]">Secure Access Node</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Center Content -->
+                                        <div class="space-y-6 mt-auto mb-8">
+                                            
+                                            <!-- Icon -->
+                                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent-cyan)] to-[var(--accent-blue)] flex items-center justify-center p-[1px] shadow-2xl">
+                                                <div class="w-full h-full bg-[#0a0a0f] rounded-2xl flex items-center justify-center backdrop-blur-xl">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" class="stroke-white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight text-white drop-shadow-lg" style="font-family: var(--font-display);">Team<br>Workspace</h2>
+                                                <p class="text-[1.05rem] text-white/90 max-w-sm leading-relaxed font-light drop-shadow">Orchestrate infrastructure layers and seamlessly manage the ThinkBubble lab ecosystem from a unified hub.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Logged in - show cards or scheduling view
+                if (STATE.portalView === 'scheduling') {
+                    return `
+                        <div class="container" style="padding-top: 12vh; min-height: 100vh; padding-bottom: 4rem;">
+                            <div class="reveal">
+                                <div class="dashboard-header">
+                                    <div>
+                                        <span class="back-link" onclick="UTILITIES.showPortalCards()">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                                            Back to Dashboard
+                                        </span>
+                                        <h2 class="text-h2" style="font-size: 2rem; margin-bottom: 0;">Employee Portal</h2>
+                                        <p class="text-secondary">${STATE.user.name} - ${STATE.user.role}</p>
+                                    </div>
+                                    <button class="btn btn-secondary" onclick="UTILITIES.logout()">Logout</button>
+                                </div>
+                                ${UI.SchedulingGrid(STATE.user.name)}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Cards view (default)
+                return `
+                    <div class="container" style="padding-top: 15vh; min-height: 100vh;">
+                        <div class="reveal">
+                            <div class="dashboard-header">
+                                <div>
+                                    <h2 class="text-h2" style="font-size: 2.5rem; margin-bottom: 0;">Welcome, ${STATE.user.name}</h2>
+                                    <p class="text-secondary">${STATE.user.role}</p>
+                                </div>
+                                <button class="btn btn-secondary" onclick="UTILITIES.logout()">Logout</button>
+                            </div>
+
+                            <div style="text-align: center; margin-bottom: 3rem;">
+                                <h3 class="text-h3" style="margin-bottom: 0.5rem;">What would you like to do?</h3>
+                                <p style="color: var(--text-secondary);">Select an option below to get started</p>
+                            </div>
+
+                            <div class="portal-cards-grid">
+                                <div class="portal-option-card" onclick="UTILITIES.showScheduling()">
+                                    <div class="card-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                            <line x1="16" y1="2" x2="16" y2="6"/>
+                                            <line x1="8" y1="2" x2="8" y2="6"/>
+                                            <line x1="3" y1="10" x2="21" y2="10"/>
+                                            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+                                        </svg>
+                                    </div>
+                                    <h3>Scheduling</h3>
+                                    <p>Set your weekly hours and availability</p>
+                                </div>
+
+                                <div class="portal-option-card" style="opacity: 0.6; cursor: not-allowed;">
+                                    <div class="card-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="9" cy="7" r="4"/>
+                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                        </svg>
+                                    </div>
+                                    <h3>Teammates</h3>
+                                    <p>View team members and contact info</p>
+                                    <span style="display: inline-block; margin-top: 0.75rem; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            ContactScreen: () => `
+                <div class="contact-layout">
+                    <div class="container container-narrow reveal">
+                        <h1 class="text-hero" style="font-size: clamp(2.5rem, 5vw, 4rem);">Work With Us</h1>
+                        <p class="text-lead" style="margin-bottom: 4rem;">For partnership inquiries, research collaboration, or enterprise licensing.</p>
+
+                        <form onsubmit="event.preventDefault(); this.innerHTML='<h3 class=\\'text-h3\\'>Message received. We will be in touch.</h3>';">
+                            <div class="floating-group">
+                                <input type="text" id="c-name" class="floating-input" placeholder="Name" required>
+                                <label for="c-name" class="floating-label">Name</label>
+                            </div>
+                            <div class="floating-group">
+                                <input type="email" id="c-email" class="floating-input" placeholder="Email" required>
+                                <label for="c-email" class="floating-label">Email Address</label>
+                            </div>
+                            <div class="floating-group" style="margin-top: 3rem;">
+                                <textarea id="c-msg" class="floating-input" style="height: 100px; resize: none;" placeholder="Message" required></textarea>
+                                <label for="c-msg" class="floating-label">Tell us about your project</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            `,
+
+            CompaniesScreen: () => `
+                <div style="min-height: 85vh;">
+                    ${SECTIONS.Companies()}
+                </div>
+            `
+        };
+
+        /* ============================================
+           ANIMATIONS
+        ============================================ */
+        const ANIMATIONS = {
+            initReveal: () => {
+                const elements = document.querySelectorAll('.reveal');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            
+                            // Check for counters inside
+                            const counter = entry.target.querySelector('[data-count]');
+                            if(counter && !counter.dataset.counted) {
+                                ANIMATIONS.runCounter(counter);
+                            }
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+                elements.forEach(el => observer.observe(el));
+                STATE.scrollObservers.push(observer);
+            },
+
+            initPortalLogin: () => {
+                // Background Orb Tracking
+                const section = document.getElementById('portal-left-section');
+                const orb = document.getElementById('portal-orb');
+                if (section && orb) {
+                    const handleMouseMove = (e) => {
+                        const rect = section.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        orb.style.transform = `translate(${x - 250}px, ${y - 250}px)`;
+                    };
+                    section.addEventListener('mousemove', handleMouseMove);
+                    section.addEventListener('mouseenter', () => orb.classList.replace('opacity-0', 'opacity-100'));
+                    section.addEventListener('mouseleave', () => orb.classList.replace('opacity-100', 'opacity-0'));
+                }
+
+                // Input Border Tracking
+                const inputs = document.querySelectorAll('.portal-app-input');
+                inputs.forEach(inputContainer => {
+                    const topGrad = inputContainer.querySelector('.portal-gradient-top');
+                    const botGrad = inputContainer.querySelector('.portal-gradient-bottom');
+                    
+                    inputContainer.addEventListener('mousemove', (e) => {
+                        const rect = inputContainer.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        if(topGrad) topGrad.style.background = `radial-gradient(30px circle at ${x}px 0px, var(--accent-cyan) 0%, transparent 80%)`;
+                        if(botGrad) botGrad.style.background = `radial-gradient(30px circle at ${x}px 2px, var(--accent-cyan) 0%, transparent 80%)`;
+                    });
+                });
+            },
+
+            initGlossyCards: () => {
+                const wraps = document.querySelectorAll('.glossy-wrap');
+                wraps.forEach(wrap => {
+                    const card = wrap.querySelector('.glossy-card');
+                    if (!card) return;
+                    wrap.addEventListener('mousemove', (e) => {
+                        const rect = wrap.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+
+                        const rotateX = -(y / rect.height) * 10; 
+                        const rotateY = (x / rect.width) * 10;
+
+                        card.style.setProperty('--rot-x', `${rotateX}deg`);
+                        card.style.setProperty('--rot-y', `${rotateY}deg`);
+                    });
+                    wrap.addEventListener('mouseenter', () => {
+                        card.style.setProperty('--hover-intensity', '1');
+                    });
+                    wrap.addEventListener('mouseleave', () => {
+                        card.style.setProperty('--hover-intensity', '0');
+                        card.style.setProperty('--rot-x', '0deg');
+                        card.style.setProperty('--rot-y', '0deg');
+                    });
+                });
+            },
+
+            runCounter: (el) => {
+                el.dataset.counted = 'true';
+                const target = parseInt(el.dataset.count);
+                const duration = 2000;
+                let start = null;
+
+                const step = (timestamp) => {
+                    if (!start) start = timestamp;
+                    const progress = Math.min((timestamp - start) / duration, 1);
+                    // easeOutQuart
+                    const ease = 1 - Math.pow(1 - progress, 4);
+                    el.innerText = Math.floor(ease * target);
+                    if (progress < 1) requestAnimationFrame(step);
+                    else el.innerText = target;
+                };
+                requestAnimationFrame(step);
+            },
+
+            initParallax: () => {
+                if (STATE.rafId) cancelAnimationFrame(STATE.rafId);
+                
+                const heroVid = document.querySelector('.hero-video');
+                const heroContent = document.querySelector('.hero-content');
+                const navbar = document.getElementById('navbar');
+
+                const loop = () => {
+                    if (STATE.route === 'home') {
+                        const y = window.scrollY;
+                        // Navbar Glass Effect
+                        if (y > 50) navbar.classList.add('is-scrolled');
+                        else navbar.classList.remove('is-scrolled');
+
+                        // Hero Parallax
+                        if (heroVid && y < window.innerHeight) {
+                            const scale = 1 + (y * 0.0005);
+                            heroVid.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                            if (heroContent) {
+                                heroContent.style.transform = `translateY(${y * 0.3}px)`;
+                                heroContent.style.opacity = 1 - (y / (window.innerHeight * 0.7));
+                            }
+                        }
+                    } else {
+                        navbar.classList.add('is-scrolled'); // Always solid on inner pages
+                    }
+                    STATE.rafId = requestAnimationFrame(loop);
+                };
+                STATE.rafId = requestAnimationFrame(loop);
+            },
+
+            cleanup: () => {
+                STATE.scrollObservers.forEach(obs => obs.disconnect());
+                STATE.scrollObservers = [];
+            }
+        };
+
+        /* ============================================
+           UTILITIES
+        ============================================ */
+        const UTILITIES = {
+            login: () => {
+                const em = document.getElementById('l-email').value;
+                const pa = document.getElementById('l-pass').value;
+                const err = document.getElementById('l-err');
+
+                const u = DATA.portalUsers.find(x => x.email === em && x.pass === pa);
+                if (u) {
+                    STATE.user = u;
+                    STATE.portalView = 'cards';
+                    ROUTER.render('portal');
+                } else {
+                    err.innerText = "Invalid credentials. Please try again.";
+                }
+            },
+            logout: () => {
+                STATE.user = null;
+                STATE.portalView = 'cards';
+                STATE.employeeSchedule = {};
+                ROUTER.render('portal');
+            },
+            // Scheduling helper functions
+            initWeekStart: () => {
+                if (!STATE.currentWeekStart) {
+                    const now = new Date();
+                    const dayOfWeek = now.getDay();
+                    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Monday
+                    STATE.currentWeekStart = new Date(now);
+                    STATE.currentWeekStart.setDate(now.getDate() + diff);
+                    STATE.currentWeekStart.setHours(0, 0, 0, 0);
+                }
+            },
+            getWeekRange: () => {
+                UTILITIES.initWeekStart();
+                const start = STATE.currentWeekStart;
+                const end = new Date(start);
+                end.setDate(start.getDate() + 4); // Friday
+                const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+            },
+            navigateWeek: (direction) => {
+                UTILITIES.initWeekStart();
+                const days = direction === 'next' ? 7 : -7;
+                STATE.currentWeekStart.setDate(STATE.currentWeekStart.getDate() + days);
+                STATE.employeeSchedule = {}; // Reset schedule for new week
+                ROUTER.render('portal');
+            },
+            updateScheduleCell: (day, time, value) => {
+                const key = `${day}-${time}`;
+                STATE.employeeSchedule[key] = value;
+                UTILITIES.updateCapacityDisplay();
+            },
+            getScheduleValue: (day, time) => {
+                const key = `${day}-${time}`;
+                return STATE.employeeSchedule[key] || 'Off';
+            },
+            getOnPremCount: (day, time) => {
+                // Mock: return random count for demo (in real app, this would be from backend)
+                const key = `${day}-${time}`;
+                const baseCount = Math.floor(Math.random() * 3);
+                const userOnPrem = STATE.employeeSchedule[key] === 'On-Prem' ? 1 : 0;
+                return baseCount + userOnPrem;
+            },
+            updateCapacityDisplay: () => {
+                document.querySelectorAll('.capacity-indicator').forEach(el => {
+                    const day = el.dataset.day;
+                    const time = el.dataset.time;
+                    const count = UTILITIES.getOnPremCount(day, time);
+                    const total = DATA.onPremCapacity.total;
+                    el.textContent = `${count}/${total}`;
+                    el.classList.remove('capacity-ok', 'capacity-full');
+                    el.classList.add(count >= total ? 'capacity-full' : 'capacity-ok');
+                });
+            },
+            saveSchedule: () => {
+                console.log('Saving schedule:', STATE.employeeSchedule);
+                alert('Schedule saved successfully!');
+            },
+            copyHours: () => {
+                STATE.copiedSchedule = { ...STATE.employeeSchedule };
+                alert('Hours copied!');
+            },
+            pasteHours: () => {
+                if (STATE.copiedSchedule) {
+                    STATE.employeeSchedule = { ...STATE.copiedSchedule };
+                    ROUTER.render('portal');
+                    alert('Hours pasted!');
+                } else {
+                    alert('No hours copied yet.');
+                }
+            },
+            showPortalCards: () => {
+                STATE.portalView = 'cards';
+                ROUTER.render('portal');
+            },
+            showScheduling: () => {
+                STATE.portalView = 'scheduling';
+                ROUTER.render('portal');
+            }
+        };
+
+        /* ============================================
+           ROUTER
+        ============================================ */
+        const ROUTER = {
+            routes: {
+                'home': COMPONENTS.LandingScreen,
+                'portal': COMPONENTS.PortalScreen,
+                'contact': COMPONENTS.ContactScreen,
+                'companies': COMPONENTS.CompaniesScreen
+            },
+
+            init: () => {
+                // Intercept clicks to prevent default jump if we handle it
+                document.addEventListener('click', e => {
+                    const link = e.target.closest('[data-link]');
+                    if (link) {
+                        e.preventDefault();
+                        const href = link.getAttribute('href').replace('#', '');
+                        ROUTER.navigate(href || 'home');
+                    }
+                });
+
+                window.addEventListener('hashchange', () => {
+                    ROUTER.render(window.location.hash.replace('#', '') || 'home');
+                });
+
+                ROUTER.render(window.location.hash.replace('#', '') || 'home');
+                ANIMATIONS.initParallax();
+            },
+
+            navigate: (path) => {
+                window.location.hash = path;
+            },
+
+            render: (route) => {
+                const originalRoute = route;
+                // Map old sub-page routes to 'home' to maintain backward compatibility
+                if (['purpose', 'how-we-build', 'products'].includes(route)) {
+                    route = 'home';
+                }
+                if (route === 'hero' || !route) route = 'home';
+
+                const contentEl = document.getElementById('page-content');
+                
+                // Only render if needed or if portal state changed
+                if (STATE.route !== route || route === 'portal') {
+                    ANIMATIONS.cleanup();
+                    
+                    contentEl.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.scrollTo(0,0);
+                        const html = (ROUTER.routes[route] || ROUTER.routes['home'])();
+                        contentEl.innerHTML = html;
+                        contentEl.classList.remove('fade-out');
+                        STATE.route = route;
+                        
+                        setTimeout(() => {
+                            ANIMATIONS.initReveal();
+                            ANIMATIONS.initGlossyCards();
+                            if(route === 'portal') ANIMATIONS.initPortalLogin();
+                            
+                            if (originalRoute !== route && document.getElementById(originalRoute)) {
+                                document.getElementById(originalRoute).scrollIntoView();
+                            }
+                        }, 100);
+                        
+                        // Update active nav state
+                        document.querySelectorAll('.nav-link').forEach(n => {
+                            n.classList.remove('active');
+                            if (n.getAttribute('href') === '#' + originalRoute) n.classList.add('active');
+                        });
+                    }, 300); // Wait for fade out
+                } else {
+                    // It's a deep link within home 
+                    const targetSection = document.getElementById(originalRoute) || document.getElementById('hero');
+                    if (targetSection) {
+                        targetSection.scrollIntoView({behavior: 'smooth'});
+                    }
+                    document.querySelectorAll('.nav-link').forEach(n => {
+                        n.classList.remove('active');
+                        if (n.getAttribute('href') === '#' + originalRoute) n.classList.add('active');
+                    });
+                }
+            }
+        };
+
+        // Bootstrap
+        document.addEventListener('DOMContentLoaded', ROUTER.init);
+
+    </script>
+</body>
+</html>

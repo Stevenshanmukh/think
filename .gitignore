@@ -1,0 +1,7 @@
+# GSD planning docs (local only)
+.planning/
+.claude/
+ffmpeg-bin/
+ffmpeg.zip
+build_boomerang.ps1
+hero section video background.mp4
