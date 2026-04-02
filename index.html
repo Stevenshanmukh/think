@@ -364,169 +364,51 @@
         }
 
         /* ============================================
-           PULSE BEAMS CTA
+           HERO CTA
         ============================================ */
-        .pulse-beams-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .pulse-beams-svg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.2s;
-        }
-
-        .pulse-beams-cta {
-            position: relative;
-            z-index: 10;
+        .hero-cta {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 1.25rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-            color: #000;
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, #fff 100%);
-            border: none;
+            gap: 0.5rem;
+            padding: 0.9rem 2.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            letter-spacing: 0.02em;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 100px;
             cursor: pointer;
             text-decoration: none;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow:
-                0 4px 20px rgba(0, 212, 232, 0.4),
-                0 0 40px rgba(0, 212, 232, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .pulse-beams-cta::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 100px;
-            background: radial-gradient(75% 100% at 50% 0%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 75%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
+        .hero-cta:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 232, 0.15),
+                        0 0 40px rgba(0, 212, 232, 0.05);
+            transform: translateY(-2px);
+            color: var(--accent-cyan);
         }
 
-        .pulse-beams-cta:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow:
-                0 8px 30px rgba(0, 212, 232, 0.5),
-                0 0 60px rgba(0, 212, 232, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        .hero-cta .cta-arrow {
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            opacity: 0.6;
         }
 
-        .pulse-beams-cta:hover::before {
+        .hero-cta:hover .cta-arrow {
+            transform: translateX(3px);
             opacity: 1;
         }
 
-        .pulse-beams-cta span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Beam path styling */
-        .beam-path-base {
-            stroke: var(--bg-elevated);
-            stroke-width: 1;
-            fill: none;
-        }
-
-        .beam-path-glow {
-            stroke-width: 2;
-            stroke-linecap: round;
-            fill: none;
-        }
-
-        .beam-connection-point {
-            fill: var(--bg-elevated);
-            stroke: var(--accent-cyan);
-            stroke-width: 1;
-        }
-
-        /* Beam gradient animations */
-        @keyframes beamPulse1 {
-            0% {
-                stop-color: var(--accent-cyan);
-                stop-opacity: 0;
-            }
-            20% {
-                stop-color: var(--accent-cyan);
-                stop-opacity: 1;
-            }
-            50% {
-                stop-color: var(--accent-blue);
-                stop-opacity: 1;
-            }
-            100% {
-                stop-color: #AE48FF;
-                stop-opacity: 0;
-            }
-        }
-
-        @keyframes beamFlow1 {
-            0% { offset-distance: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { offset-distance: 100%; opacity: 0; }
-        }
-
-        @keyframes beamFlow2 {
-            0% { offset-distance: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { offset-distance: 100%; opacity: 0; }
-        }
-
-        @keyframes beamFlow3 {
-            0% { offset-distance: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { offset-distance: 100%; opacity: 0; }
-        }
-
-        @keyframes beamFlow4 {
-            0% { offset-distance: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { offset-distance: 100%; opacity: 0; }
-        }
-
-        /* Gradient flow animation for SVG */
-        .beam-gradient-animate {
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% {
-                offset: 0%;
-            }
-            50% {
-                offset: 100%;
-            }
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .pulse-beams-svg {
-                transform: translate(-50%, -50%) scale(0.6);
-            }
-            .pulse-beams-cta {
-                padding: 1rem 2rem;
-                font-size: 1rem;
+            .hero-cta {
+                padding: 0.8rem 1.8rem;
+                font-size: 0.95rem;
             }
         }
 
@@ -543,7 +425,8 @@
             line-height: 1.4;
             color: var(--text-muted);
         }
-        .narrative-text strong {
+        .narrative-text strong,
+        .narrative-text .highlight {
             color: var(--text-primary);
             font-weight: 500;
         }
@@ -1058,6 +941,35 @@
             transition: transform 0.1s ease-out;
         }
 
+        /* Alignment for flip cards — keep content structured */
+        .philosophy-card .glossy-content {
+            justify-content: flex-start;
+        }
+
+        .philosophy-card .glossy-icon-wrap {
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .philosophy-card .glossy-text-wrap {
+            margin-top: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .philosophy-card .glossy-title {
+            font-size: 1.25rem;
+            min-height: 2.5em;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .philosophy-card .glossy-desc {
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
         .glossy-title {
             font-family: var(--font-display);
             font-size: 1.5rem;
@@ -1075,6 +987,155 @@
             line-height: 1.5;
             text-shadow: 0 calc(1px * var(--hover-intensity)) calc(2px * var(--hover-intensity)) rgba(0,0,0,0.5);
         }
+
+        /* ============================================
+           PHILOSOPHY CARD FLIP ANIMATION
+        ============================================ */
+
+        /* --- Title Crossfade (scroll-driven) --- */
+        .section-title-wrap {
+            position: relative;
+            display: block;
+            /* Must match the rendered h2 height (font-size * line-height) */
+            height: clamp(3rem, 6vw, 5.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title-outgoing,
+        .section-title-incoming {
+            /* Both absolutely positioned so they stack identically */
+            position: absolute;
+            top: 0;
+            left: 0;
+            will-change: opacity, transform;
+            white-space: nowrap;
+        }
+
+        .section-title-incoming {
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+        }
+
+        /* --- Subtitle crossfade (scroll-driven) --- */
+        .section-subtitle-wrap {
+            position: relative;
+            height: clamp(1.4rem, 2.5vw, 2rem);
+            margin-bottom: 2.5rem;
+        }
+
+        .subtitle-outgoing,
+        .subtitle-incoming {
+            position: absolute;
+            top: 0;
+            left: 0;
+            will-change: opacity, transform;
+        }
+
+        .subtitle-incoming {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        /* --- Sticky Scroll Container --- */
+        .hwb-scroll-container {
+            position: relative;
+            height: 200vh;
+        }
+
+        .hwb-sticky-content {
+            position: sticky;
+            top: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 0;
+            z-index: 1;
+        }
+
+        .hwb-sticky-content > .container {
+            width: 100%;
+        }
+
+        .hwb-flip-trigger {
+            position: absolute;
+            top: 60%;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        /* --- Flip Card Container --- */
+        .philosophy-card {
+            perspective: 1200px;
+            width: 100%;
+            height: 450px;
+        }
+
+        .philosophy-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            /* No CSS transition — JS drives rotateY directly from scroll */
+            will-change: transform;
+        }
+
+        .philosophy-card-front,
+        .philosophy-card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .philosophy-card-back {
+            transform: rotateY(180deg);
+        }
+
+
+        /* --- Reduced Motion --- */
+        @media (prefers-reduced-motion: reduce) {
+            .philosophy-card-inner,
+            .section-title-outgoing,
+            .section-title-incoming,
+            .subtitle-outgoing,
+            .subtitle-incoming {
+                will-change: auto;
+            }
+        }
+
+        /* --- Mobile adjustments for flip cards --- */
+        @media (max-width: 767px) {
+            .philosophy-card {
+                height: 420px;
+            }
+            .card-back-body {
+                padding: 1.5rem;
+            }
+            .card-back-title {
+                font-size: 1.1rem;
+            }
+            .card-back-text {
+                font-size: 0.82rem;
+            }
+            .hwb-scroll-container {
+                height: 250vh;
+            }
+            .hwb-flip-trigger {
+                top: 55%;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .philosophy-card {
+                height: 470px;
+            }
+        }
+
 
         /* ============================================
            FOOTER
@@ -1671,6 +1732,12 @@
                 { icon: '⚡', title: 'Measured Deployment', desc: 'We ship incrementally, observe carefully, and refine continuously. Speed follows from understanding, not haste.', cat: 'Principle 3' },
                 { icon: '🎯', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 4' }
             ],
+            philosophy: [
+                { icon: '🧠', title: 'Human Dignity First', desc: 'Artificial intelligence must always serve people. By prioritizing safety, rights, and respect, we ensure innovation strengthens humanity rather than replacing or diminishing it.', cat: 'Philosophy 1' },
+                { icon: '🔗', title: 'Systems that Connect', desc: 'Secure and accessible infrastructure allows people and businesses to work together more effectively, forming the foundation for trustworthy and understandable AI services.', cat: 'Philosophy 2' },
+                { icon: '⚡', title: 'Diversity Drives Innovation', desc: 'Open systems enable more voices, ideas, and applications to emerge. Inclusion strengthens creativity and expands what AI can achieve for everyone.', cat: 'Philosophy 3' },
+                { icon: '🌱', title: 'Sustainable by Design', desc: 'Efficiency and responsibility guide how we build. Using only what is needed reduces waste while supporting long-term technological progress.', cat: 'Philosophy 4' }
+            ],
             portalUsers: [
                 { email: 'demo@thinkbubble.ai', pass: 'demo', name: 'Demo User', role: 'Engineer' }
             ],
@@ -1704,6 +1771,57 @@
                                 <h3 class="glossy-title">${item.title || item.name}</h3>
                                 <p class="glossy-desc">${item.desc}</p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            PhilosophyCardBack: (item) => `
+                <div class="glossy-wrap" style="height: 100%;">
+                    <div class="glossy-card">
+                        <div class="glossy-layer glossy-glass"></div>
+                        <div class="glossy-layer glossy-bg"></div>
+                        <div class="glossy-layer glossy-noise"></div>
+                        <div class="glossy-layer glossy-smudge"></div>
+                        <div class="glossy-layer glossy-glow-1"></div>
+                        <div class="glossy-layer glossy-glow-2"></div>
+                        <div class="glossy-layer glossy-border"></div>
+                        <div class="glossy-content">
+                            <div class="glossy-icon-wrap">${item.icon}</div>
+                            <div class="glossy-text-wrap">
+                                <div style="color: var(--accent-cyan); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">${item.cat}</div>
+                                <h3 class="glossy-title">${item.title}</h3>
+                                <p class="glossy-desc">${item.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            FlippableCard: (frontItem, backItem, index) => `
+                <div class="philosophy-card reveal" style="transition-delay: ${0.1 * index}s" data-flip-card>
+                    <div class="philosophy-card-inner">
+                        <div class="philosophy-card-front">
+                            <div class="glossy-wrap" style="height: 100%;">
+                                <div class="glossy-card">
+                                    <div class="glossy-layer glossy-glass"></div>
+                                    <div class="glossy-layer glossy-bg"></div>
+                                    <div class="glossy-layer glossy-noise"></div>
+                                    <div class="glossy-layer glossy-smudge"></div>
+                                    <div class="glossy-layer glossy-glow-1"></div>
+                                    <div class="glossy-layer glossy-glow-2"></div>
+                                    <div class="glossy-layer glossy-border"></div>
+                                    <div class="glossy-content">
+                                        <div class="glossy-icon-wrap">${frontItem.icon || frontItem.init}</div>
+                                        <div class="glossy-text-wrap">
+                                            <div style="color: var(--accent-cyan); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">${frontItem.cat}</div>
+                                            <h3 class="glossy-title">${frontItem.title || frontItem.name}</h3>
+                                            <p class="glossy-desc">${frontItem.desc}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="philosophy-card-back">
+                            ${UI.PhilosophyCardBack(backItem)}
                         </div>
                     </div>
                 </div>
@@ -1799,121 +1917,12 @@
                     </div>
                 `;
             },
-            PulseBeamsCTA: (text, href) => {
-                // Generate unique IDs for gradients
-                const uniqueId = Math.random().toString(36).substr(2, 9);
-
-                return `
-                    <div class="pulse-beams-container">
-                        <svg class="pulse-beams-svg" width="500" height="280" viewBox="0 0 500 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <!-- Beam 1 gradient - left top -->
-                                <linearGradient id="grad1-${uniqueId}" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
-                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
-                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                </linearGradient>
-
-                                <!-- Beam 2 gradient - right top -->
-                                <linearGradient id="grad2-${uniqueId}" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
-                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
-                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0s"/>
-                                    </stop>
-                                </linearGradient>
-
-                                <!-- Beam 3 gradient - left bottom -->
-                                <linearGradient id="grad3-${uniqueId}" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
-                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
-                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                </linearGradient>
-
-                                <!-- Beam 4 gradient - right bottom -->
-                                <linearGradient id="grad4-${uniqueId}" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#00d4e8" stop-opacity="0">
-                                        <animate attributeName="offset" values="0;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="20%" stop-color="#00d4e8" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.2;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="50%" stop-color="#4a90d9" stop-opacity="1">
-                                        <animate attributeName="offset" values="0.5;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                    <stop offset="100%" stop-color="#AE48FF" stop-opacity="0">
-                                        <animate attributeName="offset" values="1;1;1" dur="3s" repeatCount="indefinite" begin="0.5s"/>
-                                    </stop>
-                                </linearGradient>
-
-                                <!-- Glow filter -->
-                                <filter id="glow-${uniqueId}" x="-50%" y="-50%" width="200%" height="200%">
-                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                    <feMerge>
-                                        <feMergeNode in="coloredBlur"/>
-                                        <feMergeNode in="SourceGraphic"/>
-                                    </feMerge>
-                                </filter>
-                            </defs>
-
-                            <!-- Beam 1: Top left corner to center -->
-                            <path d="M10 10 L10 100 Q10 120 30 120 L200 120" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
-                            <path d="M10 10 L10 100 Q10 120 30 120 L200 120" stroke="url(#grad1-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
-                            <circle cx="10" cy="10" r="4" class="beam-connection-point"/>
-
-                            <!-- Beam 2: Top right corner to center -->
-                            <path d="M490 10 L490 100 Q490 120 470 120 L300 120" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
-                            <path d="M490 10 L490 100 Q490 120 470 120 L300 120" stroke="url(#grad2-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
-                            <circle cx="490" cy="10" r="4" class="beam-connection-point"/>
-
-                            <!-- Beam 3: Bottom left to center -->
-                            <path d="M10 270 L10 180 Q10 160 30 160 L200 160" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
-                            <path d="M10 270 L10 180 Q10 160 30 160 L200 160" stroke="url(#grad3-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
-                            <circle cx="10" cy="270" r="4" class="beam-connection-point"/>
-
-                            <!-- Beam 4: Bottom right to center -->
-                            <path d="M490 270 L490 180 Q490 160 470 160 L300 160" class="beam-path-base" stroke="rgba(17,17,26,0.8)"/>
-                            <path d="M490 270 L490 180 Q490 160 470 160 L300 160" stroke="url(#grad4-${uniqueId})" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#glow-${uniqueId})"/>
-                            <circle cx="490" cy="270" r="4" class="beam-connection-point"/>
-
-                            <!-- Center connection points -->
-                            <circle cx="200" cy="120" r="3" class="beam-connection-point"/>
-                            <circle cx="300" cy="120" r="3" class="beam-connection-point"/>
-                            <circle cx="200" cy="160" r="3" class="beam-connection-point"/>
-                            <circle cx="300" cy="160" r="3" class="beam-connection-point"/>
-                        </svg>
-
-                        <a href="${href}" class="pulse-beams-cta" data-link>
-                            <span>${text}</span>
-                        </a>
-                    </div>
-                `;
-            }
+            HeroCTA: (text, href) => `
+                <a href="${href}" class="hero-cta" data-link>
+                    <span>${text}</span>
+                    <span class="cta-arrow">&rarr;</span>
+                </a>
+            `
         };
 
         /* ============================================
@@ -1948,10 +1957,10 @@
                             <h1 class="text-hero reveal" id="hero-headline">Infrastructure for<br>Human-Centric AI.</h1>
                         </div>
                         <p class="text-lead hero-sub reveal reveal-delay-2">
-                            ThinkBubble is an independent AI research lab. We build foundational infrastructure that treats human context as a first-class concern—not an afterthought.
+                            ThinkBubble is an independent AI research lab building foundational infrastructure where human context is treated as a core capability, not an afterthought.
                         </p>
                         <div class="hero-actions reveal reveal-delay-3">
-                            ${UI.PulseBeamsCTA('Contact Us', '#contact')}
+                            ${UI.HeroCTA('Contact Us', '#contact')}
                         </div>
                     </div>
                 </section>
@@ -1961,23 +1970,33 @@
                 <section class="section narrative" id="narrative">
                     <div class="container container-narrow text-center">
                         <p class="narrative-text reveal">
-                            Artificial intelligence will shape the next century. We believe the organizations building it should operate with <strong>institutional permanence</strong>—prioritizing long-term research, careful deployment, and genuine benefit to the people who use these systems.
+                            ThinkBubble is the <span class="highlight">engine behind practical AI</span> - designing and scaling the infrastructure, systems, and architectures that power real-world innovation. We build advanced capabilities accessible to <span class="highlight">creators, individuals, and small businesses</span>, guided by our Four Core Values and a commitment to advancing AI in ways that benefit everyone. Each system strengthens the next, forming a growing global foundation for what comes next. <span class="highlight">The future is brighter when we think together</span>.
                         </p>
                     </div>
                 </section>
             `,
 
             HowWeBuild: () => `
-                <section class="section">
-                    <div class="container">
-                        <h2 class="text-h2 reveal">How We Build</h2>
-                        <p class="text-lead reveal reveal-delay-1">The principles that guide our work.</p>
-                        
-                        <div class="grid-4">
-                            ${DATA.architecture.map((item, i) => UI.GlossyCard(item, i)).join('')}
+                <div class="hwb-scroll-container" id="how-we-build-section">
+                    <div class="hwb-sticky-content">
+                        <div class="container">
+                            <div class="section-title-wrap reveal" id="hwb-title-wrap">
+                                <h2 class="text-h2 section-title-outgoing" id="hwb-title-out">How We Build</h2>
+                                <h2 class="text-h2 section-title-incoming" id="hwb-title-in">Our Philosophy</h2>
+                            </div>
+                            <div class="section-subtitle-wrap">
+                                <p class="text-lead reveal reveal-delay-1 subtitle-outgoing">The principles that guide our work.</p>
+                                <p class="text-lead subtitle-incoming">The values at the heart of everything we create.</p>
+                            </div>
+                            
+                            <div class="grid-4">
+                                ${DATA.architecture.map((item, i) => UI.FlippableCard(item, DATA.philosophy[i], i)).join('')}
+                            </div>
                         </div>
                     </div>
-                </section>
+                    <!-- Invisible trigger element at 60% scroll progress -->
+                    <div class="hwb-flip-trigger" id="hwb-flip-trigger" aria-hidden="true"></div>
+                </div>
             `,
 
             WhatWeBuild: () => `
@@ -2354,9 +2373,70 @@
                     } else {
                         navbar.classList.add('is-scrolled'); // Always solid on inner pages
                     }
+
+                    // Scroll-driven philosophy card flip
+                    ANIMATIONS.updatePhilosophyScroll();
+
                     STATE.rafId = requestAnimationFrame(loop);
                 };
                 STATE.rafId = requestAnimationFrame(loop);
+            },
+
+            initPhilosophyScroll: () => {
+                const container = document.getElementById('how-we-build-section');
+                if (!container) return;
+
+                // Cache DOM references for rAF performance
+                STATE.hwb = {
+                    container,
+                    titleOut: document.getElementById('hwb-title-out'),
+                    titleIn: document.getElementById('hwb-title-in'),
+                    subtitleOut: container.querySelector('.subtitle-outgoing'),
+                    subtitleIn: container.querySelector('.subtitle-incoming'),
+                    cardInners: Array.from(container.querySelectorAll('[data-flip-card] .philosophy-card-inner')),
+                };
+            },
+
+            updatePhilosophyScroll: () => {
+                const hwb = STATE.hwb;
+                if (!hwb || !hwb.container) return;
+
+                const rect = hwb.container.getBoundingClientRect();
+                const containerH = hwb.container.offsetHeight;
+                const viewH = window.innerHeight;
+                // scrollProgress: 0 = container top at viewport top, 1 = container bottom at viewport bottom
+                const scrollProgress = Math.max(0, Math.min(1, -rect.top / (containerH - viewH)));
+
+                // --- Title crossfade: 25% → 55% ---
+                const titleP = Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.30));
+                if (hwb.titleOut) {
+                    hwb.titleOut.style.opacity = 1 - titleP;
+                    hwb.titleOut.style.transform = `translateY(${-titleP * 15}px)`;
+                }
+                if (hwb.titleIn) {
+                    hwb.titleIn.style.opacity = titleP;
+                    hwb.titleIn.style.transform = `translateY(${(1 - titleP) * 12}px)`;
+                }
+
+                // --- Subtitle crossfade: 28% → 58% ---
+                const subP = Math.max(0, Math.min(1, (scrollProgress - 0.28) / 0.30));
+                if (hwb.subtitleOut) {
+                    hwb.subtitleOut.style.opacity = 1 - subP;
+                    hwb.subtitleOut.style.transform = `translateY(${-subP * 10}px)`;
+                }
+                if (hwb.subtitleIn) {
+                    hwb.subtitleIn.style.opacity = subP;
+                    hwb.subtitleIn.style.transform = `translateY(${(1 - subP) * 10}px)`;
+                }
+
+                // --- Card flips with stagger: 30% → 65%, each card offset by 4% ---
+                hwb.cardInners.forEach((inner, i) => {
+                    const cardStart = 0.30 + (i * 0.04);
+                    const cardEnd = cardStart + 0.28;
+                    const cardP = Math.max(0, Math.min(1, (scrollProgress - cardStart) / (cardEnd - cardStart)));
+                    const rotation = cardP * 180;
+                    inner.style.transform = `rotateY(${rotation}deg)`;
+                });
             },
 
             cleanup: () => {
@@ -2528,6 +2608,7 @@
                         setTimeout(() => {
                             ANIMATIONS.initReveal();
                             ANIMATIONS.initGlossyCards();
+                            if(route === 'home') ANIMATIONS.initPhilosophyScroll();
                             if(route === 'portal') ANIMATIONS.initPortalLogin();
                             
                             if (originalRoute !== route && document.getElementById(originalRoute)) {
