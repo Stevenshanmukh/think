@@ -1,0 +1,686 @@
+/* ============================================
+   RESPONSIVE STYLES - Tablet & Desktop
+============================================ */
+
+/* Widen narrative text sections on larger screens */
+@media (min-width: 1024px) {
+    .container-narrow {
+        max-width: 1000px;
+    }
+
+    .narrative-text {
+        font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-narrow {
+        max-width: 1100px;
+    }
+}
+
+/* Grid responsive */
+@media (min-width: 768px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+
+    .portal-form-title {
+        font-size: 2.25rem;
+    }
+
+    .portal-form-header {
+        gap: 1.5rem;
+    }
+
+    .grid-stagger .card-motion:nth-child(even) {
+        transform: translateY(40px);
+    }
+
+    .grid-stagger .card-motion:nth-child(even):hover {
+        transform: translateY(30px);
+    }
+}
+
+@media (min-width: 900px) {
+    .company-showcase {
+        flex-direction: row;
+        align-items: center;
+        gap: 4rem;
+        padding: 4rem;
+    }
+
+    .company-showcase:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .company-showcase .showcase-content {
+        flex: 1.2;
+    }
+
+    .company-showcase .showcase-visual {
+        flex: 0.8;
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .portal-form-side {
+        width: 50%;
+    }
+
+    .portal-split-card {
+        max-width: 70%;
+    }
+
+    .portal-hero-content {
+        padding: 3.5rem;
+    }
+
+    .portal-hero-title {
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================
+   RESPONSIVE STYLES - Mobile (768px and below)
+============================================ */
+@media (max-width: 1023px) {
+    .portal-split-card {
+        max-width: 90%;
+    }
+
+    .portal-hero-side {
+        display: none;
+    }
+
+    .portal-form-side {
+        border-right: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hide desktop nav links on mobile */
+    .nav-links-desktop {
+        display: none !important;
+    }
+
+    /* Mobile Navigation Overlay — direct child of body for correct z-index */
+    .nav-mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #030305;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 9999;
+        /* Animate open/close */
+        opacity: 0;
+        visibility: hidden;
+        display: flex;
+        transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                    visibility 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .nav-mobile-overlay.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Stagger animate each link on open */
+    .nav-mobile-overlay .nav-link {
+        font-size: 1.5rem;
+        padding: 1rem 2rem;
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.3s ease, transform 0.3s ease, color var(--transition-fast);
+    }
+
+    .nav-mobile-overlay.is-open .nav-link {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .nav-mobile-overlay.is-open .nav-link:nth-child(2) { transition-delay: 0.05s; }
+    .nav-mobile-overlay.is-open .nav-link:nth-child(3) { transition-delay: 0.1s; }
+    .nav-mobile-overlay.is-open .nav-link:nth-child(4) { transition-delay: 0.15s; }
+    .nav-mobile-overlay.is-open .nav-link:nth-child(5) { transition-delay: 0.2s; }
+
+    .nav-link-cta {
+        padding: 1rem 2rem;
+    }
+
+    .nav-hamburger {
+        display: flex;
+    }
+
+    /* JS adds .is-hidden when menu is open */
+    .nav-hamburger.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .nav-mobile-overlay.is-open .nav-close {
+        display: block;
+    }
+
+    /* Navbar */
+    .navbar {
+        padding: 1rem 0;
+    }
+
+    .navbar.is-scrolled {
+        padding: 0.75rem 0;
+    }
+
+    .nav-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* Hide tagline on mobile */
+    .nav-brand-tagline {
+        display: none;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 90vh;
+        padding-top: 80px;
+    }
+
+    .hero-content {
+        padding: 0 1rem;
+    }
+
+    .hero-logo-large {
+        height: 56px;
+        margin-bottom: 2rem;
+    }
+
+    .text-hero {
+        font-size: clamp(2.25rem, 7vw, 3.5rem);
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-sub {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        padding: 0 0.5rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .hero-actions .hero-cta {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-cta {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.95rem;
+    }
+
+    /* Narrative */
+    .narrative {
+        padding: 4rem 0;
+    }
+
+    .narrative-text {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+        line-height: 1.6;
+    }
+
+    /* Cards */
+    .grid-4 {
+        gap: 1.5rem;
+    }
+
+    .glossy-wrap {
+        height: auto;
+        min-height: 380px;
+    }
+
+    .glossy-content {
+        padding: 1.75rem;
+    }
+
+    .glossy-icon-wrap {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .glossy-title {
+        font-size: 1.25rem;
+    }
+
+    .glossy-desc {
+        font-size: 0.9rem;
+    }
+
+    /* Scroll section */
+    .hwb-sticky-content {
+        padding: 2rem 0;
+    }
+
+    .section-title-wrap {
+        height: auto;
+        min-height: 3rem;
+    }
+
+    /* Company Showcase */
+    .company-showcase {
+        padding: 1.5rem;
+        border-radius: 24px;
+        gap: 2rem;
+    }
+
+    .showcase-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    .showcase-desc {
+        font-size: 1rem;
+    }
+
+    .showcase-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .showcase-visual {
+        aspect-ratio: 16/9;
+        min-height: 180px;
+    }
+
+    .showcase-logo {
+        width: 50%;
+    }
+
+    /* Metrics */
+    .metrics-wrap {
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .metric-num {
+        font-size: clamp(3rem, 12vw, 5rem);
+    }
+
+    /* Portal */
+    #portal-container {
+        height: auto !important;
+        min-height: 500px;
+    }
+
+    #portal-container .portal-hero-side {
+        display: none !important;
+    }
+
+    #portal-container .portal-form-side {
+        width: 100% !important;
+        border-right: none !important;
+    }
+
+    #portal-container {
+        margin: 1rem;
+        border-radius: 24px !important;
+    }
+
+    #portal-container .portal-form-side {
+        padding: 2rem 1.5rem !important;
+    }
+
+    #portal-container .portal-form-title {
+        font-size: 1.75rem !important;
+    }
+
+    /* Portal Dashboard */
+    .portal-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .portal-option-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .portal-option-card .card-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .portal-option-card h3 {
+        font-size: 1.25rem;
+    }
+
+    /* Scheduling */
+    .scheduling-container {
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
+    }
+
+    .scheduling-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .week-navigation {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .scheduling-grid {
+        font-size: 0.8rem;
+    }
+
+    .scheduling-grid th,
+    .scheduling-grid td {
+        padding: 0.5rem;
+    }
+
+    .schedule-select {
+        padding: 0.4rem;
+        font-size: 0.75rem;
+    }
+
+    .scheduling-actions {
+        flex-direction: column;
+    }
+
+    .scheduling-actions button {
+        width: 100%;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 4rem 0 2rem 0;
+        margin-top: 4rem;
+    }
+
+    .footer-grid {
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .footer-heading {
+        font-size: 0.85rem;
+    }
+
+    .footer-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0;
+    }
+
+    .footer-legal {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    /* General touch targets */
+    .btn {
+        min-height: 48px;
+        padding: 0.875rem 1.5rem;
+    }
+
+    .btn-secondary {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .section {
+        padding: 4rem 0;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .text-h2 {
+        font-size: clamp(1.75rem, 6vw, 3rem);
+        margin-bottom: 1rem;
+    }
+
+    .text-h3 {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+    }
+
+    .text-lead {
+        font-size: clamp(1rem, 3vw, 1.25rem);
+    }
+}
+
+/* ============================================
+   MOBILE HEADING - Show/Hide Logic
+============================================ */
+/* Hide mobile-only elements on desktop */
+.hwb-mobile-title,
+.hwb-mobile-subtitle {
+    display: none;
+}
+
+/* Philosophy card mobile - Individual scroll flip */
+@media (max-width: 767px) {
+    /* Show mobile heading, hide desktop crossfade titles */
+    .hwb-mobile-title,
+    .hwb-mobile-subtitle {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .hwb-mobile-subtitle {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .hwb-desktop-titles {
+        display: none !important;
+    }
+    .philosophy-card {
+        height: 420px;
+    }
+
+    .card-back-body {
+        padding: 1.5rem;
+    }
+
+    .card-back-title {
+        font-size: 1.1rem;
+    }
+
+    .card-back-text {
+        font-size: 0.82rem;
+    }
+
+    /* Remove sticky scroll container on mobile - let cards flow naturally */
+    .hwb-scroll-container {
+        height: auto;
+        position: relative;
+    }
+
+    .hwb-sticky-content {
+        position: relative;
+        top: auto;
+        min-height: auto;
+        padding: 3rem 0;
+    }
+
+    .hwb-flip-trigger {
+        display: none;
+    }
+
+    /* Cards grid spacing for mobile scroll */
+    .grid-4 {
+        gap: 3rem;
+    }
+
+    /* Each card has margin for individual scroll trigger */
+    .philosophy-card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .philosophy-card {
+        height: 470px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE STYLES - Extra Small Mobile (480px and below)
+============================================ */
+@media (max-width: 480px) {
+    .nav-brand-name {
+        font-size: 1.1rem !important;
+    }
+
+    .hero {
+        min-height: 85vh;
+    }
+
+    .text-hero {
+        font-size: clamp(1.75rem, 8vw, 2.5rem);
+        line-height: 1.15;
+    }
+
+    .narrative-text {
+        font-size: 1rem;
+    }
+
+    .glossy-wrap {
+        min-height: 340px;
+    }
+
+    .glossy-content {
+        padding: 1.5rem;
+    }
+
+    .glossy-icon-wrap {
+        width: 44px;
+        height: 44px;
+    }
+
+    .company-showcase {
+        padding: 1.25rem;
+        gap: 1.5rem;
+    }
+
+    .showcase-cat {
+        font-size: 0.8rem;
+    }
+
+    .showcase-title {
+        font-size: 1.35rem;
+    }
+
+    .showcase-desc {
+        font-size: 0.95rem;
+    }
+
+    .metrics-wrap {
+        gap: 1.5rem;
+    }
+
+    .metric-num {
+        font-size: 2.5rem;
+    }
+
+    #portal-container {
+        margin: 0.5rem;
+        border-radius: 20px !important;
+    }
+
+    #portal-container .portal-form-side {
+        padding: 1.5rem 1rem !important;
+    }
+
+    .scheduling-grid th,
+    .scheduling-grid td {
+        padding: 0.35rem;
+    }
+
+    .scheduling-grid .time-cell {
+        width: 70px;
+        font-size: 0.75rem;
+    }
+
+    .schedule-select {
+        padding: 0.3rem;
+        font-size: 0.7rem;
+    }
+
+    .capacity-indicator {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.35rem;
+    }
+
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    .section {
+        padding: 3rem 0;
+    }
+}
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .philosophy-card-inner,
+    .section-title-outgoing,
+    .section-title-incoming,
+    .subtitle-outgoing,
+    .subtitle-incoming {
+        will-change: auto;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .hero-logo-large {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .hero-sub,
+    .hero-actions {
+        animation: none;
+        opacity: 1;
+    }
+}
