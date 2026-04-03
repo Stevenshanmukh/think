@@ -483,13 +483,15 @@
 }
 
 .portal-layout-full {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     background: var(--bg-base);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    gap: 0;
 }
 
 .portal-split-card {
@@ -744,14 +746,18 @@
 
 .portal-hero-content {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 45%;
     z-index: 20;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 2.5rem;
+    justify-content: flex-start;
+    padding: 2rem 2.5rem;
     pointer-events: none;
     color: white;
+    overflow: hidden;
 }
 
 .portal-badge-row {
@@ -789,14 +795,14 @@
 }
 
 .portal-hero-main {
-    margin-top: auto;
-    margin-bottom: 2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
 }
 
 .portal-hero-icon-wrap {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 1rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
     background: linear-gradient(to bottom right, var(--accent-cyan), var(--accent-blue));
     display: flex;
     align-items: center;
@@ -818,10 +824,10 @@
 }
 
 .portal-hero-title {
-    font-size: 2.25rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    margin-bottom: 1rem;
-    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    line-height: 1.15;
     letter-spacing: -0.025em;
     color: white;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -829,10 +835,10 @@
 }
 
 .portal-hero-desc {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.9);
-    max-width: 24rem;
-    line-height: 1.6;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 18rem;
+    line-height: 1.4;
     font-weight: 300;
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
@@ -1109,6 +1115,7 @@
 .footer-brand-logo img {
     height: 48px;
     width: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
     mix-blend-mode: screen;
@@ -1259,4 +1266,189 @@
 
 .legal-link:hover {
     color: var(--text-secondary);
+}
+
+/* ============================================
+   SECTIONS - ANIMATED CHARACTERS
+============================================ */
+.character-stage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 340px;
+    z-index: 5;
+}
+
+/* --- Character Bodies --- */
+.char-body {
+    position: absolute;
+    bottom: 0;
+    transition: transform 0.7s ease-in-out;
+    transform-origin: bottom center;
+}
+
+.char-purple {
+    left: 55px;
+    width: 130px;
+    height: 260px;
+    background: linear-gradient(180deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+    border-radius: 8px 8px 0 0;
+    z-index: 1;
+}
+
+.char-purple.char-stretched {
+    height: 280px;
+}
+
+.char-black {
+    left: 175px;
+    width: 90px;
+    height: 200px;
+    background-color: #11111a;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    z-index: 2;
+}
+
+.char-orange {
+    left: 0;
+    width: 170px;
+    height: 130px;
+    background-color: var(--accent-blue);
+    border-radius: 85px 85px 0 0;
+    z-index: 3;
+}
+
+.char-yellow {
+    left: 240px;
+    width: 105px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+    backdrop-filter: blur(10px);
+    border-radius: 52px 52px 0 0;
+    z-index: 4;
+}
+
+/* --- Eyes (with white eyeball) --- */
+.char-eyes {
+    position: absolute;
+    display: flex;
+    gap: 18px;
+    transition: left 0.5s ease-out, top 0.5s ease-out;
+}
+
+.char-eye {
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: height 0.1s ease;
+}
+
+.char-eye.is-blinking {
+    height: 2px;
+}
+
+.char-eye.is-blinking .char-pupil {
+    display: none;
+}
+
+.char-pupil {
+    width: 7px;
+    height: 7px;
+    background-color: #2D2D2D;
+    border-radius: 50%;
+    transition: transform 0.1s ease-out;
+}
+
+/* --- Eyes (pupils only, no white eyeball) --- */
+.char-pupil-only {
+    width: 10px;
+    height: 9px;
+    background-color: #2D2D2D;
+    border-radius: 50%;
+    transition: transform 0.1s ease-out;
+}
+
+#eyes-orange,
+#eyes-yellow {
+    gap: 14px;
+}
+
+/* --- Yellow character mouth --- */
+.char-mouth {
+    position: absolute;
+    width: 42px;
+    height: 3px;
+    background-color: #2D2D2D;
+    border-radius: 2px;
+    transition: left 0.2s ease-out, top 0.2s ease-out;
+}
+
+/* --- Celebrate animation (login success) --- */
+.char-celebrate .char-body {
+    animation: charBounce 0.3s ease 3;
+}
+
+.char-celebrate .char-purple { animation-delay: 0s; }
+.char-celebrate .char-black { animation-delay: 0.08s; }
+.char-celebrate .char-orange { animation-delay: 0.15s; }
+.char-celebrate .char-yellow { animation-delay: 0.22s; }
+
+@keyframes charBounce {
+    0%, 100% { transform: translateY(0) skewX(0deg); }
+    50% { transform: translateY(-18px) skewX(0deg); }
+}
+
+/* --- Flinch animation (login failure) --- */
+.char-flinch .char-body {
+    animation: charFlinch 0.15s ease 2;
+}
+
+@keyframes charFlinch {
+    0%, 100% { transform: translateX(0) skewX(0deg); }
+    25% { transform: translateX(-8px) skewX(-3deg); }
+    75% { transform: translateX(8px) skewX(3deg); }
+}
+
+/* --- Portal page title --- */
+.portal-page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+/* --- Password toggle button --- */
+.portal-pass-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 15;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.portal-pass-toggle:hover {
+    color: var(--text-primary);
 }

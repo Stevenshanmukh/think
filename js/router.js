@@ -69,21 +69,21 @@ const SECTIONS = {
             <div class="container container-narrow text-center">
                 <h2 class="text-h2 reveal">What We're Building</h2>
                 <p class="narrative-text reveal reveal-delay-1" style="font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 3rem;">
-                    On top of our infrastructure foundation sit the products themselves. Aiparel focuses on creator-driven commerce and expression. KloeBot helps small and medium-sized businesses deploy intelligent, multilingual chatbots without needing a development team. In parallel, we're developing a broader suite of AI-driven tools built on the same underlying infrastructure, aimed at putting capable, practical AI in the hands of individuals and small organizations. Each company operates independently but shares the same technical foundation.
+                    On top of our infrastructure foundation sit the products themselves. Aiparel focuses on creator-driven commerce and expression. KloeAI helps small and medium-sized businesses deploy intelligent, multilingual chatbots without needing a development team. In parallel, we're developing a broader suite of AI-driven tools built on the same underlying infrastructure, aimed at putting capable, practical AI in the hands of individuals and small organizations. Each project operates independently but shares the same technical foundation.
                 </p>
                 <div class="reveal reveal-delay-2">
-                    <a href="#companies" class="btn btn-primary" data-link>Explore Our Companies</a>
+                    <a href="#projects" class="btn btn-primary" data-link>Explore Our Projects</a>
                 </div>
             </div>
         </section>
     `,
 
-    Companies: () => `
-        <section class="section" style="background: var(--bg-surface)" id="companies">
+    Projects: () => `
+        <section class="section" style="background: var(--bg-surface)" id="projects">
             <div class="container">
-                <h2 class="text-h2 reveal text-center">Our Companies</h2>
+                <h2 class="text-h2 reveal text-center">Our Projects</h2>
                 <div class="showcase-list mt-4">
-                    ${DATA.companies.map((c, i) => UI.CompanyShowcase(c, i)).join('')}
+                    ${DATA.projects.map((c, i) => UI.ProjectShowcase(c, i)).join('')}
 
                     <div class="reveal mt-8 mb-4" style="display: flex; justify-content: center; width: 100%;">
                         <div class="in-development-badge">
@@ -112,6 +112,7 @@ const COMPONENTS = {
         if (!STATE.user) {
             return `
                 <div class="portal-layout-full">
+                    <div class="portal-page-title reveal">Employees Log In</div>
                     <div class="portal-split-card reveal" id="portal-container">
                         <div class="portal-form-side" id="portal-left-section">
                             <div class="portal-orb" id="portal-orb"></div>
@@ -153,6 +154,9 @@ const COMPONENTS = {
                                                     autocomplete="current-password"
                                                     aria-describedby="l-err"
                                                 />
+                                                <button type="button" class="portal-pass-toggle" aria-label="Toggle password visibility">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                </button>
                                                 <div class="portal-gradient-line portal-gradient-top"></div>
                                                 <div class="portal-gradient-line portal-gradient-bottom"></div>
                                             </div>
@@ -172,43 +176,10 @@ const COMPONENTS = {
                             </div>
                         </div>
                         <div class="portal-hero-side">
-                            <img
-                                src="assets/portal-hero.jpg"
-                                class="portal-hero-image"
-                                alt="Cyber security concept"
-                                loading="lazy"
-                                onerror="this.style.display='none'"
-                            />
                             <div class="portal-hero-overlay"></div>
-                            <div class="portal-hero-overlay-blue"></div>
 
-                            <!-- Employee Portal Overlay Content -->
-                            <div class="portal-hero-content">
-                                <!-- Top Badge -->
-                                <div class="portal-badge-row">
-                                    <div class="portal-badge">
-                                        <div class="portal-badge-dot"></div>
-                                        <span class="portal-badge-text">Secure Access Node</span>
-                                    </div>
-                                </div>
-
-                                <!-- Center Content -->
-                                <div class="portal-hero-main">
-                                    <!-- Icon -->
-                                    <div class="portal-hero-icon-wrap">
-                                        <div class="portal-hero-icon-inner">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <h2 class="portal-hero-title">Team<br>Workspace</h2>
-                                        <p class="portal-hero-desc">Orchestrate infrastructure layers and seamlessly manage the ThinkBubble lab ecosystem from a unified hub.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Animated Characters -->
+                            ${CHARACTERS.render()}
                         </div>
                     </div>
                 </div>
@@ -313,9 +284,9 @@ const COMPONENTS = {
         </div>
     `,
 
-    CompaniesScreen: () => `
+    ProjectsScreen: () => `
         <div style="min-height: 85vh;">
-            ${SECTIONS.Companies()}
+            ${SECTIONS.Projects()}
         </div>
     `
 };
@@ -328,7 +299,7 @@ const ROUTER = {
         'home': COMPONENTS.LandingScreen,
         'portal': COMPONENTS.PortalScreen,
         'contact': COMPONENTS.ContactScreen,
-        'companies': COMPONENTS.CompaniesScreen
+        'projects': COMPONENTS.ProjectsScreen
     },
 
     init: () => {
@@ -381,34 +352,24 @@ const ROUTER = {
         if (STATE.route !== route || route === 'portal') {
             ANIMATIONS.cleanup();
 
-            // Show loading spinner
-            if (loadingEl) loadingEl.classList.add('is-visible');
+            window.scrollTo(0, 0);
+            const html = (ROUTER.routes[route] || ROUTER.routes['home'])();
+            contentEl.innerHTML = html;
+            STATE.route = route;
 
-            contentEl.classList.add('fade-out');
             setTimeout(() => {
-                window.scrollTo(0, 0);
-                const html = (ROUTER.routes[route] || ROUTER.routes['home'])();
-                contentEl.innerHTML = html;
-                contentEl.classList.remove('fade-out');
-                STATE.route = route;
+                ANIMATIONS.initReveal();
+                ANIMATIONS.initGlossyCards();
+                if (route === 'home') ANIMATIONS.initPhilosophyScroll();
+                if (route === 'portal') ANIMATIONS.initPortalLogin();
 
-                // Hide loading spinner
-                if (loadingEl) loadingEl.classList.remove('is-visible');
+                if (originalRoute !== route && document.getElementById(originalRoute)) {
+                    document.getElementById(originalRoute).scrollIntoView();
+                }
+            }, 50);
 
-                setTimeout(() => {
-                    ANIMATIONS.initReveal();
-                    ANIMATIONS.initGlossyCards();
-                    if (route === 'home') ANIMATIONS.initPhilosophyScroll();
-                    if (route === 'portal') ANIMATIONS.initPortalLogin();
-
-                    if (originalRoute !== route && document.getElementById(originalRoute)) {
-                        document.getElementById(originalRoute).scrollIntoView();
-                    }
-                }, 100);
-
-                // Update active nav state with ARIA
-                updateActiveNav(originalRoute);
-            }, 300); // Wait for fade out
+            // Update active nav state with ARIA
+            updateActiveNav(originalRoute);
         } else {
             // It's a deep link within home
             const targetSection = document.getElementById(originalRoute) || document.getElementById('hero');

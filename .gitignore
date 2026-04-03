@@ -1,7 +1,0 @@
-# Build tools and artifacts
-ffmpeg.zip
-ffmpeg-bin/
-build_boomerang.ps1
-
-# Source video (not used in production)
-hero section video background.mp4

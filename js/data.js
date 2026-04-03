@@ -7,7 +7,7 @@ const DATA = Object.freeze({
         { name: 'KloeBot', desc: 'Conversational AI for multilingual markets.', init: 'K' },
         { name: 'OzoneLayer', desc: 'Shared compute, orchestration, and interfaces.', init: 'O' }
     ],
-    companies: [
+    projects: [
         {
             name: 'ThinkBubble',
             cat: 'Research',
@@ -27,10 +27,10 @@ const DATA = Object.freeze({
             logo: 'company_logos/aiparellogo.svg'
         },
         {
-            name: 'KloeBot',
+            name: 'KloeAI',
             cat: 'Enterprise',
             subtitle: 'Enterprise-level conversational AI — made accessible',
-            desc: 'KloeBot helps businesses deploy intelligent, multilingual customer support without technical overhead. From answering questions to guiding customers through workflows, it brings powerful conversational automation to teams of any size.<br><br>Smart support shouldn\'t require a large engineering team — and with KloeBot, it doesn\'t.',
+            desc: 'KloeAI helps businesses deploy intelligent, multilingual customer support without technical overhead. From answering questions to guiding customers through workflows, it brings powerful conversational automation to teams of any size.<br><br>Smart support shouldn\'t require a large engineering team — and with KloeAI, it doesn\'t.',
             init: 'K',
             url: 'https://kloe.bot/',
             logo: 'company_logos/kloebotlogo.svg'
@@ -48,14 +48,14 @@ const DATA = Object.freeze({
     architecture: [
         { icon: '🧠', title: 'Context-Aware Systems', desc: 'We design AI that understands human context—cultural, linguistic, and situational—as a core capability, not a retrofit.', cat: 'Principle 1' },
         { icon: '🏗️', title: 'Shared Infrastructure', desc: 'Common problems deserve common solutions. Our internal systems become the foundation that each product builds upon.', cat: 'Principle 2' },
-        { icon: '⚡', title: 'Measured Deployment', desc: 'We ship incrementally, observe carefully, and refine continuously. Speed follows from understanding, not haste.', cat: 'Principle 3' },
-        { icon: '🎯', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 4' }
+        { icon: '📈', title: 'Measured Deployment', desc: 'We ship incrementally, observe carefully, and refine continuously. Speed follows from understanding, not haste.', cat: 'Principle 3' },
+        { icon: '🫂', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 4' }
     ],
     philosophy: [
-        { icon: '🧠', title: 'Human Dignity First', desc: 'Artificial intelligence must always serve people. By prioritizing safety, rights, and respect, we ensure innovation strengthens humanity rather than replacing or diminishing it.', cat: 'Philosophy 1' },
-        { icon: '🔗', title: 'Systems that Connect', desc: 'Secure and accessible infrastructure allows people and businesses to work together more effectively, forming the foundation for trustworthy and understandable AI services.', cat: 'Philosophy 2' },
-        { icon: '⚡', title: 'Diversity Drives Innovation', desc: 'Open systems enable more voices, ideas, and applications to emerge. Inclusion strengthens creativity and expands what AI can achieve for everyone.', cat: 'Philosophy 3' },
-        { icon: '🌱', title: 'Sustainable by Design', desc: 'Efficiency and responsibility guide how we build. Using only what is needed reduces waste while supporting long-term technological progress.', cat: 'Philosophy 4' }
+        { icon: '🧑‍🤝‍🧑', title: 'Humanity First', desc: 'With the continual advancement of AI, we prioritize human rights, safety, and dignity ensuring that technology serves people.', cat: 'Philosophy 1' },
+        { icon: '🤝', title: 'Unifying Systems', desc: 'Solid and Secure infrastructure that connects people creates a peaceful and just community for everyone.', cat: 'Philosophy 2' },
+        { icon: '🗣️', title: 'Diversity of Thought', desc: 'Full transparency, as a cornerstone, creates a system that allows many voices from all walks of life to speak and grow ideas.', cat: 'Philosophy 3' },
+        { icon: '🌱', title: 'Sustainability', desc: 'By using what we need, we remain committed to respecting the environment that sustains us while remaining efficient and innovative.', cat: 'Philosophy 4' }
     ],
     portalUsers: [
         { email: 'demo@thinkbubble.ai', pass: 'demo', name: 'Demo User', role: 'Engineer' }

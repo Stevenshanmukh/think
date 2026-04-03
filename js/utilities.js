@@ -12,11 +12,16 @@ const UTILITIES = {
 
         const u = DATA.portalUsers.find(x => x.email === em && x.pass === pa);
         if (u) {
-            STATE.user = u;
-            STATE.portalView = 'cards';
-            ROUTER.render('portal');
+            // Trigger character celebrate animation before navigating
+            CHARACTERS.onLoginSuccess();
+            setTimeout(() => {
+                STATE.user = u;
+                STATE.portalView = 'cards';
+                ROUTER.render('portal');
+            }, 1000); // Delay so user sees the celebration
         } else {
             err.innerText = "Invalid credentials. Please try again.";
+            CHARACTERS.onLoginError();
         }
     },
 

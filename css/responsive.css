@@ -4,18 +4,8 @@
 
 /* Widen narrative text sections on larger screens */
 @media (min-width: 1024px) {
-    .container-narrow {
-        max-width: 1000px;
-    }
-
     .narrative-text {
         font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-    }
-}
-
-@media (min-width: 1400px) {
-    .container-narrow {
-        max-width: 1100px;
     }
 }
 
@@ -490,9 +480,25 @@
     display: none;
 }
 
-/* Philosophy card mobile - Individual scroll flip */
+/* Philosophy card mobile - Sequential scroll */
 @media (max-width: 767px) {
-    /* Show mobile heading, hide desktop crossfade titles */
+    /* 1. Re-enable scroll container with height for 8 stops */
+    .hwb-scroll-container {
+        height: 740vh;  /* 100vh visible + 8×80vh scroll stops */
+        position: relative;
+    }
+
+    /* 2. Re-enable sticky content */
+    .hwb-sticky-content {
+        position: sticky;
+        top: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 2rem 0;
+    }
+
+    /* 3. Show static mobile title, hide crossfade titles */
     .hwb-mobile-title,
     .hwb-mobile-subtitle {
         display: block;
@@ -507,8 +513,30 @@
     .hwb-desktop-titles {
         display: none !important;
     }
-    .philosophy-card {
+
+    /* 4. Single card display - stack all, show only active */
+    .hwb-scroll-container .grid-4 {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        min-height: 420px;
+        gap: 0;
+    }
+
+    .hwb-scroll-container .philosophy-card {
+        position: absolute;
+        width: 100%;
+        max-width: 340px;
         height: 420px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+        margin-bottom: 0;
+    }
+
+    .hwb-scroll-container .philosophy-card.is-active {
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .card-back-body {
@@ -523,31 +551,8 @@
         font-size: 0.82rem;
     }
 
-    /* Remove sticky scroll container on mobile - let cards flow naturally */
-    .hwb-scroll-container {
-        height: auto;
-        position: relative;
-    }
-
-    .hwb-sticky-content {
-        position: relative;
-        top: auto;
-        min-height: auto;
-        padding: 3rem 0;
-    }
-
     .hwb-flip-trigger {
         display: none;
-    }
-
-    /* Cards grid spacing for mobile scroll */
-    .grid-4 {
-        gap: 3rem;
-    }
-
-    /* Each card has margin for individual scroll trigger */
-    .philosophy-card {
-        margin-bottom: 1rem;
     }
 }
 

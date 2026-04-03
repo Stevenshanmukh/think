@@ -33,8 +33,9 @@
 
 .nav-logo {
     height: 56px;
-    width: auto;
-    object-fit: contain;
+    width: 56px;
+    flex-shrink: 0;
+    object-fit: cover;
     mix-blend-mode: screen;
     filter: brightness(1.1);
     transition: transform var(--transition-fast);

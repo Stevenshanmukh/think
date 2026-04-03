@@ -62,6 +62,9 @@ const ANIMATIONS = {
                 if (botGrad) botGrad.style.background = `radial-gradient(30px circle at ${x}px 2px, var(--accent-cyan) 0%, transparent 80%)`;
             });
         });
+
+        // Initialize animated characters
+        CHARACTERS.init();
     },
 
     /**
@@ -194,79 +197,106 @@ const ANIMATIONS = {
             isMobileMode: ANIMATIONS.isMobile()
         };
 
-        // On mobile, use per-card scroll observers
+        // On mobile, use sequential scroll
         if (STATE.hwb.isMobileMode) {
-            ANIMATIONS.initMobileCardFlip();
+            ANIMATIONS.initMobileSequentialScroll();
         }
     },
 
     /**
-     * Initialize mobile-specific per-card scroll flip
-     * Each card flips individually as it scrolls into view
+     * Initialize mobile sequential scroll flip
+     * Each card appears and flips individually while scrolling down
      */
-    initMobileCardFlip: () => {
+    initMobileSequentialScroll: () => {
         if (!STATE.hwb || !STATE.hwb.cards) return;
 
-        // Clean up existing mobile observers
-        if (STATE.mobileCardObservers) {
-            STATE.mobileCardObservers.forEach(obs => obs.disconnect());
-        }
-        STATE.mobileCardObservers = [];
+        const container = STATE.hwb.container;
+        const cards = STATE.hwb.cards;
+        const cardInners = STATE.hwb.cardInners;
+        const totalCards = cards.length; // 4
 
-        STATE.hwb.cards.forEach((card, index) => {
-            const inner = card.querySelector('.philosophy-card-inner');
-            if (!inner) return;
+        // Title elements for crossfade
+        const titleOut = STATE.hwb.titleOut;
+        const titleIn = STATE.hwb.titleIn;
+        const subtitleOut = STATE.hwb.subtitleOut;
+        const subtitleIn = STATE.hwb.subtitleIn;
 
-            // Track flip state for this card
-            let isFlipped = false;
-            let flipProgress = 0;
+        let currentActiveCard = -1;
 
-            // Create scroll handler for this specific card
-            const updateCardFlip = () => {
-                const rect = card.getBoundingClientRect();
-                const viewH = window.innerHeight;
-                const cardCenter = rect.top + rect.height / 2;
+        const updateMobileScroll = () => {
+            const rect = container.getBoundingClientRect();
+            const containerH = container.offsetHeight;
+            const viewH = window.innerHeight;
 
-                // Calculate progress: 0 when card center is at bottom of viewport,
-                // 1 when card center is at top of viewport
-                // Flip happens when card is in the middle third of the viewport
-                const startFlip = viewH * 0.7;  // Start flip when card center is at 70% from top
-                const endFlip = viewH * 0.3;    // End flip when card center is at 30% from top
+            // Scroll progress 0-1
+            const scrollProgress = Math.max(0, Math.min(1,
+                -rect.top / (containerH - viewH)
+            ));
 
-                if (cardCenter <= startFlip && cardCenter >= endFlip) {
-                    // Card is in flip zone
-                    flipProgress = (startFlip - cardCenter) / (startFlip - endFlip);
-                    flipProgress = Math.max(0, Math.min(1, flipProgress));
-                } else if (cardCenter < endFlip) {
-                    // Card has passed flip zone - stay flipped
-                    flipProgress = 1;
-                } else {
-                    // Card hasn't reached flip zone yet
-                    flipProgress = 0;
+            // Which card is active (0-3)
+            const cardIndex = Math.min(totalCards - 1,
+                Math.floor(scrollProgress * totalCards));
+
+            // Progress within card's segment (0-1)
+            const cardProgress = (scrollProgress * totalCards) % 1;
+
+            // Flip rotation: 0-0.4 = front, 0.4-0.9 = flipping
+            let flipRotation = 0;
+            if (cardProgress > 0.4) {
+                const flipProgress = Math.min(1, (cardProgress - 0.4) / 0.5);
+                flipRotation = flipProgress * 180;
+            }
+
+            // Update active card
+            if (cardIndex !== currentActiveCard) {
+                if (currentActiveCard >= 0) {
+                    cards[currentActiveCard].classList.remove('is-active');
+                    cardInners[currentActiveCard].style.transform = 'rotateY(0deg)';
                 }
+                cards[cardIndex].classList.add('is-active');
+                currentActiveCard = cardIndex;
+            }
 
-                const rotation = flipProgress * 180;
-                inner.style.transform = `rotateY(${rotation}deg)`;
-            };
+            // Apply flip rotation to active card
+            cardInners[cardIndex].style.transform = `rotateY(${flipRotation}deg)`;
 
-            // Use IntersectionObserver to only track when card is visible
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Card is visible, add scroll listener
-                        window.addEventListener('scroll', updateCardFlip, { passive: true });
-                        updateCardFlip(); // Initial update
-                    } else {
-                        // Card not visible, remove scroll listener
-                        window.removeEventListener('scroll', updateCardFlip);
-                    }
-                });
-            }, { threshold: 0, rootMargin: '50px 0px' });
+            // Title crossfade at 45%-55% scroll
+            const titleProgress = Math.max(0, Math.min(1,
+                (scrollProgress - 0.45) / 0.10));
 
-            observer.observe(card);
-            STATE.mobileCardObservers.push(observer);
-            STATE.scrollObservers.push(observer);
-        });
+            if (titleOut) {
+                titleOut.style.opacity = 1 - titleProgress;
+                titleOut.style.transform = `translateY(${-titleProgress * 15}px)`;
+            }
+            if (titleIn) {
+                titleIn.style.opacity = titleProgress;
+                titleIn.style.transform = `translateY(${(1 - titleProgress) * 12}px)`;
+            }
+            if (subtitleOut) {
+                subtitleOut.style.opacity = 1 - titleProgress;
+                subtitleOut.style.transform = `translateY(${-titleProgress * 15}px)`;
+            }
+            if (subtitleIn) {
+                subtitleIn.style.opacity = titleProgress;
+                subtitleIn.style.transform = `translateY(${(1 - titleProgress) * 12}px)`;
+            }
+        };
+
+        // Only run when section visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    window.addEventListener('scroll', updateMobileScroll, { passive: true });
+                    updateMobileScroll();
+                } else {
+                    window.removeEventListener('scroll', updateMobileScroll);
+                }
+            });
+        }, { threshold: 0 });
+
+        observer.observe(container);
+        STATE.scrollObservers.push(observer);
+        STATE.mobileScrollHandler = updateMobileScroll;
     },
 
     /**
@@ -326,10 +356,18 @@ const ANIMATIONS = {
         STATE.scrollObservers.forEach(obs => obs.disconnect());
         STATE.scrollObservers = [];
 
+        // Clean up animated characters
+        CHARACTERS.cleanup();
+
         // Clean up mobile-specific observers
         if (STATE.mobileCardObservers) {
             STATE.mobileCardObservers.forEach(obs => obs.disconnect());
             STATE.mobileCardObservers = [];
+        }
+
+        if (STATE.mobileScrollHandler) {
+            window.removeEventListener('scroll', STATE.mobileScrollHandler);
+            STATE.mobileScrollHandler = null;
         }
     }
 };

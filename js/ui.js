@@ -86,9 +86,9 @@ const UI = {
     `,
 
     /**
-     * Company showcase card
+     * Project showcase card
      */
-    CompanyShowcase: (item, index) => `
+    ProjectShowcase: (item, index) => `
         <div class="company-showcase reveal" style="transition-delay: ${0.1 * index}s">
             <div class="showcase-content">
                 <div class="showcase-cat">${item.cat}</div>

@@ -19,7 +19,7 @@
     <meta name="twitter:image" content="https://www.thinkbubble.io/ThinkbubbleLogo.png">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="ThinkbubbleLogo.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,20 +27,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/variables.css?v=1.2">
+    <link rel="stylesheet" href="css/base.css?v=1.3">
+    <link rel="stylesheet" href="css/components.css?v=1.2">
+    <link rel="stylesheet" href="css/sections.css?v=1.2">
+    <link rel="stylesheet" href="css/responsive.css?v=1.3">
 </head>
 <body>
     <!-- Skip to Content Link (Accessibility) -->
     <a href="#page-content" class="skip-link">Skip to main content</a>
 
-    <!-- Page Loading Indicator -->
-    <div class="page-loading" id="page-loading" aria-hidden="true">
-        <div class="page-loading-spinner"></div>
-    </div>
 
     <!-- Nav Shell -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
@@ -60,7 +56,7 @@
             <!-- Desktop nav links (visible > 768px) -->
             <div class="nav-links nav-links-desktop" id="nav-links-desktop">
                 <a href="#home" class="nav-link" data-link>Overview</a>
-                <a href="#companies" class="nav-link" data-link>Companies</a>
+                <a href="#projects" class="nav-link" data-link>Projects</a>
                 <a href="#portal" class="nav-link" data-link>Employees</a>
                 <a href="#contact" class="nav-link nav-link-cta" data-link>Contact</a>
             </div>
@@ -76,7 +72,7 @@
             </svg>
         </button>
         <a href="#home" class="nav-link" data-link>Overview</a>
-        <a href="#companies" class="nav-link" data-link>Companies</a>
+        <a href="#projects" class="nav-link" data-link>Projects</a>
         <a href="#portal" class="nav-link" data-link>Employees</a>
         <a href="#contact" class="nav-link nav-link-cta" data-link>Contact</a>
     </div>
@@ -90,13 +86,13 @@
             <div class="footer-grid">
                 <!-- Brand Column -->
                 <div class="footer-brand">
-                    <div class="footer-brand-logo">
+                    <a href="#home" class="footer-brand-logo" data-link style="text-decoration: none; color: inherit;">
                         <img src="ThinkbubbleLogo.png?v=1.1" alt="ThinkBubble Logo" loading="lazy">
                         <div class="footer-brand-info">
                             <div class="footer-brand-name">ThinkBubble</div>
                             <div class="footer-brand-tagline">Beyond Infinity</div>
                         </div>
-                    </div>
+                    </a>
                     <p class="footer-brand-desc">
                         Independent AI research lab building infrastructure for human-centric artificial intelligence. We prioritize clarity, safety, and real-world utility.
                     </p>
@@ -111,9 +107,9 @@
                     </div>
                 </div>
 
-                <!-- Companies Column -->
+                <!-- Projects Column -->
                 <div class="footer-col">
-                    <h4 class="footer-heading">Our Companies</h4>
+                    <h4 class="footer-heading">Our Projects</h4>
                     <div class="footer-links">
                         <a href="https://www.aiparel.io/" target="_blank" class="footer-link">Aiparel <span class="external-arrow">&#x2197;</span></a>
                         <a href="https://kloe.bot/" target="_blank" class="footer-link">KloeBot <span class="external-arrow">&#x2197;</span></a>
@@ -126,7 +122,7 @@
                     <h4 class="footer-heading">Explore</h4>
                     <div class="footer-links">
                         <a href="#home" class="footer-link" data-link>Overview</a>
-                        <a href="#companies" class="footer-link" data-link>Companies</a>
+                        <a href="#projects" class="footer-link" data-link>Projects</a>
                         <a href="#portal" class="footer-link" data-link>Employees</a>
                         <a href="#contact" class="footer-link" data-link>Contact Us</a>
                     </div>
@@ -150,6 +146,7 @@
     <script src="js/ui.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/utilities.js"></script>
+    <script src="js/characters.js"></script>
     <script src="js/router.js"></script>
     <script src="js/main.js"></script>
 </body>
