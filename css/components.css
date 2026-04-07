@@ -481,35 +481,6 @@
 }
 
 /* ============================================
-   COMPONENTS - FLIP CARDS
-============================================ */
-.philosophy-card {
-    perspective: 1200px;
-    width: 100%;
-    height: 450px;
-}
-
-.philosophy-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    will-change: transform;
-}
-
-.philosophy-card-front,
-.philosophy-card-back {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
-
-.philosophy-card-back {
-    transform: rotateY(180deg);
-}
-
-/* ============================================
    COMPONENTS - STAGGER GRID
 ============================================ */
 .grid-stagger {

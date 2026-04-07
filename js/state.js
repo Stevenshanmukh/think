@@ -7,7 +7,6 @@ const STATE = {
     scrollObservers: [],
     rafId: null,
     scrollHandler: null,
-    hwb: null,
     // Portal scheduling state
     portalView: 'cards', // 'cards' | 'scheduling'
     currentWeekStart: null, // Will be initialized to current week

@@ -1,6 +1,19 @@
 /* ============================================
    ANIMATIONS - Scroll, Parallax, and Card Effects
 ============================================ */
+
+// Configuration constants
+const ANIMATION_CONFIG = {
+    REVEAL_THRESHOLD: 0.1,
+    CARD_TILT_DEGREES: 10,
+    COUNTER_DURATION_MS: 2000,
+    HERO_PARALLAX_SCALE: 0.0005,
+    HERO_CONTENT_PARALLAX: 0.3,
+    PHILOSOPHY_ANIM_OUT_MS: 300,
+    PHILOSOPHY_ANIM_IN_MS: 500,
+    NAVBAR_SCROLL_THRESHOLD: 50
+};
+
 const ANIMATIONS = {
     /**
      * Check if we're on mobile (single column card layout)
@@ -24,7 +37,7 @@ const ANIMATIONS = {
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: ANIMATION_CONFIG.REVEAL_THRESHOLD, rootMargin: '0px 0px -50px 0px' });
 
         elements.forEach(el => observer.observe(el));
         STATE.scrollObservers.push(observer);
@@ -81,8 +94,8 @@ const ANIMATIONS = {
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
 
-                const rotateX = -(y / rect.height) * 10;
-                const rotateY = (x / rect.width) * 10;
+                const rotateX = -(y / rect.height) * ANIMATION_CONFIG.CARD_TILT_DEGREES;
+                const rotateY = (x / rect.width) * ANIMATION_CONFIG.CARD_TILT_DEGREES;
 
                 card.style.setProperty('--rot-x', `${rotateX}deg`);
                 card.style.setProperty('--rot-y', `${rotateY}deg`);
@@ -106,7 +119,7 @@ const ANIMATIONS = {
     runCounter: (el) => {
         el.dataset.counted = 'true';
         const target = parseInt(el.dataset.count);
-        const duration = 2000;
+        const duration = ANIMATION_CONFIG.COUNTER_DURATION_MS;
         let start = null;
 
         const step = (timestamp) => {
@@ -143,15 +156,15 @@ const ANIMATIONS = {
             if (STATE.route === 'home') {
                 const y = window.scrollY;
                 // Navbar Glass Effect
-                if (y > 50) navbar.classList.add('is-scrolled');
+                if (y > ANIMATION_CONFIG.NAVBAR_SCROLL_THRESHOLD) navbar.classList.add('is-scrolled');
                 else navbar.classList.remove('is-scrolled');
 
                 // Hero Parallax - only update if hero is visible
                 if (heroVid && y < window.innerHeight) {
-                    const scale = 1 + (y * 0.0005);
+                    const scale = 1 + (y * ANIMATION_CONFIG.HERO_PARALLAX_SCALE);
                     heroVid.style.transform = `translate(-50%, -50%) scale(${scale})`;
                     if (heroContent) {
-                        heroContent.style.transform = `translateY(${y * 0.3}px)`;
+                        heroContent.style.transform = `translateY(${y * ANIMATION_CONFIG.HERO_CONTENT_PARALLAX}px)`;
                         heroContent.style.opacity = 1 - (y / (window.innerHeight * 0.7));
                     }
                 }
@@ -159,8 +172,6 @@ const ANIMATIONS = {
                 navbar.classList.add('is-scrolled'); // Always solid on inner pages
             }
 
-            // Scroll-driven philosophy card flip
-            ANIMATIONS.updatePhilosophyScroll();
             ticking = false;
         };
 
@@ -179,178 +190,231 @@ const ANIMATIONS = {
     },
 
     /**
-     * Initialize philosophy scroll section (cache DOM references)
+     * Initialize philosophy section with toggle and navigation
      */
-    initPhilosophyScroll: () => {
-        const container = document.getElementById('how-we-build-section');
-        if (!container) return;
+    initPhilosophySection: () => {
+        const wrapper = document.getElementById('how-we-build-section');
+        if (!wrapper) return;
 
-        // Cache DOM references for rAF performance
-        STATE.hwb = {
-            container,
-            titleOut: document.getElementById('hwb-title-out'),
-            titleIn: document.getElementById('hwb-title-in'),
-            subtitleOut: container.querySelector('.subtitle-outgoing'),
-            subtitleIn: container.querySelector('.subtitle-incoming'),
-            cardInners: Array.from(container.querySelectorAll('[data-flip-card] .philosophy-card-inner')),
-            cards: Array.from(container.querySelectorAll('[data-flip-card]')),
-            isMobileMode: ANIMATIONS.isMobile()
+        const videoFixed = wrapper.querySelector('.philosophy-video-fixed');
+        const section = wrapper.querySelector('.philosophy-section');
+
+        // Initialize state
+        STATE.philosophySection = {
+            activeMode: 'principles',  // 'principles' | 'philosophy'
+            activeIndex: 0,            // 0-3
+            isAnimating: false
         };
 
-        // On mobile, use sequential scroll
-        if (STATE.hwb.isMobileMode) {
-            ANIMATIONS.initMobileSequentialScroll();
-        }
-    },
+        // Cache DOM elements
+        const toggle = wrapper.querySelector('.philosophy-toggle');
+        const toggleBtns = wrapper.querySelectorAll('.philosophy-toggle-btn');
+        const videoPrinciples = document.getElementById('video-principles');
+        const videoPhilosophy = document.getElementById('video-philosophy');
+        const display = wrapper.querySelector('.philosophy-display');
+        const labelEl = wrapper.querySelector('.philosophy-label');
+        const titleEl = wrapper.querySelector('.philosophy-title');
+        const descEl = wrapper.querySelector('.philosophy-description');
+        const pagination = wrapper.querySelector('.philosophy-pagination');
+        const navPrev = wrapper.querySelector('.philosophy-nav-prev');
+        const navNext = wrapper.querySelector('.philosophy-nav-next');
+        const navMobilePrev = wrapper.querySelector('.philosophy-nav-btn-prev');
+        const navMobileNext = wrapper.querySelector('.philosophy-nav-btn-next');
 
-    /**
-     * Initialize mobile sequential scroll flip
-     * Each card appears and flips individually while scrolling down
-     */
-    initMobileSequentialScroll: () => {
-        if (!STATE.hwb || !STATE.hwb.cards) return;
-
-        const container = STATE.hwb.container;
-        const cards = STATE.hwb.cards;
-        const cardInners = STATE.hwb.cardInners;
-        const totalCards = cards.length; // 4
-
-        // Title elements for crossfade
-        const titleOut = STATE.hwb.titleOut;
-        const titleIn = STATE.hwb.titleIn;
-        const subtitleOut = STATE.hwb.subtitleOut;
-        const subtitleIn = STATE.hwb.subtitleIn;
-
-        let currentActiveCard = -1;
-
-        const updateMobileScroll = () => {
-            const rect = container.getBoundingClientRect();
-            const containerH = container.offsetHeight;
-            const viewH = window.innerHeight;
-
-            // Scroll progress 0-1
-            const scrollProgress = Math.max(0, Math.min(1,
-                -rect.top / (containerH - viewH)
-            ));
-
-            // Which card is active (0-3)
-            const cardIndex = Math.min(totalCards - 1,
-                Math.floor(scrollProgress * totalCards));
-
-            // Progress within card's segment (0-1)
-            const cardProgress = (scrollProgress * totalCards) % 1;
-
-            // Flip rotation: 0-0.4 = front, 0.4-0.9 = flipping
-            let flipRotation = 0;
-            if (cardProgress > 0.4) {
-                const flipProgress = Math.min(1, (cardProgress - 0.4) / 0.5);
-                flipRotation = flipProgress * 180;
-            }
-
-            // Update active card
-            if (cardIndex !== currentActiveCard) {
-                if (currentActiveCard >= 0) {
-                    cards[currentActiveCard].classList.remove('is-active');
-                    cardInners[currentActiveCard].style.transform = 'rotateY(0deg)';
-                }
-                cards[cardIndex].classList.add('is-active');
-                currentActiveCard = cardIndex;
-            }
-
-            // Apply flip rotation to active card
-            cardInners[cardIndex].style.transform = `rotateY(${flipRotation}deg)`;
-
-            // Title crossfade at 45%-55% scroll
-            const titleProgress = Math.max(0, Math.min(1,
-                (scrollProgress - 0.45) / 0.10));
-
-            if (titleOut) {
-                titleOut.style.opacity = 1 - titleProgress;
-                titleOut.style.transform = `translateY(${-titleProgress * 15}px)`;
-            }
-            if (titleIn) {
-                titleIn.style.opacity = titleProgress;
-                titleIn.style.transform = `translateY(${(1 - titleProgress) * 12}px)`;
-            }
-            if (subtitleOut) {
-                subtitleOut.style.opacity = 1 - titleProgress;
-                subtitleOut.style.transform = `translateY(${-titleProgress * 15}px)`;
-            }
-            if (subtitleIn) {
-                subtitleIn.style.opacity = titleProgress;
-                subtitleIn.style.transform = `translateY(${(1 - titleProgress) * 12}px)`;
-            }
-        };
-
-        // Only run when section visible
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    window.addEventListener('scroll', updateMobileScroll, { passive: true });
-                    updateMobileScroll();
-                } else {
-                    window.removeEventListener('scroll', updateMobileScroll);
-                }
+        // === Section visibility observer ===
+        if (videoFixed) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        wrapper.classList.add('is-in-view');
+                    } else {
+                        wrapper.classList.remove('is-in-view');
+                    }
+                });
+            }, {
+                threshold: [0, 0.1, 0.5, 0.9, 1],
+                rootMargin: '-10% 0px -10% 0px'
             });
-        }, { threshold: 0 });
 
-        observer.observe(container);
-        STATE.scrollObservers.push(observer);
-        STATE.mobileScrollHandler = updateMobileScroll;
-    },
+            observer.observe(wrapper);
+            STATE.philosophySectionObserver = observer;
 
-    /**
-     * Update philosophy section based on scroll position
-     * Handles title crossfade and card flip animations
-     * On mobile, card flips are handled by initMobileCardFlip instead
-     */
-    updatePhilosophyScroll: () => {
-        const hwb = STATE.hwb;
-        if (!hwb || !hwb.container) return;
+            // === Smooth scroll-based opacity ===
+            const updateVideoOpacity = () => {
+                const rect = wrapper.getBoundingClientRect();
+                const viewHeight = window.innerHeight;
 
-        // On mobile, skip desktop scroll behavior (per-card flip handles it)
-        if (hwb.isMobileMode) return;
+                // Calculate opacity based on section position
+                let opacity = 1;
+                if (rect.top > 0) {
+                    // Entering from bottom - fade in
+                    opacity = Math.min(1, (viewHeight - rect.top) / (viewHeight * 0.3));
+                } else if (rect.bottom < viewHeight) {
+                    // Exiting to top - fade out
+                    opacity = Math.min(1, rect.bottom / (viewHeight * 0.3));
+                }
 
-        const rect = hwb.container.getBoundingClientRect();
-        const containerH = hwb.container.offsetHeight;
-        const viewH = window.innerHeight;
-        // scrollProgress: 0 = container top at viewport top, 1 = container bottom at viewport bottom
-        const scrollProgress = Math.max(0, Math.min(1, -rect.top / (containerH - viewH)));
+                videoFixed.style.opacity = Math.max(0, Math.min(1, opacity));
+            };
 
-        // --- Title crossfade: 25% → 55% ---
-        const titleP = Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.30));
-        if (hwb.titleOut) {
-            hwb.titleOut.style.opacity = 1 - titleP;
-            hwb.titleOut.style.transform = `translateY(${-titleP * 15}px)`;
-        }
-        if (hwb.titleIn) {
-            hwb.titleIn.style.opacity = titleP;
-            hwb.titleIn.style.transform = `translateY(${(1 - titleP) * 12}px)`;
-        }
+            // Throttled scroll handler
+            let ticking = false;
+            const onScroll = () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateVideoOpacity();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            };
 
-        // --- Subtitle crossfade: 28% → 58% ---
-        const subP = Math.max(0, Math.min(1, (scrollProgress - 0.28) / 0.30));
-        if (hwb.subtitleOut) {
-            hwb.subtitleOut.style.opacity = 1 - subP;
-            hwb.subtitleOut.style.transform = `translateY(${-subP * 10}px)`;
-        }
-        if (hwb.subtitleIn) {
-            hwb.subtitleIn.style.opacity = subP;
-            hwb.subtitleIn.style.transform = `translateY(${(1 - subP) * 10}px)`;
+            window.addEventListener('scroll', onScroll, { passive: true });
+            STATE.philosophyScrollHandler = onScroll;
+
+            // Initial call
+            updateVideoOpacity();
         }
 
-        // --- Card flips with stagger: 30% → 65%, each card offset by 4% ---
-        hwb.cardInners.forEach((inner, i) => {
-            const cardStart = 0.30 + (i * 0.04);
-            const cardEnd = cardStart + 0.28;
-            const cardP = Math.max(0, Math.min(1, (scrollProgress - cardStart) / (cardEnd - cardStart)));
-            const rotation = cardP * 180;
-            inner.style.transform = `rotateY(${rotation}deg)`;
+        // Get data based on current mode
+        const getData = () => {
+            return STATE.philosophySection.activeMode === 'principles'
+                ? DATA.architecture
+                : DATA.philosophy;
+        };
+
+        // Update content display
+        const updateContent = (animate = false) => {
+            const data = getData();
+            const item = data[STATE.philosophySection.activeIndex];
+
+            if (animate && !STATE.philosophySection.isAnimating) {
+                STATE.philosophySection.isAnimating = true;
+                display.classList.add('is-animating-out');
+
+                setTimeout(() => {
+                    labelEl.textContent = item.cat;
+                    titleEl.textContent = item.title;
+                    descEl.textContent = item.desc;
+                    if (pagination) {
+                        pagination.textContent = `${STATE.philosophySection.activeIndex + 1} / ${data.length}`;
+                    }
+
+                    display.classList.remove('is-animating-out');
+                    display.classList.add('is-animating-in');
+
+                    setTimeout(() => {
+                        display.classList.remove('is-animating-in');
+                        STATE.philosophySection.isAnimating = false;
+                    }, ANIMATION_CONFIG.PHILOSOPHY_ANIM_IN_MS);
+                }, ANIMATION_CONFIG.PHILOSOPHY_ANIM_OUT_MS);
+            } else {
+                labelEl.textContent = item.cat;
+                titleEl.textContent = item.title;
+                descEl.textContent = item.desc;
+                if (pagination) {
+                    pagination.textContent = `${STATE.philosophySection.activeIndex + 1} / ${data.length}`;
+                }
+            }
+        };
+
+        // Set mode (principles/philosophy)
+        const setMode = (mode) => {
+            if (mode === STATE.philosophySection.activeMode) return;
+
+            STATE.philosophySection.activeMode = mode;
+            STATE.philosophySection.activeIndex = 0;
+
+            // Update toggle button states
+            toggleBtns.forEach(btn => {
+                btn.classList.toggle('is-active', btn.dataset.mode === mode);
+            });
+
+            // Update toggle data attribute for slider position
+            toggle.dataset.mode = mode;
+
+            // Swap video backgrounds
+            if (mode === 'principles') {
+                videoPrinciples.classList.add('is-active');
+                videoPhilosophy.classList.remove('is-active');
+            } else {
+                videoPrinciples.classList.remove('is-active');
+                videoPhilosophy.classList.add('is-active');
+            }
+
+            // Update content with animation
+            updateContent(true);
+        };
+
+        // Navigate between items
+        const navigate = (direction) => {
+            if (STATE.philosophySection.isAnimating) return;
+
+            const data = getData();
+            let newIndex = STATE.philosophySection.activeIndex + direction;
+
+            // Wrap around
+            if (newIndex < 0) newIndex = data.length - 1;
+            if (newIndex >= data.length) newIndex = 0;
+
+            STATE.philosophySection.activeIndex = newIndex;
+            updateContent(true);
+        };
+
+        // Attach toggle click handlers
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setMode(btn.dataset.mode);
+            });
         });
+
+        // Attach navigation handlers (desktop)
+        if (navPrev) navPrev.addEventListener('click', () => navigate(-1));
+        if (navNext) navNext.addEventListener('click', () => navigate(1));
+
+        // Attach navigation handlers (mobile)
+        if (navMobilePrev) navMobilePrev.addEventListener('click', () => navigate(-1));
+        if (navMobileNext) navMobileNext.addEventListener('click', () => navigate(1));
+
+        // Keyboard navigation
+        const handleKeydown = (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            if (!isVisible) return;
+
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigate(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigate(1);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeydown);
+        STATE.philosophyKeyHandler = handleKeydown;
+
+        // Initial content render
+        updateContent(false);
+
+        // Explicitly play videos (fallback for browsers that block autoplay)
+        const playVideos = () => {
+            if (videoPrinciples) {
+                videoPrinciples.play().catch(() => {});
+            }
+            if (videoPhilosophy) {
+                videoPhilosophy.play().catch(() => {});
+            }
+        };
+
+        // Try to play immediately and also on user interaction
+        playVideos();
+        document.addEventListener('click', playVideos, { once: true });
+        document.addEventListener('scroll', playVideos, { once: true });
     },
 
     /**
-     * Cleanup all scroll observers
+     * Cleanup all scroll observers and event handlers
      */
     cleanup: () => {
         STATE.scrollObservers.forEach(obs => obs.disconnect());
@@ -359,15 +423,25 @@ const ANIMATIONS = {
         // Clean up animated characters
         CHARACTERS.cleanup();
 
-        // Clean up mobile-specific observers
-        if (STATE.mobileCardObservers) {
-            STATE.mobileCardObservers.forEach(obs => obs.disconnect());
-            STATE.mobileCardObservers = [];
+        // Clean up philosophy section keyboard handler
+        if (STATE.philosophyKeyHandler) {
+            document.removeEventListener('keydown', STATE.philosophyKeyHandler);
+            STATE.philosophyKeyHandler = null;
         }
 
-        if (STATE.mobileScrollHandler) {
-            window.removeEventListener('scroll', STATE.mobileScrollHandler);
-            STATE.mobileScrollHandler = null;
+        // Clean up philosophy section observer
+        if (STATE.philosophySectionObserver) {
+            STATE.philosophySectionObserver.disconnect();
+            STATE.philosophySectionObserver = null;
         }
+
+        // Clean up philosophy scroll handler
+        if (STATE.philosophyScrollHandler) {
+            window.removeEventListener('scroll', STATE.philosophyScrollHandler);
+            STATE.philosophyScrollHandler = null;
+        }
+
+        // Reset philosophy section state
+        STATE.philosophySection = null;
     }
 };

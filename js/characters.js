@@ -1,10 +1,26 @@
 /* ============================================
    CHARACTERS - Animated Eye-Tracking Characters
-   
+
    Ported from React component to vanilla JS.
    Features: eye tracking, blinking, body lean,
    password peek, typing awareness, login reactions.
 ============================================ */
+
+// Configuration constants
+const CHARACTER_CONFIG = {
+    BLINK_MIN_MS: 3000,
+    BLINK_MAX_MS: 7000,
+    BLINK_DURATION_MS: 150,
+    LOOK_AT_EACH_OTHER_MS: 800,
+    PEEK_MIN_DELAY_MS: 2000,
+    PEEK_MAX_DELAY_MS: 5000,
+    PEEK_DURATION_MS: 800,
+    CELEBRATE_DURATION_MS: 1200,
+    FLINCH_DURATION_MS: 600,
+    BODY_SKEW_DIVISOR: 120,
+    MAX_BODY_SKEW_DEG: 6
+};
+
 const CHARACTERS = {
     state: {
         mouseX: 0,
@@ -152,7 +168,7 @@ const CHARACTERS = {
         stage.classList.add('char-celebrate');
         CHARACTERS.state.celebrateTimer = setTimeout(() => {
             stage.classList.remove('char-celebrate');
-        }, 1200);
+        }, CHARACTER_CONFIG.CELEBRATE_DURATION_MS);
     },
 
     /**
@@ -164,7 +180,7 @@ const CHARACTERS = {
         stage.classList.add('char-flinch');
         CHARACTERS.state.flinchTimer = setTimeout(() => {
             stage.classList.remove('char-flinch');
-        }, 600);
+        }, CHARACTER_CONFIG.FLINCH_DURATION_MS);
     },
 
     /* ---- Private methods ---- */
@@ -277,7 +293,7 @@ const CHARACTERS = {
      * Start random blinking for a character
      */
     _startBlinking: (charId, eyesId, timerIndex) => {
-        const getInterval = () => Math.random() * 4000 + 3000; // 3-7 seconds
+        const getInterval = () => Math.random() * (CHARACTER_CONFIG.BLINK_MAX_MS - CHARACTER_CONFIG.BLINK_MIN_MS) + CHARACTER_CONFIG.BLINK_MIN_MS;
 
         const scheduleBlink = () => {
             const timer = setTimeout(() => {
@@ -291,7 +307,7 @@ const CHARACTERS = {
                 setTimeout(() => {
                     eyeEls.forEach(eye => eye.classList.remove('is-blinking'));
                     scheduleBlink();
-                }, 150);
+                }, CHARACTER_CONFIG.BLINK_DURATION_MS);
             }, getInterval());
 
             CHARACTERS.state.blinkTimers[timerIndex] = timer;
@@ -311,7 +327,7 @@ const CHARACTERS = {
         CHARACTERS.state.lookTimer = setTimeout(() => {
             CHARACTERS.state.isLookingAtEachOther = false;
             CHARACTERS._updateAll();
-        }, 800);
+        }, CHARACTER_CONFIG.LOOK_AT_EACH_OTHER_MS);
     },
 
     /**
@@ -333,8 +349,8 @@ const CHARACTERS = {
                     CHARACTERS._updateAll();
                     // Schedule another peek
                     CHARACTERS._schedulePeek();
-                }, 800);
-            }, Math.random() * 3000 + 2000);
+                }, CHARACTER_CONFIG.PEEK_DURATION_MS);
+            }, Math.random() * (CHARACTER_CONFIG.PEEK_MAX_DELAY_MS - CHARACTER_CONFIG.PEEK_MIN_DELAY_MS) + CHARACTER_CONFIG.PEEK_MIN_DELAY_MS);
         } else {
             CHARACTERS.state.purplePeeking = false;
         }
@@ -366,7 +382,7 @@ const CHARACTERS = {
         const rect = el.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const dx = CHARACTERS.state.mouseX - cx;
-        return Math.max(-6, Math.min(6, -dx / 120));
+        return Math.max(-CHARACTER_CONFIG.MAX_BODY_SKEW_DEG, Math.min(CHARACTER_CONFIG.MAX_BODY_SKEW_DEG, -dx / CHARACTER_CONFIG.BODY_SKEW_DIVISOR));
     },
 
     /**

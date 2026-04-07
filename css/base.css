@@ -113,6 +113,22 @@ textarea {
     text-align: center;
 }
 
+/* Spacing Utilities */
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.pt-12vh { padding-top: 12vh; }
+.pt-15vh { padding-top: 15vh; }
+.min-h-100vh { min-height: 100vh; }
+.min-h-85vh { min-height: 85vh; }
+.w-full { width: 100%; }
+.flex { display: flex; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.gap-4 { gap: 1rem; }
+
 /* ============================================
    TYPOGRAPHY SYSTEM
 ============================================ */

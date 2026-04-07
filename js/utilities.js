@@ -118,7 +118,6 @@ const UTILITIES = {
      * Save schedule (mock implementation)
      */
     saveSchedule: () => {
-        console.log('Saving schedule:', STATE.employeeSchedule);
         alert('Schedule saved successfully!');
     },
 

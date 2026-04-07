@@ -276,16 +276,6 @@
         font-size: 0.9rem;
     }
 
-    /* Scroll section */
-    .hwb-sticky-content {
-        padding: 2rem 0;
-    }
-
-    .section-title-wrap {
-        height: auto;
-        min-height: 3rem;
-    }
-
     /* Company Showcase */
     .company-showcase {
         padding: 1.5rem;
@@ -472,87 +462,73 @@
 }
 
 /* ============================================
-   MOBILE HEADING - Show/Hide Logic
+   PHILOSOPHY SECTION - Responsive Styles
 ============================================ */
-/* Hide mobile-only elements on desktop */
-.hwb-mobile-title,
-.hwb-mobile-subtitle {
-    display: none;
-}
-
-/* Philosophy card mobile - Sequential scroll */
-@media (max-width: 767px) {
-    /* 1. Re-enable scroll container with height for 8 stops */
-    .hwb-scroll-container {
-        height: 740vh;  /* 100vh visible + 8×80vh scroll stops */
-        position: relative;
+/* Mobile Navigation - Show on mobile, hide desktop arrows */
+@media (max-width: 768px) {
+    .philosophy-nav {
+        display: none;
     }
 
-    /* 2. Re-enable sticky content */
-    .hwb-sticky-content {
-        position: sticky;
-        top: 0;
-        min-height: 100vh;
+    .philosophy-nav-mobile {
         display: flex;
-        align-items: center;
-        padding: 2rem 0;
     }
 
-    /* 3. Show static mobile title, hide crossfade titles */
-    .hwb-mobile-title,
-    .hwb-mobile-subtitle {
-        display: block;
-        margin-bottom: 1rem;
+    .philosophy-section {
+        min-height: 100vh;
+        padding: 0;
     }
 
-    .hwb-mobile-subtitle {
-        color: var(--text-secondary);
+    .philosophy-content {
+        padding: 2rem 1rem;
+    }
+
+    .philosophy-toggle-wrap {
         margin-bottom: 2rem;
     }
 
-    .hwb-desktop-titles {
-        display: none !important;
+    .philosophy-toggle-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 
-    /* 4. Single card display - stack all, show only active */
-    .hwb-scroll-container .grid-4 {
-        display: flex;
-        justify-content: center;
-        position: relative;
-        min-height: 420px;
-        gap: 0;
+    .philosophy-title {
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
     }
 
-    .hwb-scroll-container .philosophy-card {
-        position: absolute;
-        width: 100%;
-        max-width: 340px;
-        height: 420px;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.4s ease;
-        margin-bottom: 0;
+    .philosophy-description {
+        font-size: 0.95rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .philosophy-toggle-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
     }
 
-    .hwb-scroll-container .philosophy-card.is-active {
-        opacity: 1;
-        pointer-events: auto;
+    .philosophy-label {
+        font-size: 0.75rem;
     }
 
-    .card-back-body {
-        padding: 1.5rem;
+    .philosophy-title {
+        font-size: clamp(1.25rem, 7vw, 2rem);
+        margin-bottom: 1rem;
     }
 
-    .card-back-title {
-        font-size: 1.1rem;
+    .philosophy-description {
+        font-size: 0.9rem;
     }
 
-    .card-back-text {
-        font-size: 0.82rem;
+    .philosophy-nav-mobile {
+        margin-top: 2rem;
+        gap: 1rem;
     }
 
-    .hwb-flip-trigger {
-        display: none;
+    .philosophy-nav-btn {
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -663,14 +639,6 @@
    REDUCED MOTION
 ============================================ */
 @media (prefers-reduced-motion: reduce) {
-    .philosophy-card-inner,
-    .section-title-outgoing,
-    .section-title-incoming,
-    .subtitle-outgoing,
-    .subtitle-incoming {
-        will-change: auto;
-    }
-
     .reveal {
         opacity: 1;
         transform: none;
@@ -687,5 +655,29 @@
     .hero-actions {
         animation: none;
         opacity: 1;
+    }
+
+    /* Philosophy section - disable transitions */
+    .philosophy-video {
+        transition: none;
+    }
+
+    .philosophy-toggle-slider {
+        transition: none;
+    }
+
+    .philosophy-display.is-animating-out .philosophy-label,
+    .philosophy-display.is-animating-out .philosophy-title,
+    .philosophy-display.is-animating-out .philosophy-description,
+    .philosophy-display.is-animating-in .philosophy-label,
+    .philosophy-display.is-animating-in .philosophy-title,
+    .philosophy-display.is-animating-in .philosophy-description {
+        transition: none;
+    }
+
+    .philosophy-nav,
+    .philosophy-nav-btn,
+    .philosophy-toggle-btn {
+        transition: none;
     }
 }

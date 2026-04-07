@@ -35,40 +35,80 @@ const SECTIONS = {
     `,
 
     HowWeBuild: () => `
-        <div class="hwb-scroll-container" id="how-we-build-section">
-            <div class="hwb-sticky-content">
-                <div class="container">
-                    <!-- Mobile-only combined heading -->
-                    <h2 class="text-h2 reveal hwb-mobile-title">Principles & Philosophy</h2>
+        <!-- Outer wrapper creates scroll boundary for video clipping -->
+        <div class="philosophy-wrapper" id="how-we-build-section">
+            <!-- Video stays fixed within wrapper bounds via opacity control -->
+            <div class="philosophy-video-fixed">
+                <video class="philosophy-video is-active" id="video-principles"
+                       loop autoplay muted playsinline preload="auto">
+                    <source src="Principles.mp4" type="video/mp4">
+                </video>
+                <video class="philosophy-video" id="video-philosophy"
+                       loop autoplay muted playsinline preload="auto">
+                    <source src="philosophy.mp4" type="video/mp4">
+                </video>
+                <div class="philosophy-overlay"></div>
+            </div>
 
-                    <!-- Desktop crossfade titles -->
-                    <div class="section-title-wrap reveal hwb-desktop-titles" id="hwb-title-wrap">
-                        <h2 class="text-h2 section-title-outgoing" id="hwb-title-out">How We Build</h2>
-                        <h2 class="text-h2 section-title-incoming" id="hwb-title-in">Our Philosophy</h2>
+            <!-- Content scrolls over the fixed video -->
+            <section class="philosophy-section">
+                <div class="philosophy-content container">
+                    <!-- Toggle (acts as section title) -->
+                    <div class="philosophy-toggle-wrap reveal">
+                        <div class="philosophy-toggle" data-mode="principles">
+                            <button class="philosophy-toggle-btn is-active" data-mode="principles">
+                                How We Build
+                            </button>
+                            <button class="philosophy-toggle-btn" data-mode="philosophy">
+                                Our Philosophy
+                            </button>
+                            <div class="philosophy-toggle-slider"></div>
+                        </div>
                     </div>
-                    <div class="section-subtitle-wrap hwb-desktop-titles">
-                        <p class="text-lead reveal reveal-delay-1 subtitle-outgoing">The principles that guide our work.</p>
-                        <p class="text-lead subtitle-incoming">The values at the heart of everything we create.</p>
+
+                    <!-- Content Display -->
+                    <div class="philosophy-display reveal reveal-delay-1">
+                        <div class="philosophy-label">${DATA.architecture[0].cat}</div>
+                        <h3 class="philosophy-title">${DATA.architecture[0].title}</h3>
+                        <p class="philosophy-description">${DATA.architecture[0].desc}</p>
                     </div>
 
-                    <!-- Mobile-only subtitle -->
-                    <p class="text-lead reveal reveal-delay-1 hwb-mobile-subtitle">Scroll to reveal the values behind each principle.</p>
+                    <!-- Desktop Navigation Arrows -->
+                    <button class="philosophy-nav philosophy-nav-prev" aria-label="Previous item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="philosophy-nav philosophy-nav-next" aria-label="Next item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
 
-                    <div class="grid-4">
-                        ${DATA.architecture.map((item, i) => UI.FlippableCard(item, DATA.philosophy[i], i)).join('')}
+                    <!-- Mobile Navigation -->
+                    <div class="philosophy-nav-mobile reveal reveal-delay-2">
+                        <button class="philosophy-nav-btn philosophy-nav-btn-prev" aria-label="Previous item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="philosophy-pagination">1 / 4</div>
+                        <button class="philosophy-nav-btn philosophy-nav-btn-next" aria-label="Next item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-            </div>
-            <!-- Invisible trigger element at 60% scroll progress -->
-            <div class="hwb-flip-trigger" id="hwb-flip-trigger" aria-hidden="true"></div>
+            </section>
         </div>
     `,
 
     WhatWeBuild: () => `
-        <section class="section narrative" style="padding-top: 0;">
+        <section class="section narrative what-we-build-section">
             <div class="container container-narrow text-center">
                 <h2 class="text-h2 reveal">What We're Building</h2>
-                <p class="narrative-text reveal reveal-delay-1" style="font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 3rem;">
+                <p class="narrative-text what-we-build-desc reveal reveal-delay-1">
                     On top of our infrastructure foundation sit the products themselves. Aiparel focuses on creator-driven commerce and expression. KloeAI helps small and medium-sized businesses deploy intelligent, multilingual chatbots without needing a development team. In parallel, we're developing a broader suite of AI-driven tools built on the same underlying infrastructure, aimed at putting capable, practical AI in the hands of individuals and small organizations. Each project operates independently but shares the same technical foundation.
                 </p>
                 <div class="reveal reveal-delay-2">
@@ -79,13 +119,13 @@ const SECTIONS = {
     `,
 
     Projects: () => `
-        <section class="section" style="background: var(--bg-surface)" id="projects">
+        <section class="section projects-section" id="projects">
             <div class="container">
                 <h2 class="text-h2 reveal text-center">Our Projects</h2>
                 <div class="showcase-list mt-4">
                     ${DATA.projects.map((c, i) => UI.ProjectShowcase(c, i)).join('')}
 
-                    <div class="reveal mt-8 mb-4" style="display: flex; justify-content: center; width: 100%;">
+                    <div class="reveal mt-8 mb-4 badge-wrapper">
                         <div class="in-development-badge">
                             <span class="badge-dot"></span>
                             <span class="badge-text">More ventures in development...</span>
@@ -189,7 +229,7 @@ const COMPONENTS = {
         // Logged in - show cards or scheduling view
         if (STATE.portalView === 'scheduling') {
             return `
-                <div class="container" style="padding-top: 12vh; min-height: 100vh; padding-bottom: 4rem;">
+                <div class="container portal-scheduling-container">
                     <div class="reveal">
                         <div class="dashboard-header">
                             <div>
@@ -197,7 +237,7 @@ const COMPONENTS = {
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
                                     Back to Dashboard
                                 </span>
-                                <h2 class="text-h2" style="font-size: 2rem; margin-bottom: 0;">Employee Portal</h2>
+                                <h2 class="text-h2 dashboard-title-sm">Employee Portal</h2>
                                 <p class="text-secondary">${STATE.user.name} - ${STATE.user.role}</p>
                             </div>
                             <button class="btn btn-secondary" onclick="UTILITIES.logout()">Logout</button>
@@ -210,18 +250,18 @@ const COMPONENTS = {
 
         // Cards view (default)
         return `
-            <div class="container" style="padding-top: 15vh; min-height: 100vh;">
+            <div class="container portal-dashboard-container">
                 <div class="reveal">
                     <div class="dashboard-header">
                         <div>
-                            <h2 class="text-h2" style="font-size: 2.5rem; margin-bottom: 0;">Welcome, ${STATE.user.name}</h2>
+                            <h2 class="text-h2 dashboard-title-lg">Welcome, ${STATE.user.name}</h2>
                             <p class="text-secondary">${STATE.user.role}</p>
                         </div>
                         <button class="btn btn-secondary" onclick="UTILITIES.logout()">Logout</button>
                     </div>
 
-                    <div style="text-align: center; margin-bottom: 3rem;">
-                        <h3 class="text-h3" style="margin-bottom: 0.5rem;">What would you like to do?</h3>
+                    <div class="dashboard-intro">
+                        <h3 class="text-h3">What would you like to do?</h3>
                         <p class="text-secondary">Select an option below to get started</p>
                     </div>
 
@@ -240,7 +280,7 @@ const COMPONENTS = {
                             <p>Set your weekly hours and availability</p>
                         </div>
 
-                        <div class="portal-option-card" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="portal-option-card is-disabled">
                             <div class="card-icon">
                                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5">
                                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -262,8 +302,8 @@ const COMPONENTS = {
     ContactScreen: () => `
         <div class="contact-layout">
             <div class="container container-narrow reveal">
-                <h1 class="text-hero" style="font-size: clamp(2.5rem, 5vw, 4rem);">Work With Us</h1>
-                <p class="text-lead" style="margin-bottom: 4rem;">For partnership inquiries, research collaboration, or enterprise licensing.</p>
+                <h1 class="text-hero contact-title">Work With Us</h1>
+                <p class="text-lead contact-lead">For partnership inquiries, research collaboration, or enterprise licensing.</p>
 
                 <form onsubmit="event.preventDefault(); this.innerHTML='<h3 class=\\'text-h3\\'>Message received. We will be in touch.</h3>';">
                     <div class="floating-group">
@@ -274,18 +314,18 @@ const COMPONENTS = {
                         <input type="email" id="c-email" class="floating-input" placeholder="Email" required>
                         <label for="c-email" class="floating-label">Email Address</label>
                     </div>
-                    <div class="floating-group" style="margin-top: 3rem;">
-                        <textarea id="c-msg" class="floating-input" style="height: 100px; resize: none;" placeholder="Message" required></textarea>
+                    <div class="floating-group contact-message-group">
+                        <textarea id="c-msg" class="floating-input contact-textarea" placeholder="Message" required></textarea>
                         <label for="c-msg" class="floating-label">Tell us about your project</label>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Send Message</button>
+                    <button type="submit" class="btn btn-primary contact-submit">Send Message</button>
                 </form>
             </div>
         </div>
     `,
 
     ProjectsScreen: () => `
-        <div style="min-height: 85vh;">
+        <div class="projects-screen">
             ${SECTIONS.Projects()}
         </div>
     `
@@ -360,7 +400,7 @@ const ROUTER = {
             setTimeout(() => {
                 ANIMATIONS.initReveal();
                 ANIMATIONS.initGlossyCards();
-                if (route === 'home') ANIMATIONS.initPhilosophyScroll();
+                if (route === 'home') ANIMATIONS.initPhilosophySection();
                 if (route === 'portal') ANIMATIONS.initPortalLogin();
 
                 if (originalRoute !== route && document.getElementById(originalRoute)) {

@@ -110,79 +110,265 @@
 }
 
 /* ============================================
-   SECTIONS - HOW WE BUILD (Scroll Container)
+   SECTIONS - PHILOSOPHY (Sticky Video Pattern)
 ============================================ */
-.hwb-scroll-container {
+
+/* Wrapper creates scroll boundary for clipping */
+.philosophy-wrapper {
     position: relative;
-    height: 200vh;
+    min-height: 100vh;
 }
 
-.hwb-sticky-content {
-    position: sticky;
+/* Fixed video container - clips to wrapper bounds via opacity */
+.philosophy-video-fixed {
+    position: fixed;
     top: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 4rem 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* When section is in view */
+.philosophy-wrapper.is-in-view .philosophy-video-fixed {
+    opacity: 1;
+}
+
+/* Video element styling */
+.philosophy-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity;
+}
+
+.philosophy-video.is-active {
+    opacity: 0.6;
+}
+
+/* Gradient overlay on video */
+.philosophy-video-fixed .philosophy-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
     z-index: 1;
 }
 
-.hwb-sticky-content > .container {
-    width: 100%;
-}
-
-.hwb-flip-trigger {
-    position: absolute;
-    top: 60%;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    pointer-events: none;
-    opacity: 0;
-}
-
-/* Title Crossfade (scroll-driven) */
-.section-title-wrap {
+/* Content section - scrolls over video */
+.philosophy-section {
     position: relative;
-    display: block;
-    height: clamp(3rem, 6vw, 5.5rem);
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Content container */
+.philosophy-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    min-height: 100vh;
+}
+
+/* Smooth transition to next section */
+.philosophy-wrapper + section,
+.philosophy-wrapper + .section,
+.what-we-build-section {
+    position: relative;
+    z-index: 5;
+    background: var(--bg-base);
+}
+
+/* Toggle Wrapper */
+.philosophy-toggle-wrap {
+    margin-bottom: 3.5rem;
+}
+
+.philosophy-toggle {
+    display: inline-flex;
+    position: relative;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 0.25rem;
+}
+
+.philosophy-toggle-btn {
+    position: relative;
+    z-index: 2;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.philosophy-toggle-btn.is-active {
+    color: #000;
+}
+
+.philosophy-toggle-slider {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: calc(50% - 0.25rem);
+    height: calc(100% - 0.5rem);
+    background: #fff;
+    border-radius: 100px;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+}
+
+.philosophy-toggle[data-mode="philosophy"] .philosophy-toggle-slider {
+    transform: translateX(100%);
+}
+
+/* Content Display */
+.philosophy-display {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.philosophy-label {
+    color: var(--accent-cyan);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+}
+
+.philosophy-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
 
-.section-title-outgoing,
-.section-title-incoming {
+.philosophy-description {
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 720px;
+}
+
+/* Desktop Navigation Arrows */
+.philosophy-nav {
     position: absolute;
-    top: 0;
-    left: 0;
-    will-change: opacity, transform;
-    white-space: nowrap;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 10;
 }
 
-.section-title-incoming {
+.philosophy-nav:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text-primary);
+}
+
+.philosophy-nav-prev {
+    left: 5vw;
+}
+
+.philosophy-nav-next {
+    right: 5vw;
+}
+
+/* Mobile Navigation */
+.philosophy-nav-mobile {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.philosophy-nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.philosophy-nav-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+.philosophy-pagination {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Content Animation States */
+.philosophy-display.is-animating-out .philosophy-label,
+.philosophy-display.is-animating-out .philosophy-title,
+.philosophy-display.is-animating-out .philosophy-description {
     opacity: 0;
-    transform: translateY(12px);
-    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Subtitle crossfade (scroll-driven) */
-.section-subtitle-wrap {
-    position: relative;
-    height: clamp(1.4rem, 2.5vw, 2rem);
-    margin-bottom: 2.5rem;
+.philosophy-display.is-animating-in .philosophy-label,
+.philosophy-display.is-animating-in .philosophy-title,
+.philosophy-display.is-animating-in .philosophy-description {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.subtitle-outgoing,
-.subtitle-incoming {
-    position: absolute;
-    top: 0;
-    left: 0;
-    will-change: opacity, transform;
+.philosophy-display.is-animating-in .philosophy-title {
+    transition-delay: 0.1s;
 }
 
-.subtitle-incoming {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
+.philosophy-display.is-animating-in .philosophy-description {
+    transition-delay: 0.2s;
 }
 
 /* ============================================
@@ -1110,6 +1296,8 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1.5rem;
+    text-decoration: none;
+    color: inherit;
 }
 
 .footer-brand-logo img {
@@ -1451,4 +1639,119 @@
 
 .portal-pass-toggle:hover {
     color: var(--text-primary);
+}
+
+/* ============================================
+   PAGE-SPECIFIC UTILITY CLASSES
+============================================ */
+
+/* What We Build section description */
+.what-we-build-desc {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    margin-bottom: 3rem;
+}
+
+/* Projects section background */
+.projects-section {
+    background: var(--bg-surface);
+}
+
+/* Badge wrapper centered */
+.badge-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Portal scheduling container */
+.portal-scheduling-container {
+    padding-top: 12vh;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+}
+
+/* Portal dashboard container */
+.portal-dashboard-container {
+    padding-top: 15vh;
+    min-height: 100vh;
+}
+
+/* Dashboard title sizes */
+.dashboard-title-sm {
+    font-size: 2rem;
+    margin-bottom: 0;
+}
+
+.dashboard-title-lg {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+}
+
+/* Dashboard intro */
+.dashboard-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.dashboard-intro .text-h3 {
+    margin-bottom: 0.5rem;
+}
+
+/* Disabled card state */
+.portal-option-card.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Contact form styles */
+.contact-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.contact-lead {
+    margin-bottom: 4rem;
+}
+
+.contact-message-group {
+    margin-top: 3rem;
+}
+
+.contact-textarea {
+    height: 100px;
+    resize: none;
+}
+
+.contact-submit {
+    margin-top: 2rem;
+}
+
+/* Projects screen wrapper */
+.projects-screen {
+    min-height: 85vh;
+}
+
+/* Showcase header without subtitle spacing */
+.showcase-header-no-subtitle {
+    margin-bottom: 1.5rem;
+}
+
+/* Showcase title inline */
+.showcase-title-inline {
+    margin-bottom: 0;
+}
+
+/* Showcase description inline */
+.showcase-desc-inline {
+    margin-bottom: 0;
+}
+
+/* Showcase button compact */
+.showcase-btn-compact {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.85rem;
+}
+
+/* Scheduling table wrapper */
+.scheduling-table-wrap {
+    overflow-x: auto;
 }

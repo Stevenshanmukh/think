@@ -44,43 +44,10 @@ const UI = {
      * Standard glossy card (used in How We Build section)
      */
     GlossyCard: (item, index) => `
-        <div class="glossy-wrap reveal" style="transition-delay: ${0.1 * index}s">
+        <div class="glossy-wrap reveal reveal-delay-${index % 3 + 1}">
             <div class="glossy-card">
                 ${GlossyCardLayers()}
                 ${GlossyCardContent(item)}
-            </div>
-        </div>
-    `,
-
-    /**
-     * Back face of philosophy flip card
-     */
-    PhilosophyCardBack: (item) => `
-        <div class="glossy-wrap" style="height: 100%;">
-            <div class="glossy-card">
-                ${GlossyCardLayers()}
-                ${GlossyCardContent(item)}
-            </div>
-        </div>
-    `,
-
-    /**
-     * Flippable card with front and back faces
-     */
-    FlippableCard: (frontItem, backItem, index) => `
-        <div class="philosophy-card reveal" style="transition-delay: ${0.1 * index}s" data-flip-card>
-            <div class="philosophy-card-inner">
-                <div class="philosophy-card-front">
-                    <div class="glossy-wrap" style="height: 100%;">
-                        <div class="glossy-card">
-                            ${GlossyCardLayers()}
-                            ${GlossyCardContent(frontItem)}
-                        </div>
-                    </div>
-                </div>
-                <div class="philosophy-card-back">
-                    ${UI.PhilosophyCardBack(backItem)}
-                </div>
             </div>
         </div>
     `,
@@ -89,19 +56,19 @@ const UI = {
      * Project showcase card
      */
     ProjectShowcase: (item, index) => `
-        <div class="company-showcase reveal" style="transition-delay: ${0.1 * index}s">
+        <div class="company-showcase reveal reveal-delay-${index % 3 + 1}">
             <div class="showcase-content">
                 <div class="showcase-cat">${item.cat}</div>
-                <div class="showcase-header" ${item.subtitle ? '' : 'style="margin-bottom: 1.5rem;"'}>
-                    <h3 class="showcase-title" style="margin-bottom: 0;">${item.name}</h3>
+                <div class="showcase-header ${item.subtitle ? '' : 'showcase-header-no-subtitle'}">
+                    <h3 class="showcase-title showcase-title-inline">${item.name}</h3>
                     ${item.url ? `
-                        <a href="${item.url}" target="_blank" class="showcase-btn" style="padding: 0.6rem 1.5rem; font-size: 0.85rem;">
+                        <a href="${item.url}" target="_blank" class="showcase-btn showcase-btn-compact">
                             Visit Website <span class="showcase-btn-arrow">&#x2197;</span>
                         </a>
                     ` : ''}
                 </div>
                 ${item.subtitle ? `<h4 class="showcase-subtitle">${item.subtitle}</h4>` : ''}
-                <p class="showcase-desc" style="margin-bottom: 0;">${item.desc}</p>
+                <p class="showcase-desc showcase-desc-inline">${item.desc}</p>
             </div>
             <div class="showcase-visual">
                 ${item.logo
@@ -143,7 +110,7 @@ const UI = {
                     </div>
                 </div>
 
-                <div style="overflow-x: auto;">
+                <div class="scheduling-table-wrap">
                     <table class="scheduling-grid">
                         <thead>
                             <tr>
