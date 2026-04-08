@@ -5,7 +5,7 @@ const SECTIONS = {
     Hero: () => `
         <section class="hero" id="hero">
             <div class="hero-video-wrapper">
-                <video class="hero-video" loop autoplay muted playsinline poster="ThinkbubbleLogo.png">
+                <video class="hero-video" loop autoplay muted playsinline>
                     <source src="hero_boomerang.mp4" type="video/mp4">
                 </video>
             </div>
@@ -28,7 +28,7 @@ const SECTIONS = {
         <section class="section narrative" id="narrative">
             <div class="container container-narrow text-center">
                 <p class="narrative-text reveal">
-                    ThinkBubble is the <span class="highlight">engine behind practical AI</span> - designing and scaling the infrastructure, systems, and architectures that power real-world innovation. We build advanced capabilities accessible to <span class="highlight">creators, individuals, and small businesses</span>, guided by our Four Core Values and a commitment to advancing AI in ways that benefit everyone. Each system strengthens the next, forming a growing global foundation for what comes next. <span class="highlight">The future is brighter when we think together</span>.
+                    ThinkBubble is the <span class="highlight">engine behind practical AI</span>, designing and scaling the infrastructure, systems, and architectures that power <span class="highlight">real-world innovation</span>. Guided by our four core values and a commitment to advancing AI for everyone, we are building a global foundation for what comes next. <span class="highlight">The future is brighter when we think together.</span>
                 </p>
             </div>
         </section>
@@ -40,11 +40,11 @@ const SECTIONS = {
             <!-- Video stays fixed within wrapper bounds via opacity control -->
             <div class="philosophy-video-fixed">
                 <video class="philosophy-video is-active" id="video-principles"
-                       loop autoplay muted playsinline preload="auto">
+                       loop autoplay muted playsinline preload="none">
                     <source src="Principles.mp4" type="video/mp4">
                 </video>
                 <video class="philosophy-video" id="video-philosophy"
-                       loop autoplay muted playsinline preload="auto">
+                       loop autoplay muted playsinline preload="none">
                     <source src="philosophy.mp4" type="video/mp4">
                 </video>
                 <div class="philosophy-overlay"></div>
@@ -358,7 +358,6 @@ const ROUTER = {
         });
 
         ROUTER.render(window.location.hash.replace('#', '') || 'home');
-        ANIMATIONS.initParallax();
     },
 
     navigate: (path) => {
@@ -374,7 +373,6 @@ const ROUTER = {
         if (route === 'hero' || !route) route = 'home';
 
         const contentEl = document.getElementById('page-content');
-        const loadingEl = document.getElementById('page-loading');
 
         // Helper to update active nav with ARIA
         const updateActiveNav = (targetRoute) => {
@@ -400,7 +398,10 @@ const ROUTER = {
             setTimeout(() => {
                 ANIMATIONS.initReveal();
                 ANIMATIONS.initGlossyCards();
-                if (route === 'home') ANIMATIONS.initPhilosophySection();
+                if (route === 'home') {
+                    ANIMATIONS.initPhilosophySection();
+                    ANIMATIONS.initParallax();
+                }
                 if (route === 'portal') ANIMATIONS.initPortalLogin();
 
                 if (originalRoute !== route && document.getElementById(originalRoute)) {

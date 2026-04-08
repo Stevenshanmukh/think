@@ -32,14 +32,14 @@
 }
 
 .nav-logo {
-    height: 56px;
-    width: 56px;
+    height: 42px;
+    width: 65px;
     flex-shrink: 0;
     object-fit: cover;
     mix-blend-mode: screen;
     filter: brightness(1.1);
     transition: transform var(--transition-fast);
-    border-radius: 50%;
+    border-radius: 30%;
 }
 
 .nav-logo:hover {
@@ -83,7 +83,8 @@
     transition: color var(--transition-fast);
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
     color: var(--text-primary);
 }
 
@@ -263,7 +264,7 @@
     background: rgba(255, 255, 255, 0.12);
     border-color: var(--accent-cyan);
     box-shadow: 0 0 20px rgba(0, 212, 232, 0.15),
-                0 0 40px rgba(0, 212, 232, 0.05);
+        0 0 40px rgba(0, 212, 232, 0.05);
     transform: translateY(-2px);
     color: var(--accent-cyan);
 }
@@ -281,13 +282,6 @@
 /* ============================================
    COMPONENTS - GLOSSY 3D CARDS
 ============================================ */
-.grid-4 {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 2rem;
-    margin-top: 4rem;
-}
-
 .glossy-wrap {
     perspective: 1000px;
     width: 100%;
@@ -322,7 +316,7 @@
 
 .glossy-glass {
     z-index: 35;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.05) 100%);
     backdrop-filter: blur(2px);
     opacity: calc(0.5 + 0.2 * var(--hover-intensity));
     transform: rotateX(calc(var(--rot-x) * -0.2)) rotateY(calc(var(--rot-y) * -0.2)) translateZ(1px);
@@ -352,17 +346,25 @@
 }
 
 .glossy-glow-1 {
-    bottom: 0; left: 0; right: 0; height: 66%; top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 66%;
+    top: auto;
     z-index: 20;
     background: radial-gradient(ellipse at bottom right, rgba(0, 212, 232, 0.4) -10%, transparent 70%),
-                radial-gradient(ellipse at bottom left, rgba(74, 144, 217, 0.4) -10%, transparent 70%);
+        radial-gradient(ellipse at bottom left, rgba(74, 144, 217, 0.4) -10%, transparent 70%);
     filter: blur(40px);
     opacity: calc(0.8 + 0.1 * var(--hover-intensity));
     transform: translateZ(0);
 }
 
 .glossy-glow-2 {
-    bottom: 0; left: 0; right: 0; height: 66%; top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 66%;
+    top: auto;
     z-index: 21;
     background: radial-gradient(circle at bottom center, rgba(0, 212, 232, 0.5) -20%, transparent 60%);
     filter: blur(45px);
@@ -371,9 +373,13 @@
 }
 
 .glossy-border {
-    bottom: 0; left: 0; right: 0; height: 2px; top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    top: auto;
     z-index: 25;
-    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.05) 100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.05) 100%);
     opacity: calc(0.9 + 0.1 * var(--hover-intensity));
     box-shadow: 0 0 calc(15px + 5px * var(--hover-intensity)) calc(3px + 1px * var(--hover-intensity)) rgba(0, 212, 232, 0.8);
     transform: translateZ(0.5px);
@@ -399,7 +405,7 @@
     justify-content: center;
     margin-bottom: 2rem;
     background: linear-gradient(225deg, #14213d 0%, #0b1222 100%);
-    box-shadow: 0 6px 12px -2px rgba(0,0,0,0.25), inset 1px 1px 3px rgba(255,255,255,0.12);
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.25), inset 1px 1px 3px rgba(255, 255, 255, 0.12);
     position: relative;
     overflow: hidden;
     transform: translateZ(calc(5px + 5px * var(--hover-intensity))) rotateX(calc(var(--rot-x) * -0.5)) rotateY(calc(var(--rot-y) * -0.5));
@@ -413,8 +419,11 @@
 .glossy-icon-wrap::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 66%; height: 66%;
-    background: radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 80%);
+    top: 0;
+    left: 0;
+    width: 66%;
+    height: 66%;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 80%);
     filter: blur(10px);
     opacity: 0.4;
 }
@@ -440,7 +449,7 @@
     color: #fff;
     margin-bottom: 0.75rem;
     line-height: 1.2;
-    text-shadow: 0 calc(2px * var(--hover-intensity)) calc(4px * var(--hover-intensity)) rgba(0,0,0,0.5);
+    text-shadow: 0 calc(2px * var(--hover-intensity)) calc(4px * var(--hover-intensity)) rgba(0, 0, 0, 0.5);
 }
 
 .glossy-desc {
@@ -448,76 +457,21 @@
     color: var(--text-secondary);
     font-weight: 300;
     line-height: 1.5;
-    text-shadow: 0 calc(1px * var(--hover-intensity)) calc(2px * var(--hover-intensity)) rgba(0,0,0,0.5);
-}
-
-/* Philosophy card alignment */
-.philosophy-card .glossy-content {
-    justify-content: flex-start;
-}
-
-.philosophy-card .glossy-icon-wrap {
-    margin-bottom: 1.5rem;
-    flex-shrink: 0;
-}
-
-.philosophy-card .glossy-text-wrap {
-    margin-top: 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.philosophy-card .glossy-title {
-    font-size: 1.25rem;
-    min-height: 2.5em;
-    display: flex;
-    align-items: flex-start;
-}
-
-.philosophy-card .glossy-desc {
-    font-size: 0.88rem;
-    line-height: 1.55;
-}
-
-/* ============================================
-   COMPONENTS - STAGGER GRID
-============================================ */
-.grid-stagger {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 4rem;
-}
-
-.card-motion {
-    background: var(--bg-surface);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    padding: 3rem 2rem;
-    transition: all var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
-}
-
-.card-motion:hover {
-    transform: translateY(-10px);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 40px var(--accent-glow);
+    text-shadow: 0 calc(1px * var(--hover-intensity)) calc(2px * var(--hover-intensity)) rgba(0, 0, 0, 0.5);
 }
 
 .card-icon {
     font-size: 2rem;
     margin-bottom: 2rem;
     display: inline-block;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     width: 64px;
     height: 64px;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ============================================

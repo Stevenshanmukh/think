@@ -13,7 +13,10 @@
 
 .hero-video-wrapper {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     overflow: hidden;
 }
@@ -33,12 +36,10 @@
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(3, 3, 5, 0.1) 0%,
-        rgba(3, 3, 5, 0.7) 60%,
-        var(--bg-base) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(3, 3, 5, 0.1) 0%,
+            rgba(3, 3, 5, 0.7) 60%,
+            var(--bg-base) 100%);
     z-index: 1;
 }
 
@@ -81,11 +82,16 @@
 }
 
 @keyframes heroLogoIn {
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 @keyframes fadeIn {
-    to { opacity: 1; }
+    to {
+        opacity: 1;
+    }
 }
 
 /* ============================================
@@ -161,7 +167,7 @@
 .philosophy-video-fixed .philosophy-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
     z-index: 1;
 }
 
@@ -171,7 +177,7 @@
     z-index: 2;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -182,15 +188,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
-    padding: 6rem 2rem;
+    padding: 25vh 2rem 6rem;
     min-height: 100vh;
 }
 
 /* Smooth transition to next section */
-.philosophy-wrapper + section,
-.philosophy-wrapper + .section,
+.philosophy-wrapper+section,
+.philosophy-wrapper+.section,
 .what-we-build-section {
     position: relative;
     z-index: 5;
@@ -205,8 +211,8 @@
 .philosophy-toggle {
     display: inline-flex;
     position: relative;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 100px;
     padding: 0.25rem;
 }
@@ -267,7 +273,7 @@
     color: var(--text-primary);
     margin-bottom: 1.5rem;
     line-height: 1.1;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 .philosophy-description {
@@ -285,8 +291,8 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
     cursor: pointer;
     display: flex;
@@ -297,8 +303,8 @@
 }
 
 .philosophy-nav:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
     color: var(--text-primary);
 }
 
@@ -323,8 +329,8 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
     cursor: pointer;
     display: flex;
@@ -334,7 +340,7 @@
 }
 
 .philosophy-nav-btn:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
 }
 
@@ -411,8 +417,8 @@
     flex-direction: column;
     gap: 3rem;
     padding: 2.5rem;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 32px;
     transition: all var(--transition-smooth);
     position: relative;
@@ -431,9 +437,9 @@
 
 .company-showcase:hover {
     transform: translateY(-5px);
-    border-color: rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.03);
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .company-showcase:hover::after {
@@ -490,8 +496,8 @@
 }
 
 .showcase-btn {
-    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-    border: 1px solid rgba(255,255,255,0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
     padding: 1rem 2rem;
     border-radius: 100px;
@@ -508,7 +514,7 @@
     border-color: var(--accent-cyan);
     color: var(--accent-cyan);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,212,232,0.15);
+    box-shadow: 0 10px 30px rgba(0, 212, 232, 0.15);
 }
 
 .showcase-btn-arrow {
@@ -518,30 +524,30 @@
 
 .showcase-visual {
     position: relative;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 24px;
     width: 100%;
     aspect-ratio: 16/10;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,0.03);
+    border: 1px solid rgba(255, 255, 255, 0.03);
     overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     transition: border-color var(--transition-smooth);
     z-index: 2;
 }
 
 .company-showcase:hover .showcase-visual {
-    border-color: rgba(255,255,255,0.08);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .showcase-logo {
-    width: 55%;
+    width: 75%;
     height: auto;
-    max-height: 60%;
+    max-height: 80%;
     object-fit: contain;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
     transition: transform var(--transition-smooth);
     position: relative;
     z-index: 2;
@@ -567,7 +573,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
     z-index: 1;
 }
 
@@ -578,9 +584,9 @@
     gap: 0.75rem;
     padding: 0.75rem 1.75rem;
     border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.02);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .badge-dot {
@@ -601,8 +607,17 @@
 }
 
 @keyframes customPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.2); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+    }
 }
 
 /* ============================================
@@ -624,7 +639,7 @@
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1rem 0;
     color: #fff;
     font-size: 1.1rem;
@@ -645,8 +660,8 @@
     transition: all var(--transition-fast);
 }
 
-.floating-input:focus ~ .floating-label,
-.floating-input:not(:placeholder-shown) ~ .floating-label {
+.floating-input:focus~.floating-label,
+.floating-input:not(:placeholder-shown)~.floating-label {
     top: -0.5rem;
     font-size: 0.8rem;
     color: var(--text-secondary);
@@ -689,8 +704,8 @@
     border: 1px solid var(--color-border);
     border-radius: 1.5rem;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
 }
 
 .portal-form-side {
@@ -709,11 +724,11 @@
     height: 100%;
     overflow: hidden;
     position: relative;
-    background: var(--bg-elevated);
+    background: #021a22;
     background-image:
-        radial-gradient(ellipse at 30% 20%, rgba(0, 212, 232, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(74, 144, 217, 0.15) 0%, transparent 50%),
-        linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+        radial-gradient(ellipse at 30% 20%, rgba(0, 212, 232, 0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(13, 27, 42, 0.9) 0%, transparent 70%),
+        linear-gradient(135deg, #021a22 0%, #060b13 100%);
 }
 
 .portal-orb {
@@ -776,12 +791,12 @@
     height: 3rem;
     width: 100%;
     border-radius: 0.375rem;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     padding: 0 1rem;
     font-family: var(--font-body);
     font-size: 0.875rem;
     outline: none;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
     transition: all 0.2s ease-in-out;
     color: white;
 }
@@ -894,7 +909,7 @@
     position: relative;
     height: 100%;
     width: 2rem;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 /* Portal hero side content */
@@ -918,7 +933,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 10;
-    background: linear-gradient(135deg, rgba(10,10,15,0.9) 0%, rgba(0,212,232,0.2) 100%);
+    background: linear-gradient(135deg, rgba(10, 10, 15, 0.9) 0%, rgba(0, 212, 232, 0.2) 100%);
 }
 
 .portal-hero-overlay-blue {
@@ -957,11 +972,11 @@
     align-items: center;
     gap: 0.75rem;
     backdrop-filter: blur(12px);
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.5rem 1.25rem;
     border-radius: 9999px;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .portal-badge-dot {
@@ -994,7 +1009,7 @@
     align-items: center;
     justify-content: center;
     padding: 1px;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     margin-bottom: 1.5rem;
 }
 
@@ -1016,22 +1031,22 @@
     line-height: 1.15;
     letter-spacing: -0.025em;
     color: white;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     font-family: var(--font-display);
 }
 
 .portal-hero-desc {
     font-size: 0.8rem;
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
     max-width: 18rem;
     line-height: 1.4;
     font-weight: 300;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Portal Dashboard */
 .dashboard-header {
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding-bottom: 2rem;
     margin-bottom: 2rem;
     display: flex;
@@ -1065,7 +1080,7 @@
 .portal-option-card:hover {
     transform: translateY(-8px);
     border-color: rgba(0, 212, 232, 0.3);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px var(--accent-glow);
 }
 
 .portal-option-card .card-icon {
@@ -1273,7 +1288,7 @@
    SECTIONS - FOOTER
 ============================================ */
 .footer {
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 6rem 0 3rem 0;
     margin-top: 6rem;
     background: linear-gradient(to top, rgba(3, 3, 5, 0.9) 0%, rgba(10, 10, 15, 0.4) 100%);
@@ -1301,10 +1316,10 @@
 }
 
 .footer-brand-logo img {
-    height: 48px;
-    width: 48px;
+    height: 42px;
+    width: 65px;
     flex-shrink: 0;
-    border-radius: 50%;
+    border-radius: 30%;
     object-fit: cover;
     mix-blend-mode: screen;
     filter: brightness(1.1);
@@ -1457,7 +1472,7 @@
 }
 
 /* ============================================
-   SECTIONS - ANIMATED CHARACTERS
+   SECTIONS - ANIMATED THINKBUBBLE CLOUD
 ============================================ */
 .character-stage {
     position: absolute;
@@ -1469,143 +1484,302 @@
     z-index: 5;
 }
 
-/* --- Character Bodies --- */
-.char-body {
+/* --- Particles Array --- */
+.cloud-particles {
     position: absolute;
-    bottom: 0;
-    transition: transform 0.7s ease-in-out;
-    transform-origin: bottom center;
-}
-
-.char-purple {
-    left: 55px;
-    width: 130px;
-    height: 260px;
-    background: linear-gradient(180deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
-    border-radius: 8px 8px 0 0;
+    inset: -50px;
+    pointer-events: none;
     z-index: 1;
 }
 
-.char-purple.char-stretched {
-    height: 280px;
+.cloud-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8), 0 0 20px 4px var(--accent-cyan);
+    opacity: 0;
+    animation: sparkleFade 4s infinite ease-in-out;
 }
 
-.char-black {
-    left: 175px;
-    width: 90px;
-    height: 200px;
-    background-color: #11111a;
-    border: 1px solid rgba(255,255,255,0.05);
-    border-bottom: none;
-    border-radius: 6px 6px 0 0;
+.cloud-sparkle.s-1 { top: 10%; left: 20%; animation-delay: 0s; }
+.cloud-sparkle.s-2 { top: 80%; left: 80%; animation-delay: 1s; width: 4px; height: 4px; }
+.cloud-sparkle.s-3 { top: 20%; left: 85%; animation-delay: 2s; }
+.cloud-sparkle.s-4 { top: 75%; left: 15%; animation-delay: 0.5s; width: 5px; height: 5px; }
+.cloud-sparkle.s-5 { top: 40%; left: -10%; animation-delay: 1.5s; }
+
+@keyframes sparkleFade {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.6; transform: scale(1); }
+}
+
+/* --- Cloud Wrapper --- */
+.cloud-wrapper {
+    position: absolute;
+    inset: 0;
+    animation: cloudDrift 6s infinite ease-in-out;
     z-index: 2;
 }
 
-.char-orange {
-    left: 0;
-    width: 170px;
-    height: 130px;
-    background-color: var(--accent-blue);
-    border-radius: 85px 85px 0 0;
+@keyframes cloudDrift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* --- Main Cloud & Bubbles --- */
+.main-cloud {
+    position: absolute;
+    width: 280px;
+    height: 180px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 218, 245, 0.6) 25%, rgba(180, 220, 255, 0.4) 50%, rgba(230, 200, 255, 0.3) 80%);
+    box-shadow: 
+        inset -5px -5px 15px rgba(255, 140, 240, 0.2),
+        inset -10px -10px 25px rgba(100, 190, 255, 0.25),
+        inset 6px 10px 18px rgba(255, 255, 255, 0.95),
+        inset -3px 3px 12px rgba(255, 255, 255, 0.7),
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 0 50px rgba(200, 120, 255, 0.25); /* Subtle internal nebula glow */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    animation: bubbleOscillate 4s infinite ease-in-out alternate;
+}
+
+@keyframes bubbleOscillate {
+    from { transform: scale(0.98) translate(0, 0); }
+    to { transform: scale(1.02) translate(1px, -2px); }
+}
+
+/* Individual Bubble Placements with varied iridescent tints */
+.bubble.b-main {
+    width: 190px; height: 180px;
+    top: 0; left: 45px;
+    z-index: 5;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 1), rgba(255, 210, 250, 0.7) 40%, rgba(190, 230, 255, 0.4) 70%, rgba(220, 190, 255, 0.3));
+}
+
+.bubble.b-left {
+    width: 130px; height: 130px;
+    top: 40px; left: -15px;
+    z-index: 4;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 190, 210, 0.5) 50%, rgba(180, 200, 255, 0.2));
+}
+
+.bubble.b-right {
+    width: 140px; height: 140px;
+    top: 30px; right: -25px;
+    z-index: 4;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(180, 240, 255, 0.5) 50%, rgba(230, 200, 255, 0.2));
+}
+
+.bubble.b-top {
+    width: 100px; height: 100px;
+    top: -25px; left: 65px;
+    z-index: 3;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 230, 255, 0.5) 60%, transparent);
+}
+
+.bubble.b-top-right {
+    width: 85px; height: 85px;
+    top: -5px; left: 165px;
+    z-index: 3;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 240, 190, 0.4) 60%, transparent);
+}
+
+.bubble.b-bottom-left {
+    width: 75px; height: 75px;
+    bottom: -15px; left: 25px;
+    z-index: 6;
+}
+
+.bubble.b-bottom-right {
+    width: 90px; height: 90px;
+    bottom: -20px; right: 15px;
+    z-index: 6;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(210, 210, 255, 0.5) 60%, transparent);
+}
+
+/* Secondary Glossy Overlays for Depth */
+.bubble-highlight {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
+    z-index: 7;
+    pointer-events: none;
+}
+.bubble-highlight.h-1 { width: 40px; height: 40px; top: 15px; left: 80px; }
+.bubble-highlight.h-2 { width: 25px; height: 25px; top: 45px; left: 15px; }
+
+/* --- Trailing Bubbles --- */
+.tail-bubbles {
+    position: absolute;
+    bottom: -5px;
+    right: -10px;
     z-index: 3;
 }
 
-.char-yellow {
-    left: 240px;
-    width: 105px;
-    height: 150px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: none;
-    backdrop-filter: blur(10px);
-    border-radius: 52px 52px 0 0;
-    z-index: 4;
-}
-
-/* --- Eyes (with white eyeball) --- */
-.char-eyes {
+.tail-bubble {
     position: absolute;
-    display: flex;
-    gap: 18px;
-    transition: left 0.5s ease-out, top 0.5s ease-out;
-}
-
-.char-eye {
-    width: 16px;
-    height: 16px;
-    background-color: white;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition: height 0.1s ease;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(230, 240, 255, 0.4) 70%);
+    box-shadow: inset 3px 3px 8px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(200, 150, 255, 0.2), 0 5px 12px rgba(0,0,0,0.1), 0 0 20px rgba(180, 220, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    animation: tailDrift 3s infinite ease-in-out alternate;
+    backdrop-filter: blur(4px);
 }
 
-.char-eye.is-blinking {
-    height: 2px;
+.tail-bubble.t-1 { width: 45px; height: 45px; top: 0; left: 0; animation-delay: 0.2s; }
+.tail-bubble.t-2 { width: 28px; height: 28px; top: 50px; left: 20px; animation-delay: 0.5s; }
+.tail-bubble.t-3 { width: 16px; height: 16px; top: 85px; left: 45px; animation-delay: 0.8s; }
+.tail-bubble.t-4 { width: 8px; height: 8px; top: 105px; left: 65px; animation-delay: 1.1s; box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+
+@keyframes tailDrift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(10px, 8px); }
 }
 
-.char-eye.is-blinking .char-pupil {
-    display: none;
-}
-
-.char-pupil {
-    width: 7px;
-    height: 7px;
-    background-color: #2D2D2D;
-    border-radius: 50%;
-    transition: transform 0.1s ease-out;
-}
-
-/* --- Eyes (pupils only, no white eyeball) --- */
-.char-pupil-only {
-    width: 10px;
-    height: 9px;
-    background-color: #2D2D2D;
-    border-radius: 50%;
-    transition: transform 0.1s ease-out;
-}
-
-#eyes-orange,
-#eyes-yellow {
-    gap: 14px;
-}
-
-/* --- Yellow character mouth --- */
-.char-mouth {
+/* --- Face --- */
+.cloud-face {
     position: absolute;
-    width: 42px;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px;
+    height: 70px;
+    z-index: 10;
+}
+
+.cloud-eyes {
+    display: flex;
+    justify-content: space-between;
+    width: 70px;
+    margin: 0 auto;
+}
+
+.cloud-eye {
+    width: 22px;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    position: relative;
+    /* Removed overflow: hidden so eyelashes can be rendered using ::before/after */
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Tiny Eyelashes */
+.cloud-eye::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #1a1a1a;
+    border-left: 2px solid #1a1a1a;
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+.cloud-eye::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 5px;
+    height: 5px;
+    border-top: 2px solid #1a1a1a;
+    border-right: 2px solid #1a1a1a;
+    border-radius: 50%;
+    transform: rotate(20deg);
+}
+
+/* Main Pupil / Catchlight */
+.cloud-pupil {
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    transition: transform 0.1s ease-out;
+    box-shadow: 0 0 6px rgba(255,255,255,0.8);
+    z-index: 2;
+}
+
+/* Second Tiny Catchlight for soulful look */
+.cloud-pupil::after {
+    content: "";
+    position: absolute;
+    width: 3px;
     height: 3px;
-    background-color: #2D2D2D;
-    border-radius: 2px;
-    transition: left 0.2s ease-out, top 0.2s ease-out;
+    background: #fff;
+    border-radius: 50%;
+    top: 8px;
+    left: 6px;
+    opacity: 0.8;
 }
 
-/* --- Celebrate animation (login success) --- */
-.char-celebrate .char-body {
-    animation: charBounce 0.3s ease 3;
+.cloud-cheeks {
+    position: absolute;
+    top: 18px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
-.char-celebrate .char-purple { animation-delay: 0s; }
-.char-celebrate .char-black { animation-delay: 0.08s; }
-.char-celebrate .char-orange { animation-delay: 0.15s; }
-.char-celebrate .char-yellow { animation-delay: 0.22s; }
+.cloud-cheek {
+    width: 22px;
+    height: 12px;
+    background: radial-gradient(circle, rgba(255, 130, 150, 0.7) 0%, rgba(255, 130, 150, 0) 70%);
+    border-radius: 50%;
+    filter: blur(1.5px);
+}
+.cloud-cheek.left { transform: translateX(-8px); }
+.cloud-cheek.right { transform: translateX(8px); }
 
-@keyframes charBounce {
-    0%, 100% { transform: translateY(0) skewX(0deg); }
-    50% { transform: translateY(-18px) skewX(0deg); }
+.cloud-smile {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    border-bottom: 3.5px solid #1a1a1a;
+    border-radius: 0 0 20px 20px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* --- Flinch animation (login failure) --- */
-.char-flinch .char-body {
-    animation: charFlinch 0.15s ease 2;
+/* --- Reactions --- */
+.cloud-stage.is-success .main-cloud {
+    transform: translate(-50%, -60%);
+}
+.cloud-stage.is-success .cloud-smile {
+    width: 24px;
+    height: 14px;
+    border-bottom-width: 4px;
+    bottom: 6px;
+}
+.cloud-stage.is-success .cloud-eye {
+    border-radius: 50% 50% 20% 20%;
 }
 
-@keyframes charFlinch {
-    0%, 100% { transform: translateX(0) skewX(0deg); }
-    25% { transform: translateX(-8px) skewX(-3deg); }
-    75% { transform: translateX(8px) skewX(3deg); }
+.cloud-stage.is-error .cloud-smile {
+    transform: translateX(-50%) scaleY(-1) translateY(-6px);
+}
+.cloud-stage.is-error .cloud-eye {
+    height: 16px;
+    margin-top: 6px;
+    border-radius: 40% 40% 50% 50%;
 }
 
 /* --- Portal page title --- */

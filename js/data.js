@@ -2,11 +2,6 @@
    DATA - Immutable Application Data Store
 ============================================ */
 const DATA = Object.freeze({
-    products: [
-        { name: 'Aiparel', desc: 'Merchandise creation tools, from concept to production.', init: 'A' },
-        { name: 'KloeBot', desc: 'Conversational AI for multilingual markets.', init: 'K' },
-        { name: 'OzoneLayer', desc: 'Shared compute, orchestration, and interfaces.', init: 'O' }
-    ],
     projects: [
         {
             name: 'ThinkBubble',
@@ -46,10 +41,10 @@ const DATA = Object.freeze({
         }
     ],
     architecture: [
-        { icon: '🧠', title: 'Context-Aware Systems', desc: 'We design AI that understands human context—cultural, linguistic, and situational—as a core capability, not a retrofit.', cat: 'Principle 1' },
+        { icon: '🫂', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 1' },
         { icon: '🏗️', title: 'Shared Infrastructure', desc: 'Common problems deserve common solutions. Our internal systems become the foundation that each product builds upon.', cat: 'Principle 2' },
-        { icon: '📈', title: 'Measured Deployment', desc: 'We ship incrementally, observe carefully, and refine continuously. Speed follows from understanding, not haste.', cat: 'Principle 3' },
-        { icon: '🫂', title: 'Human Benefit', desc: 'Technology exists to serve people. Every decision we make begins and ends with this premise.', cat: 'Principle 4' }
+        { icon: '🧠', title: 'Dynamic Intelligence', desc: 'We design AI that understands human context—cultural, linguistic, and situational—as a core capability, not a retrofit.', cat: 'Principle 3' },
+        { icon: '📈', title: 'Systems Thinking', desc: 'We design with the whole problem in mind. We don\'t cut corners, because resources matter. Because the most efficient solution, is often the best solution (Not wasting time, energy, etc.)', cat: 'Principle 4' }
     ],
     philosophy: [
         { icon: '🧑‍🤝‍🧑', title: 'Humanity First', desc: 'With the continual advancement of AI, we prioritize human rights, safety, and dignity ensuring that technology serves people.', cat: 'Philosophy 1' },
@@ -59,11 +54,6 @@ const DATA = Object.freeze({
     ],
     portalUsers: [
         { email: 'demo@thinkbubble.ai', pass: 'demo', name: 'Demo User', role: 'Engineer' }
-    ],
-    schedule: [
-        { day: 'Mon', time: '9:00 AM', title: 'Sprint Planning', type: 'meeting' },
-        { day: 'Tue', time: '10:00 AM', title: 'OzoneLayer Standup', type: 'standup' },
-        { day: 'Wed', time: '2:00 PM', title: 'Architecture Review', type: 'review' }
     ],
     schedulingOptions: ['Off', 'Remote', 'On-Prem'],
     timeSlots: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'],
