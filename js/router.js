@@ -348,6 +348,15 @@ const ROUTER = {
             const link = e.target.closest('[data-link]');
             if (link) {
                 e.preventDefault();
+
+                // If clicking the brand logo, act like a true page reload to reset the app
+                if (link.classList.contains('nav-brand') || link.classList.contains('footer-brand-logo')) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                    window.history.pushState('', document.title, window.location.pathname);
+                    window.location.reload();
+                    return;
+                }
+
                 const href = link.getAttribute('href').replace('#', '');
                 ROUTER.navigate(href || 'home');
             }

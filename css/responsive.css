@@ -201,6 +201,10 @@
     }
 
     .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
         padding: 0 1rem;
     }
 
@@ -222,19 +226,48 @@
 
     .hero-actions {
         flex-direction: column;
+        align-items: center;
         gap: 1rem;
         width: 100%;
-        padding: 0 1rem;
+        padding: 0;
     }
 
     .hero-actions .hero-cta {
         width: 100%;
+        max-width: 280px;
         justify-content: center;
     }
 
     .hero-cta {
         padding: 0.8rem 1.8rem;
         font-size: 0.95rem;
+    }
+
+    /* ========================================
+       TITLE VISIBILITY FIXES - Clear navbar
+    ======================================== */
+    /* Projects section - ensure title clears navbar */
+    .projects-section {
+        padding-top: 80px;
+    }
+
+    /* Portal containers - use fixed px instead of vh */
+    .portal-dashboard-container {
+        padding-top: 80px;
+    }
+
+    .portal-scheduling-container {
+        padding-top: 80px;
+    }
+
+    /* Portal login page layout */
+    .portal-layout-full {
+        padding-top: 80px;
+    }
+
+    /* Portal page title container */
+    .portal-page-title {
+        padding-top: 20px;
     }
 
     /* Narrative */
@@ -245,6 +278,13 @@
     .narrative-text {
         font-size: clamp(1.1rem, 4vw, 1.5rem);
         line-height: 1.6;
+        text-align: center;
+    }
+
+    .narrative-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     /* Cards */
@@ -281,6 +321,18 @@
         padding: 1.5rem;
         border-radius: 24px;
         gap: 2rem;
+        text-align: center;
+    }
+
+    .showcase-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .showcase-header {
+        flex-direction: column;
+        align-items: center;
     }
 
     .showcase-title {
@@ -289,12 +341,14 @@
 
     .showcase-desc {
         font-size: 1rem;
+        text-align: center;
     }
 
     .showcase-btn {
         width: 100%;
+        max-width: 280px;
         justify-content: center;
-        margin-top: 1rem;
+        margin: 1rem auto 0;
     }
 
     .showcase-visual {
@@ -309,12 +363,17 @@
     /* Metrics */
     .metrics-wrap {
         flex-direction: column;
+        align-items: center;
         gap: 2rem;
         margin-bottom: 4rem;
     }
 
     .metric-num {
         font-size: clamp(3rem, 12vw, 5rem);
+    }
+
+    .metric-item {
+        text-align: center;
     }
 
     /* Portal */
@@ -412,6 +471,23 @@
     .footer-grid {
         gap: 3rem;
         margin-bottom: 3rem;
+        text-align: center;
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-socials {
+        justify-content: center;
     }
 
     .footer-heading {
@@ -429,6 +505,52 @@
         align-items: center;
     }
 
+    /* ========================================
+       SECTION CENTERING
+    ======================================== */
+    /* Projects section centering */
+    .projects-section {
+        text-align: center;
+    }
+
+    .projects-section .text-h2 {
+        text-align: center;
+    }
+
+    .showcase-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* What We Build section centering */
+    .build-section {
+        text-align: center;
+    }
+
+    .build-description {
+        text-align: center;
+    }
+
+    /* Contact section centering */
+    .contact-section {
+        text-align: center;
+    }
+
+    .contact-form {
+        margin: 0 auto;
+    }
+
+    /* Philosophy section centering */
+    .philosophy-toggle-wrap {
+        display: flex;
+        justify-content: center;
+    }
+
+    .philosophy-display {
+        text-align: center;
+    }
+
     /* General touch targets */
     .btn {
         min-height: 48px;
@@ -444,7 +566,7 @@
     }
 
     .container {
-        padding: 0 1rem;
+        padding: 0 1.25rem;
     }
 
     .text-h2 {
@@ -480,7 +602,10 @@
     }
 
     .philosophy-content {
-        padding: 2rem 1rem;
+        padding-top: 80px;
+        padding-right: 1rem;
+        padding-bottom: 2rem;
+        padding-left: 1rem;
     }
 
     .philosophy-toggle-wrap {
@@ -542,6 +667,15 @@
    RESPONSIVE STYLES - Extra Small Mobile (480px and below)
 ============================================ */
 @media (max-width: 480px) {
+    /* Title visibility fixes - slightly less padding on smaller screens */
+    .projects-section,
+    .philosophy-content,
+    .portal-dashboard-container,
+    .portal-scheduling-container,
+    .portal-layout-full {
+        padding-top: 70px;
+    }
+
     .nav-brand-name {
         font-size: 1.1rem !important;
     }
@@ -627,11 +761,99 @@
     }
 
     .container {
-        padding: 0 0.75rem;
+        padding: 0 1rem;
     }
 
     .section {
         padding: 3rem 0;
+    }
+
+    .hero-actions .hero-cta {
+        max-width: 100%;
+    }
+}
+
+/* ============================================
+   SCROLL-SNAP FOR MOBILE
+============================================ */
+@media (max-width: 768px) {
+    /* Step 1: Enable Scroll Container on Mobile */
+    html {
+        scroll-snap-type: y proximity;
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px; /* Offset fixed header for scroll-snap and hash jumps */
+    }
+
+    /* Step 2 & 3: Sections & Alignment */
+    .hero {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .narrative {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .narrative .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+        padding-top: 70px; /* Clear navbar */
+        padding-bottom: 2rem;
+    }
+
+    .philosophy-wrapper {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .philosophy-content {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 15vh; /* Locks toggle position */
+    }
+
+    /* Lock the text container height to prevent mobile nav arrows from jumping */
+    .philosophy-display {
+        min-height: 280px;
+    }
+
+    .what-we-build-section {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Step 4: Handle Overflow on Long Content */
+    .projects-section {
+        min-height: 100vh;
+        max-height: none; /* Allow growth if needed */
+        scroll-snap-align: start;
+        scroll-snap-stop: normal; /* Not "always" - allows scroll-through */
+        padding-top: 90px !important; /* Force clear header */
+    }
+
+    /* Snap individual project cards on mobile */
+    .company-showcase {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+    }
+
+    .footer {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
     }
 }
 
