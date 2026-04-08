@@ -119,10 +119,10 @@
    SECTIONS - PHILOSOPHY (Sticky Video Pattern)
 ============================================ */
 
-/* Wrapper creates scroll boundary for clipping */
+/* Wrapper creates 200vh scroll space: first 100vh = video only, second 100vh = text revealed */
 .philosophy-wrapper {
     position: relative;
-    min-height: 100vh;
+    height: 200vh;
 }
 
 /* Fixed video container - clips to wrapper bounds via opacity */
@@ -171,13 +171,14 @@
     z-index: 1;
 }
 
-/* Content section - scrolls over video */
+/* Content section - sticky so it pins inside the 200vh wrapper */
 .philosophy-section {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 2;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 }
 
@@ -188,10 +189,52 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     text-align: center;
-    padding: 25vh 2rem 6rem;
-    min-height: 100vh;
+    padding: 2rem;
+    width: 100%;
+}
+
+/* ============================================
+   PHILOSOPHY TEXT GROUP - Scroll-reveal states
+============================================ */
+
+/* Phase 1: text is invisible and shifted down */
+.philosophy-text-group {
+    opacity: 0;
+    transform: translateY(48px);
+    transition:
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Phase 2: text is revealed as user scrolls */
+.philosophy-text-group.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children for a cascade effect */
+.philosophy-text-group .philosophy-toggle-wrap {
+    transition-delay: 0s;
+}
+
+.philosophy-text-group .philosophy-display {
+    transition-delay: 0.1s;
+    transition-property: opacity, transform;
+}
+
+.philosophy-text-group .philosophy-nav {
+    transition-delay: 0.18s;
+}
+
+.philosophy-text-group .philosophy-nav-mobile {
+    transition-delay: 0.18s;
 }
 
 /* Smooth transition to next section */
@@ -1503,15 +1546,52 @@
     animation: sparkleFade 4s infinite ease-in-out;
 }
 
-.cloud-sparkle.s-1 { top: 10%; left: 20%; animation-delay: 0s; }
-.cloud-sparkle.s-2 { top: 80%; left: 80%; animation-delay: 1s; width: 4px; height: 4px; }
-.cloud-sparkle.s-3 { top: 20%; left: 85%; animation-delay: 2s; }
-.cloud-sparkle.s-4 { top: 75%; left: 15%; animation-delay: 0.5s; width: 5px; height: 5px; }
-.cloud-sparkle.s-5 { top: 40%; left: -10%; animation-delay: 1.5s; }
+.cloud-sparkle.s-1 {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.cloud-sparkle.s-2 {
+    top: 80%;
+    left: 80%;
+    animation-delay: 1s;
+    width: 4px;
+    height: 4px;
+}
+
+.cloud-sparkle.s-3 {
+    top: 20%;
+    left: 85%;
+    animation-delay: 2s;
+}
+
+.cloud-sparkle.s-4 {
+    top: 75%;
+    left: 15%;
+    animation-delay: 0.5s;
+    width: 5px;
+    height: 5px;
+}
+
+.cloud-sparkle.s-5 {
+    top: 40%;
+    left: -10%;
+    animation-delay: 1.5s;
+}
 
 @keyframes sparkleFade {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 0.6; transform: scale(1); }
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
 }
 
 /* --- Cloud Wrapper --- */
@@ -1523,8 +1603,15 @@
 }
 
 @keyframes cloudDrift {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 /* --- Main Cloud & Bubbles --- */
@@ -1542,68 +1629,88 @@
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 218, 245, 0.6) 25%, rgba(180, 220, 255, 0.4) 50%, rgba(230, 200, 255, 0.3) 80%);
-    box-shadow: 
+    box-shadow:
         inset -5px -5px 15px rgba(255, 140, 240, 0.2),
         inset -10px -10px 25px rgba(100, 190, 255, 0.25),
         inset 6px 10px 18px rgba(255, 255, 255, 0.95),
         inset -3px 3px 12px rgba(255, 255, 255, 0.7),
         0 10px 30px rgba(0, 0, 0, 0.15),
-        0 0 50px rgba(200, 120, 255, 0.25); /* Subtle internal nebula glow */
+        0 0 50px rgba(200, 120, 255, 0.25);
+    /* Subtle internal nebula glow */
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.6);
     animation: bubbleOscillate 4s infinite ease-in-out alternate;
 }
 
 @keyframes bubbleOscillate {
-    from { transform: scale(0.98) translate(0, 0); }
-    to { transform: scale(1.02) translate(1px, -2px); }
+    from {
+        transform: scale(0.98) translate(0, 0);
+    }
+
+    to {
+        transform: scale(1.02) translate(1px, -2px);
+    }
 }
 
 /* Individual Bubble Placements with varied iridescent tints */
 .bubble.b-main {
-    width: 190px; height: 180px;
-    top: 0; left: 45px;
+    width: 190px;
+    height: 180px;
+    top: 0;
+    left: 45px;
     z-index: 5;
     background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 1), rgba(255, 210, 250, 0.7) 40%, rgba(190, 230, 255, 0.4) 70%, rgba(220, 190, 255, 0.3));
 }
 
 .bubble.b-left {
-    width: 130px; height: 130px;
-    top: 40px; left: -15px;
+    width: 130px;
+    height: 130px;
+    top: 40px;
+    left: -15px;
     z-index: 4;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 190, 210, 0.5) 50%, rgba(180, 200, 255, 0.2));
 }
 
 .bubble.b-right {
-    width: 140px; height: 140px;
-    top: 30px; right: -25px;
+    width: 140px;
+    height: 140px;
+    top: 30px;
+    right: -25px;
     z-index: 4;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(180, 240, 255, 0.5) 50%, rgba(230, 200, 255, 0.2));
 }
 
 .bubble.b-top {
-    width: 100px; height: 100px;
-    top: -25px; left: 65px;
+    width: 100px;
+    height: 100px;
+    top: -25px;
+    left: 65px;
     z-index: 3;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 230, 255, 0.5) 60%, transparent);
 }
 
 .bubble.b-top-right {
-    width: 85px; height: 85px;
-    top: -5px; left: 165px;
+    width: 85px;
+    height: 85px;
+    top: -5px;
+    left: 165px;
     z-index: 3;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 240, 190, 0.4) 60%, transparent);
 }
 
 .bubble.b-bottom-left {
-    width: 75px; height: 75px;
-    bottom: -15px; left: 25px;
+    width: 75px;
+    height: 75px;
+    bottom: -15px;
+    left: 25px;
     z-index: 6;
 }
 
 .bubble.b-bottom-right {
-    width: 90px; height: 90px;
-    bottom: -20px; right: 15px;
+    width: 90px;
+    height: 90px;
+    bottom: -20px;
+    right: 15px;
     z-index: 6;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(210, 210, 255, 0.5) 60%, transparent);
 }
@@ -1616,8 +1723,20 @@
     z-index: 7;
     pointer-events: none;
 }
-.bubble-highlight.h-1 { width: 40px; height: 40px; top: 15px; left: 80px; }
-.bubble-highlight.h-2 { width: 25px; height: 25px; top: 45px; left: 15px; }
+
+.bubble-highlight.h-1 {
+    width: 40px;
+    height: 40px;
+    top: 15px;
+    left: 80px;
+}
+
+.bubble-highlight.h-2 {
+    width: 25px;
+    height: 25px;
+    top: 45px;
+    left: 15px;
+}
 
 /* --- Trailing Bubbles --- */
 .tail-bubbles {
@@ -1631,20 +1750,53 @@
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(230, 240, 255, 0.4) 70%);
-    box-shadow: inset 3px 3px 8px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(200, 150, 255, 0.2), 0 5px 12px rgba(0,0,0,0.1), 0 0 20px rgba(180, 220, 255, 0.4);
+    box-shadow: inset 3px 3px 8px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(200, 150, 255, 0.2), 0 5px 12px rgba(0, 0, 0, 0.1), 0 0 20px rgba(180, 220, 255, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.5);
     animation: tailDrift 3s infinite ease-in-out alternate;
     backdrop-filter: blur(4px);
 }
 
-.tail-bubble.t-1 { width: 45px; height: 45px; top: 0; left: 0; animation-delay: 0.2s; }
-.tail-bubble.t-2 { width: 28px; height: 28px; top: 50px; left: 20px; animation-delay: 0.5s; }
-.tail-bubble.t-3 { width: 16px; height: 16px; top: 85px; left: 45px; animation-delay: 0.8s; }
-.tail-bubble.t-4 { width: 8px; height: 8px; top: 105px; left: 65px; animation-delay: 1.1s; box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+.tail-bubble.t-1 {
+    width: 45px;
+    height: 45px;
+    top: 0;
+    left: 0;
+    animation-delay: 0.2s;
+}
+
+.tail-bubble.t-2 {
+    width: 28px;
+    height: 28px;
+    top: 50px;
+    left: 20px;
+    animation-delay: 0.5s;
+}
+
+.tail-bubble.t-3 {
+    width: 16px;
+    height: 16px;
+    top: 85px;
+    left: 45px;
+    animation-delay: 0.8s;
+}
+
+.tail-bubble.t-4 {
+    width: 8px;
+    height: 8px;
+    top: 105px;
+    left: 65px;
+    animation-delay: 1.1s;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
 
 @keyframes tailDrift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(10px, 8px); }
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(10px, 8px);
+    }
 }
 
 /* --- Face --- */
@@ -1673,7 +1825,7 @@
     position: relative;
     /* Removed overflow: hidden so eyelashes can be rendered using ::before/after */
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Tiny Eyelashes */
@@ -1689,6 +1841,7 @@
     border-radius: 50%;
     transform: rotate(45deg);
 }
+
 .cloud-eye::after {
     content: "";
     position: absolute;
@@ -1712,7 +1865,7 @@
     top: 3px;
     left: 5px;
     transition: transform 0.1s ease-out;
-    box-shadow: 0 0 6px rgba(255,255,255,0.8);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
     z-index: 2;
 }
 
@@ -1744,8 +1897,14 @@
     border-radius: 50%;
     filter: blur(1.5px);
 }
-.cloud-cheek.left { transform: translateX(-8px); }
-.cloud-cheek.right { transform: translateX(8px); }
+
+.cloud-cheek.left {
+    transform: translateX(-8px);
+}
+
+.cloud-cheek.right {
+    transform: translateX(8px);
+}
 
 .cloud-smile {
     position: absolute;
@@ -1763,12 +1922,14 @@
 .cloud-stage.is-success .main-cloud {
     transform: translate(-50%, -60%);
 }
+
 .cloud-stage.is-success .cloud-smile {
     width: 24px;
     height: 14px;
     border-bottom-width: 4px;
     bottom: 6px;
 }
+
 .cloud-stage.is-success .cloud-eye {
     border-radius: 50% 50% 20% 20%;
 }
@@ -1776,6 +1937,7 @@
 .cloud-stage.is-error .cloud-smile {
     transform: translateX(-50%) scaleY(-1) translateY(-6px);
 }
+
 .cloud-stage.is-error .cloud-eye {
     height: 16px;
     margin-top: 6px;

@@ -53,52 +53,57 @@ const SECTIONS = {
             <!-- Content scrolls over the fixed video -->
             <section class="philosophy-section">
                 <div class="philosophy-content container">
-                    <!-- Toggle (acts as section title) -->
-                    <div class="philosophy-toggle-wrap reveal">
-                        <div class="philosophy-toggle" data-mode="principles">
-                            <button class="philosophy-toggle-btn is-active" data-mode="principles">
-                                How We Build
-                            </button>
-                            <button class="philosophy-toggle-btn" data-mode="philosophy">
-                                Our Philosophy
-                            </button>
-                            <div class="philosophy-toggle-slider"></div>
+                    <!-- Phase 1: only video visible. Phase 2: this group fades in on scroll -->
+                    <div class="philosophy-text-group">
+
+                        <!-- Toggle (acts as section title) -->
+                        <div class="philosophy-toggle-wrap">
+                            <div class="philosophy-toggle" data-mode="principles">
+                                <button class="philosophy-toggle-btn is-active" data-mode="principles">
+                                    How We Build
+                                </button>
+                                <button class="philosophy-toggle-btn" data-mode="philosophy">
+                                    Our Philosophy
+                                </button>
+                                <div class="philosophy-toggle-slider"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Content Display -->
-                    <div class="philosophy-display reveal reveal-delay-1">
-                        <div class="philosophy-label">${DATA.architecture[0].cat}</div>
-                        <h3 class="philosophy-title">${DATA.architecture[0].title}</h3>
-                        <p class="philosophy-description">${DATA.architecture[0].desc}</p>
-                    </div>
+                        <!-- Content Display -->
+                        <div class="philosophy-display">
+                            <div class="philosophy-label">${DATA.architecture[0].cat}</div>
+                            <h3 class="philosophy-title">${DATA.architecture[0].title}</h3>
+                            <p class="philosophy-description">${DATA.architecture[0].desc}</p>
+                        </div>
 
-                    <!-- Desktop Navigation Arrows -->
-                    <button class="philosophy-nav philosophy-nav-prev" aria-label="Previous item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 18l-6-6 6-6"/>
-                        </svg>
-                    </button>
-                    <button class="philosophy-nav philosophy-nav-next" aria-label="Next item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </button>
-
-                    <!-- Mobile Navigation -->
-                    <div class="philosophy-nav-mobile reveal reveal-delay-2">
-                        <button class="philosophy-nav-btn philosophy-nav-btn-prev" aria-label="Previous item">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- Desktop Navigation Arrows -->
+                        <button class="philosophy-nav philosophy-nav-prev" aria-label="Previous item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M15 18l-6-6 6-6"/>
                             </svg>
                         </button>
-                        <div class="philosophy-pagination">1 / 4</div>
-                        <button class="philosophy-nav-btn philosophy-nav-btn-next" aria-label="Next item">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <button class="philosophy-nav philosophy-nav-next" aria-label="Next item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 18l6-6-6-6"/>
                             </svg>
                         </button>
-                    </div>
+
+                        <!-- Mobile Navigation -->
+                        <div class="philosophy-nav-mobile">
+                            <button class="philosophy-nav-btn philosophy-nav-btn-prev" aria-label="Previous item">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>
+                            </button>
+                            <div class="philosophy-pagination">1 / 4</div>
+                            <button class="philosophy-nav-btn philosophy-nav-btn-next" aria-label="Next item">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div><!-- /.philosophy-text-group -->
                 </div>
             </section>
         </div>

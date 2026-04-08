@@ -221,60 +221,64 @@ const ANIMATIONS = {
         const navMobilePrev = wrapper.querySelector('.philosophy-nav-btn-prev');
         const navMobileNext = wrapper.querySelector('.philosophy-nav-btn-next');
 
-        // === Section visibility observer ===
-        if (videoFixed) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        wrapper.classList.add('is-in-view');
-                    } else {
-                        wrapper.classList.remove('is-in-view');
-                    }
+        // === Unified scroll-progress driver ===
+        // The wrapper is 200vh. We track how far the user has scrolled through it:
+        //   progress 0.0 → 0.45  = Phase 1: full-screen video, no text
+        //   progress ≥ 0.45      = Phase 2: text group fades in
+        const textGroup = wrapper.querySelector('.philosophy-text-group');
+        let isRevealed = false;
+
+        const updateScrollPhase = () => {
+            const rect = wrapper.getBoundingClientRect();
+            const wrapperHeight = wrapper.offsetHeight; // ~200vh
+            const viewH = window.innerHeight;
+
+            // How many pixels we've scrolled into the wrapper
+            const scrolled = -rect.top;
+            // Total scrollable distance through wrapper (200vh - 100vh = 100vh)
+            const scrollable = wrapperHeight - viewH;
+            const progress = scrollable > 0 ? Math.max(0, Math.min(1, scrolled / scrollable)) : 0;
+
+            // --- Video fade-in / fade-out at section entry and exit ---
+            let videoOpacity = 1;
+            if (rect.top > 0) {
+                // Section entering from below: fade in over 30% of viewport
+                videoOpacity = Math.min(1, (viewH - rect.top) / (viewH * 0.3));
+            } else if (rect.bottom < viewH) {
+                // Section exiting to above: fade out over 30% of viewport
+                videoOpacity = Math.min(1, rect.bottom / (viewH * 0.3));
+            }
+            videoFixed.style.opacity = Math.max(0, Math.min(1, videoOpacity));
+
+            // --- Phase gate ---
+            if (progress >= 0.45 && !isRevealed) {
+                // Phase 2: reveal text
+                isRevealed = true;
+                if (textGroup) textGroup.classList.add('is-revealed');
+            } else if (progress < 0.3 && isRevealed) {
+                // Back in Phase 1: hide text again (re-triggerable)
+                isRevealed = false;
+                if (textGroup) textGroup.classList.remove('is-revealed');
+            }
+        };
+
+        // Throttled scroll handler
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateScrollPhase();
+                    ticking = false;
                 });
-            }, {
-                threshold: [0, 0.1, 0.5, 0.9, 1],
-                rootMargin: '-10% 0px -10% 0px'
-            });
+                ticking = true;
+            }
+        };
 
-            observer.observe(wrapper);
-            STATE.philosophySectionObserver = observer;
+        window.addEventListener('scroll', onScroll, { passive: true });
+        STATE.philosophyScrollHandler = onScroll;
 
-            // === Smooth scroll-based opacity ===
-            const updateVideoOpacity = () => {
-                const rect = wrapper.getBoundingClientRect();
-                const viewHeight = window.innerHeight;
-
-                // Calculate opacity based on section position
-                let opacity = 1;
-                if (rect.top > 0) {
-                    // Entering from bottom - fade in
-                    opacity = Math.min(1, (viewHeight - rect.top) / (viewHeight * 0.3));
-                } else if (rect.bottom < viewHeight) {
-                    // Exiting to top - fade out
-                    opacity = Math.min(1, rect.bottom / (viewHeight * 0.3));
-                }
-
-                videoFixed.style.opacity = Math.max(0, Math.min(1, opacity));
-            };
-
-            // Throttled scroll handler
-            let ticking = false;
-            const onScroll = () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateVideoOpacity();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            };
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-            STATE.philosophyScrollHandler = onScroll;
-
-            // Initial call
-            updateVideoOpacity();
-        }
+        // Initial call
+        updateScrollPhase();
 
         // Get data based on current mode
         const getData = () => {
@@ -429,11 +433,6 @@ const ANIMATIONS = {
             STATE.philosophyKeyHandler = null;
         }
 
-        // Clean up philosophy section observer
-        if (STATE.philosophySectionObserver) {
-            STATE.philosophySectionObserver.disconnect();
-            STATE.philosophySectionObserver = null;
-        }
 
         // Clean up philosophy scroll handler
         if (STATE.philosophyScrollHandler) {
