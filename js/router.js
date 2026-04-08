@@ -157,7 +157,7 @@ const COMPONENTS = {
         if (!STATE.user) {
             return `
                 <div class="portal-layout-full">
-                    <div class="portal-page-title reveal">Employees Log In</div>
+
                     <div class="portal-split-card reveal" id="portal-container">
                         <div class="portal-form-side" id="portal-left-section">
                             <div class="portal-orb" id="portal-orb"></div>
