@@ -16,7 +16,7 @@ const DATA = Object.freeze({
             name: 'Aiparel',
             cat: 'Consumer',
             subtitle: 'Create. Customize. Launch. Sell — globally with AI',
-            desc: 'Aiparel is an AI-powered platform that transforms ideas into sellable products in minutes. Generate original designs with AI, apply them to merchandise instantly, and launch to a worldwide audience through integrated fulfillment and payments across 200+ countries.<br><br>No inventory. No complexity. Just creation at scale.',
+            desc: 'By giving you a powerful AI platform, Aiparel transforms your ideas into tangible products that you can sell. Generate original designs and view others from a worldwide audience, while applying your own to merchandise effortlessly and launching them in over 200 countries with integrated fullfillment and payments. The ability to bring your ideas to life and grow has never been easier.',
             init: 'A',
             url: 'https://www.aiparel.io/',
             logo: 'company_logos/aiparellogo.svg'
@@ -25,7 +25,7 @@ const DATA = Object.freeze({
             name: 'KloeAI',
             cat: 'Enterprise',
             subtitle: 'Enterprise-level conversational AI — made accessible',
-            desc: 'KloeAI helps businesses deploy intelligent, multilingual customer support without technical overhead. From answering questions to guiding customers through workflows, it brings powerful conversational automation to teams of any size.<br><br>Smart support shouldn\'t require a large engineering team — and with KloeAI, it doesn\'t.',
+            desc: 'As the culmination of all of our core values, KloeAI holds the purpose of providing Artificial intelligence tools to a wide variety of people. Whether you are a business who needs to increase workflow efficiency or an individual who wants to bring your own dreams and thoughts to life, KloeAI provides all the support you need to make your thoughts a reality.',
             init: 'K',
             url: 'https://kloe.bot/',
             logo: 'company_logos/kloebotlogo.svg'
@@ -34,7 +34,7 @@ const DATA = Object.freeze({
             name: 'OzoneLayer',
             cat: 'Infrastructure',
             subtitle: 'Infrastructure designed for modern AI systems',
-            desc: 'OzoneLayer is our O³ infrastructure stack built for performance, scalability, and control. It includes OxiFrame for rapid development, Omnexus for unified API orchestration, and Orbnet for secure self-hosted deployment and large-scale object storage.<br><br>Purpose-built for LLM applications, fast iteration cycles, and production-grade AI environments.',
+            desc: 'The OzoneLayer is our protective infrastructure stack built with the idea of scaling horizontally. It remains committed to serving you by allowing full personalized control and efficient performance for rapid development, unified API orchestration, secure deployment and object storage. The OzoneLayer is about personal privacy, and protects your data from threats in a unsecure world.',
             init: 'O',
             url: 'https://www.ozonelayer.io/',
             logo: 'company_logos/ozonelayerlogo.svg'

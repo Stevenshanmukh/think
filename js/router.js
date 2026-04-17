@@ -114,7 +114,7 @@ const SECTIONS = {
             <div class="container container-narrow text-center">
                 <h2 class="text-h2 reveal">What We're Building</h2>
                 <p class="narrative-text what-we-build-desc reveal reveal-delay-1">
-                    On top of our infrastructure foundation sit the products themselves. Aiparel focuses on creator-driven commerce and expression. KloeAI helps small and medium-sized businesses deploy intelligent, multilingual chatbots without needing a development team. In parallel, we're developing a broader suite of AI-driven tools built on the same underlying infrastructure, aimed at putting capable, practical AI in the hands of individuals and small organizations. Each project operates independently but shares the same technical foundation.
+                    The current landscape of Artificial Intelligence is one lacking proper safeguards and regulations. As such we aim to challenge that by creating products with Humanity first in mind and laying the groundwork for a Human-Centric future. We are committed to create a world where the capabilities of AI never supersedes morality and ethics, but is instead led by them.
                 </p>
                 <div class="reveal reveal-delay-2">
                     <a href="#projects" class="btn btn-primary" data-link>Explore Our Projects</a>
